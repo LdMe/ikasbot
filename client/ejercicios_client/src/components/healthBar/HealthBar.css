@@ -1,0 +1,38 @@
+
+.health-bar {
+    height:10px;
+    width: 100%;
+    border: 1px solid black;
+}
+
+.health-bar-fill {
+    height:100%;
+    background-color: var(--from-color);
+}
+
+.medium-health {
+    background-color: yellow;
+}
+
+.low-health {
+    background-color: red;
+}
+
+/*
+animate the health bar using --from-width 
+*/
+.health-bar-fill.animated {
+    animation: health-bar-fill var(--duration) ease-out;
+    animation-fill-mode: forwards;
+}
+
+@keyframes health-bar-fill {
+    from {
+        width: var(--from-width);
+        background-color: var(--from-color)
+    }
+    to {
+        width: var(--to-width);
+        background-color: var(--to-color)
+    }
+}

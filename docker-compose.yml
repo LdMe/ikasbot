@@ -1,0 +1,38 @@
+version: "3"
+
+services:
+  mongo:
+    image: mongo:latest
+    container_name: ${DB_HOST}
+    restart: always
+    ports:
+      - 27017:27017
+    volumes:
+      - ./data:/data/db
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: ${DB_ROOT_USERNAME}
+      MONGO_INITDB_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
+      MONGO_INITDB_DATABASE: ${DB_NAME}
+      MONGO_INITDB_DATA_DIR: /data/db
+      MONGO_INITDB_USERNAME: ${DB_USERNAME}
+      MONGO_INITDB_PASSWORD: ${DB_PASSWORD}
+
+  api:
+    build: .
+    container_name: ${APP_NAME}
+    restart: always
+    privileged: true
+    ports:
+      - ${APP_PORT}:${APP_PORT}
+    environment:
+      - APP_PORT=${APP_PORT}
+    volumes:
+      - .:/app
+      - /app/node_modules
+      - /var/run/docker.sock:/var/run/docker.sock
+  js-test: 
+    container_name: js-test
+    restart: always
+    build: ./test/
+    volumes:
+      - ./test:/app
