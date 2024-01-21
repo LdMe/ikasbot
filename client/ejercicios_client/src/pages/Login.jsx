@@ -1,28 +1,38 @@
 
 
-import { useState,useContext } from "react";
+import { useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import loggedInContext from "../context/loggedInContext";
 
 const Login = () => {
-    const [username, setUsername] = useState("");
+    const [name, setName] = useState("");
+    const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [passwordConfirm, setPasswordConfirm] = useState("")
     const [isRegister, setIsRegister] = useState(false);
     const { login } = useContext(loggedInContext);
     const navigate = useNavigate();
-    const handleLogin = () => {
-        fetch("http://localhost:3001/auth/login", {
-            method: "POST",
-            credentials: "include",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ username, password })
-        }).then((response) => response.json()).then((data) => {
+    const handleLogin = async () => {
+        try {
+            const response = await fetch("http://localhost:3001/auth/login", {
+                method: "POST",
+                credentials: "include",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ email, password })
+            });
+            if (!response.ok) {
+                console.log("error")
+                return;
+            }
+            const data = await response.json();
             login(data.user);
             console.log(data);
             // navigate to home
             navigate("/");
-        }).catch((error) => console.log(error))
+        }
+        catch (error) {
+            console.log(error)
+        }
     }
 
     const handleRegister = () => {
@@ -30,7 +40,7 @@ const Login = () => {
             method: "POST",
             credentials: "include",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ username, password, passwordConfirm })
+            body: JSON.stringify({ name, email, password, passwordConfirm })
         }).then((response) => response.json()).then((data) => {
             console.log(data);
         }).catch((error) => console.log(error))
@@ -40,8 +50,14 @@ const Login = () => {
         <section className="login">
             <h2>{isRegister ? "Registro" : "Login"}</h2>
             <form className="login-form">
-                <label htmlFor="username">Nombre de usuario</label>
-                <input type="text" id="username" value={username} onChange={(e) => setUsername(e.target.value)} />
+                {isRegister &&
+                    <>
+                        <label htmlFor="name">Nombre</label>
+                        <input type="text" id="name" value={name} onChange={(e) => setName(e.target.value)} />
+                    </>
+                }
+                <label htmlFor="email">Email</label>
+                <input type="email" id="email" value={email} onChange={(e) => setEmail(e.target.value)} />
                 <label htmlFor="password">Contraseña</label>
                 <input type="password" id="password" value={password} onChange={(e) => setPassword(e.target.value)} />
                 {isRegister &&

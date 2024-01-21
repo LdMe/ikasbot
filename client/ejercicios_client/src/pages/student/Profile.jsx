@@ -32,18 +32,8 @@ const Profile = () => {
     }
     return (
         <div className="container">
-            <h1>Perfil</h1>
-            <h2>Nombre: {user.name}</h2>
-            {getUserRole() == "admin" &&
-                <select name="role" id="role" value={user.role} onChange={handleChangeRole}>
-                    <option value="student">Estudiante</option>
-                    <option value="teacher">Profesor</option>
-                    <option value="admin">Administrador</option>
-                </select>
-            }
 
-            {user.role == "student" && (
-                <>
+                
                     <section className="courses">
                         {user.courses.length > 0 ?
                             (
@@ -54,23 +44,20 @@ const Profile = () => {
                                             <TextShowHide key={course._id}
                                             title ={
                                             <article key={course._id} className="course-info">
-                                                <Link key={course._id} to={`/cursos/${course._id}`}><p>{course.name}</p></Link>
+                                                <Link key={course._id} to={`cursos/${course._id}`}><p>{course.name}</p></Link>
                                                 <HealthBar hp={course.totalExercisesPassed} maxHp={course.totalExercises} />
                                             </article>
                                             }
                                             >
-                                                <CourseStats course={course} />
+                                                <CourseStats  course={course} />
                                             </TextShowHide>
                                         )
                                     })}
                                 </>
                             ) :
-                            <p>El usuario no está inscrito a ningún curso</p>
+                            <p>No estás inscrito a ningún curso</p>
                         }
                     </section>
-                </>
-            )}
-
         </div>
     )
 }

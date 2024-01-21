@@ -1,15 +1,15 @@
 
 import { useState, useContext, useEffect } from 'react'
-import loggedInContext from '../context/loggedInContext'
+import loggedInContext from '../../context/loggedInContext'
 import 'highlight.js/styles/atom-one-dark.css';
 import Highlight from 'react-highlight'
 import { highlight, languages } from 'highlight.js';
 import Editor from 'react-simple-code-editor';
 import { useLoaderData } from 'react-router-dom';
-import { createAttempt,deleteExercise, updateExercise } from '../util/apiCalls';
-import { useNavigate } from 'react-router-dom';
-import CreateExercise from './CreateExercise';
-import HealthBar from './healthBar/HealthBar';
+import { createAttempt,deleteExercise, updateExercise } from '../../util/apiCalls';
+import { useNavigate,Link } from 'react-router-dom';
+import CreateExercise from '../../components/CreateExercise';
+import HealthBar from '../../components/healthBar/HealthBar';
 
 const Exercise = () => {
     const [exercise,setExercise] = useState(useLoaderData())
@@ -61,7 +61,12 @@ const Exercise = () => {
     return (
         <div key={exercise._id}>
             <h1>{exercise.name}</h1>
-            <p>Creado por {exercise.createdBy?.username}</p>
+            <p>Creado por {exercise.createdBy?.name}</p>
+            <p> Tema:  
+            <Link to={`/temas/${exercise.subject?._id}`}>
+             {exercise.subject?.name}
+            </Link>
+            </p>
             {isAdminOrTeacher  && (
                 <>
                     <button onClick={() => setIsEditing(!isEditing)}>Editar</button>

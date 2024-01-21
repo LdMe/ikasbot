@@ -2,8 +2,11 @@ import User from '../models/userModel.js';
 import Course from '../models/courseModel.js';
 import bcrypt from 'bcryptjs';
 import Attempt from '../models/attemptModel.js';
+import Subject from '../models/subjectModel.js';
+import Exercise from '../models/exerciseModel.js';
+import { isValidObjectId } from '../utils/helpers.js';
 /**
- * create a user with username and password
+ * create a user 
  * @param {Object} req
  * @param {Object} res
  */
@@ -32,7 +35,27 @@ const createUser = async (req, res) => {
  */
 const getAllUsers = async (req, res) => {
     try {
-        const users = await User.find();
+        const { query, limit } = req.query;
+        console.log("query", query)
+        console.log("limit", limit)
+
+        let filter = {};
+        if (query) {
+            filter = {
+                $or: [
+                    { name: { $regex: query, $options: 'i' } },
+                    { email: { $regex: query, $options: 'i' } },
+                ],
+            };
+        }
+        
+        
+        if(limit){
+            const users = await User.find(filter).limit(parseInt(limit));
+            console.log("users",users)
+            return res.json(users);
+        }
+        const users = await User.find(filter);
         res.json(users);
     } catch (err) {
         res.status(500).json({ message: err.message });
@@ -46,15 +69,63 @@ const getAllUsers = async (req, res) => {
  */
 const getUser = async (req, res) => {
     try {
-        const user = await User.findById(req.params.id).populate('courses');
+        const id = isValidObjectId(req.params.id) ?  req.params.id : req.user.id;
+        const user = await User.findById(id).populate('courses');
         if (user == null) {
             return res.status(404).json({ message: 'Cannot find user' });
         }
         const attempts = await Attempt.find({ createdBy: user._id }).sort({ createdAt: -1 }).populate('exercise');
-        const response ={...user._doc,attempts:attempts};
+        const attemptsByExercise = {};
+        attempts.forEach(attempt => {
+            if (!attemptsByExercise[attempt.exercise._id]) {
+                attemptsByExercise[attempt.exercise._id] = {
+                    exercise: attempt.exercise,
+                    attempts: [],
+                    isCorrect: attempt.success,
+                    bestAttempt: attempt
+                }
+            }
+            if (!attemptsByExercise[attempt.exercise._id].isCorrect) {
+                attemptsByExercise[attempt.exercise._id].isCorrect = attempt.success;
+            }
+            if (attemptsByExercise[attempt.exercise._id].bestAttempt.correct_percentage < attempt.correct_percentage) {
+                attemptsByExercise[attempt.exercise._id].bestAttempt = attempt;
+            }
+            attemptsByExercise[attempt.exercise._id].attempts.push(attempt);
+        });
+        // once grouped by exercise, group exercises by subject and subject by course
+        const courses = [];
+        const formattedCourses = user.courses.map(course => course._doc);
+        for( const course of formattedCourses){
+           
+            courses.push(course);
+            // find subjects and convert them to regular objects
+            const subjects = await Subject.find({ course: course._id });
+            const formattedSubjects = subjects.map(subject => subject._doc);
+            for( const subject of formattedSubjects){
+                const exercises = await Exercise.find({subject:subject._id});
+                const formattedExercises = exercises.map(exercise => exercise._doc);
+                course.subjects = course.subjects || [];
+                course.subjects.push(subject);
+                for (const exercise of formattedExercises){
+                    subject.exercises = subject.exercises || [];
+                    if(attemptsByExercise[exercise._id]){
+                        subject.exercises.push(attemptsByExercise[exercise._id]);
+                    }
+                    else{
+                        subject.exercises.push({exercise:exercise,attempts:[]});
+                    }
+                }
+            };
+        };
+        const userData = user._doc;
+        delete userData.password;
+        const response ={...userData,attempts:attemptsByExercise,courses};
         res.json(response);
+
     }
     catch (err) {
+        console.error(err)
         res.status(500).json({ message: err.message });
     }
 
@@ -68,15 +139,21 @@ const getUser = async (req, res) => {
 const updateUser = async (req, res) => {
 
     try {
-        const { username, password, role } = req.body;
+        const { name, password, role } = req.body;
         const id = req.params.id;
         const user = await User.findById(id);
         if (user == null) {
             return res.status(404).json({ message: 'Cannot find user' });
         }
-        user.username = username;
-        user.password = password;
-        user.role = role;
+        if(name){
+            user.name = name;
+        }
+        if(password){
+            user.password = await bcrypt.hash(password, 10);
+        }
+        if(role){
+            user.role = role;
+        }
         await user.save();
         res.json(user);
 
@@ -143,7 +220,7 @@ const getTeachers = async (req, res) => {
                     },
                     {
                         $or: [
-                            { username: { $regex: query, $options: 'i' } },
+                            { name: { $regex: query, $options: 'i' } },
                             { email: { $regex: query, $options: 'i' } },
                         ],
                     },
@@ -151,7 +228,7 @@ const getTeachers = async (req, res) => {
                 ],
             }
 
-        ).sort({ username: 1, email: 1 }).limit(parseInt(limit));
+        ).sort({ name: 1, email: 1 }).limit(parseInt(limit));
         res.json(teachers);
     } catch (err) {
         console.error(err)
@@ -179,7 +256,7 @@ const getUsersByRole = async (req, res) => {
                 { role: role },
                 {
                     $or: [
-                        { username: { $regex: query, $options: 'i' } },
+                        { name: { $regex: query, $options: 'i' } },
                         { email: { $regex: query, $options: 'i' } },
                     ],
                 },
@@ -194,7 +271,7 @@ const getUsersByRole = async (req, res) => {
                 filter.courses = { $ne: notCourse };
             }
         }
-         users = await User.find(filter).sort({ username: 1, email: 1 }).limit(parseInt(limit));
+         users = await User.find(filter).sort({ name: 1, email: 1 }).limit(parseInt(limit));
 
         res.json(users);
     } catch (err) {

@@ -22,6 +22,8 @@ const attemptSchema = new mongoose.Schema({
         default: Date.now
     },
     correct_percentage: Number,
+    correct_tests: Number,
+    total_tests: Number,
     execution_time: Number,
     message: String
 });
@@ -39,13 +41,18 @@ attemptSchema.pre('save', async function (next) {
     }
     const match = attempt.message.match(regex);
     let correct_percentage = 0;
+    let correct_tests = 0;
+    let total_tests = 0;
     if (match) {
-        const passed = parseInt(match[1]);
-        const total = parseInt(match[2]);
-         correct_percentage = passed / total * 100;
+        correct_tests = parseInt(match[1]);
+        total_tests = parseInt(match[2]);
+         correct_percentage = correct_tests / total_tests * 100;
         
     }
     attempt.correct_percentage = correct_percentage;
+    attempt.correct_tests = correct_tests;
+    attempt.total_tests = total_tests;
+
     // get execution time
     regex = /Time:\s+(\d.?\d+)\s+s/;
     const match2 = attempt.message.match(regex);

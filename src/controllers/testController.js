@@ -23,7 +23,8 @@ const testCode = async (userId,exerciseId, code) => {
         const attempts = await Attempt.find({ exercise: exerciseId, createdBy: userId }).sort({ createdAt: 1 });
         // if code is the same as any of the previous attempts, throw error
         if(attempts.some(attempt => attempt.code === code)){
-            throw new Error("You have already submitted this code");
+            const attempt = attempts.find(attempt => attempt.code === code);
+            return attempt;
         }
         // if number of attempts for this exercise is greater than 3, remove the oldest attempt
         if (attempts.length > 3) {

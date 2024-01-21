@@ -120,7 +120,19 @@ const deleteCourse = async (req, res) => {
         if (course == null) {
             return res.status(404).json({ message: 'Cannot find course' });
         }
-        await course.remove();
+        // delete course from students and subjects
+        const students = await User.find({ courses: course._id });
+        students.forEach(async (student) => {
+            student.courses.pull(course._id);
+            await student.save();
+        });
+        const subjects = await Subject.find({ course: course._id });
+        subjects.forEach(async (subject) => {
+            subject.course = null;
+            await subject.save();
+        });
+
+        await Course.deleteOne({ _id: course._id });
         res.json({ message: 'Course deleted' });
     } catch (err) {
         res.status(500).json({ message: err.message });

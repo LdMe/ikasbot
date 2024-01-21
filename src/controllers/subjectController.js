@@ -43,7 +43,7 @@ const getAllSubjects = async (req, res) => {
  */
 const getSubject = async (req, res) => {
     try {
-        const subject = await Subject.findById(req.params.id);
+        const subject = await Subject.findById(req.params.id).populate('course', 'name');
         if (subject == null) {
             return res.status(404).json({ message: 'Cannot find subject' });
         }

@@ -59,6 +59,9 @@
   overflow-y: scroll;
   overflow-x: scroll;
 }
+.hljs.sm{
+  min-height: initial;
+}
 .hljs.editor {
   padding: 1em;
   border: 1px solid #ccc;
@@ -66,3 +69,27 @@
   background-color: #000000;
 }
 
+.attempt-list {
+  /* horizontal carrusel */
+  display: flex;
+  flex-wrap: nowrap;
+  overflow-x: auto;
+  overflow-y: hidden;
+  -webkit-overflow-scrolling: touch;
+  scroll-snap-type: x mandatory;
+  scroll-behavior: smooth;
+  gap: 1em;
+}
+
+.text-show-hide-title {
+  cursor: pointer;
+  font-weight: bold;
+  display: flex;
+  
+}
+.text-show-hide-title svg {
+  margin: auto 1em;
+}
+.text-show-hide-title article {
+  width: 50%;
+}

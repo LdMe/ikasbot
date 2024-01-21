@@ -1,9 +1,9 @@
 import { useLoaderData, Link, useNavigate } from "react-router-dom";
 import { useContext, useEffect, useState } from "react";
-import loggedInContext from "../context/loggedInContext";
-import { createSubject, deleteSubject, getTeachers, removeTeacher,addTeacher,getStudents, enrollStudent,unenrollStudent } from "../util/apiCalls";
-import AddUser from "../components/AddUser";
-
+import loggedInContext from "../../context/loggedInContext";
+import { createSubject, deleteSubject, getTeachers, removeTeacher, addTeacher, getStudents, enrollStudent, unenrollStudent } from "../../util/apiCalls";
+import AddUser from "../../components/AddUser";
+import TextShowHide from "../../components/TextShowHide";
 const Course = () => {
     const [data, setData] = useState(useLoaderData())
     const [subjectToDelete, setSubjectToDelete] = useState(null);
@@ -21,7 +21,7 @@ const Course = () => {
         const name = e.target.name.value;
         const subject = { name, course: data.course._id };
         const response = await createSubject(subject);
-        if(response){
+        if (response) {
             setData({ ...data, subjects: [...data.subjects, response] })
         }
         e.target.reset();
@@ -57,7 +57,7 @@ const Course = () => {
     const handleEnroll = async (course) => {
         const newStudent = course;
         console.log("teacher", newStudent)
-        setData({ ...data,  students: [...data.students, newStudent] })
+        setData({ ...data, students: [...data.students, newStudent] })
     }
     const handleUnenrroll = async (studentId) => {
         const response = await unenrollStudent(data.course._id, studentId)
@@ -65,7 +65,7 @@ const Course = () => {
         console.log("studentId", studentId)
         const newStudents = data.students.filter((student) => student._id != studentId)
         console.log("newStudents", newStudents)
-        setData({ ...data, students: newStudents})
+        setData({ ...data, students: newStudents })
     }
     console.log("roleeee", getUserRole())
     if (!data.course) return (<div>cargando...</div>)
@@ -74,40 +74,39 @@ const Course = () => {
             <h1>Curso {data.course.name}</h1>
             <section className="subject-section">
                 <h2>Temas</h2>
-                {getUserRole() != "student" &&
+                <TextShowHide
+                    title={<h3>Crear nuevo tema</h3>}
+                >
                     <section className="new-subject">
-                        <h3>Crear nuevo tema</h3>
+
                         <form onSubmit={handleNewSubject}>
                             <label htmlFor="name">Nombre</label>
                             <input type="text" id="name" />
                             <button type="submit">Crear</button>
                         </form>
                     </section>
-                }
+                </TextShowHide>
+
                 <ul>
                     {data.subjects.map((subject) => (
                         <li key={subject._id}>
-                            <Link to={`/temas/${subject._id}`}>{subject.name}</Link>
-
-                            {getUserRole() != "student" &&
-                                <>
-                                    {subjectToDelete === subject._id ?
-                                        <>
-                                            <label htmlFor="deleteExercises">Eliminar ejercicios</label>
-                                            <input type="checkbox" checked={deleteExercises} onChange={() => setDeleteExercises(!deleteExercises)} />
-                                            <button onClick={() => handleDelete(subject._id)}>Confirmar</button>
-                                            <button onClick={handleCancelDelete}>Cancelar</button>
-                                        </>
-                                        :
-                                        <button onClick={() => handleDelete(subject._id)}>Eliminar</button>
-                                    }
-                                </>
-                            }
+                            <Link to={`../temas/${subject._id}`}>{subject.name}</Link>
+                            <>
+                                {subjectToDelete === subject._id ?
+                                    <>
+                                        <label htmlFor="deleteExercises">Eliminar ejercicios</label>
+                                        <input type="checkbox" checked={deleteExercises} onChange={() => setDeleteExercises(!deleteExercises)} />
+                                        <button onClick={() => handleDelete(subject._id)}>Confirmar</button>
+                                        <button onClick={handleCancelDelete}>Cancelar</button>
+                                    </>
+                                    :
+                                    <button onClick={() => handleDelete(subject._id)}>Eliminar</button>
+                                }
+                            </>
                         </li>
                     ))}
                 </ul>
             </section>
-            {getUserRole() != "student" &&
                 <section className="student-section">
                     <h2>Alumnos</h2>
                     <ul>
@@ -115,42 +114,47 @@ const Course = () => {
                             data.students.map((student) => (
 
                                 <li key={student._id}>
-                                    <Link to={`/profile/${student._id}`}>{student.username}</Link><button onClick={() => handleUnenrroll(student._id)}>Eliminar</button>
+                                    <Link to={`/perfil/${student._id}`}>{student.name}</Link><button onClick={() => handleUnenrroll(student._id)}>Eliminar</button>
                                 </li>
                             ))
                         }
                     </ul>
-                    <AddUser
-                    key={data.students}
-                        courseId={data.course._id}
-                        onAddUser={handleEnroll}
-                        getUsers={getStudents}
-                        addUser={enrollStudent}
-                    />
+                    <TextShowHide
+                        title={<h3>Añadir alumno</h3>}
+                    >
+                        <AddUser
+                            key={data.students}
+                            courseId={data.course._id}
+                            onAddUser={handleEnroll}
+                            getUsers={getStudents}
+                            addUser={enrollStudent}
+                        />
+                    </TextShowHide>
                 </section>
 
-            }
             {getUserRole() == "admin" &&
                 <section className="teacher-section">
                     <h2>Profesores</h2>
-
                     <ul>
                         {
                             data.course.teachers.map((teacher) => (
-
                                 <li key={teacher._id}>
-                                    <Link to={`/profile/${teacher._id}`}>{teacher.username}</Link> <button onClick={() => handleRemoveTeacher(teacher._id)}>Eliminar</button>
+                                    <Link to={`/perfil/${teacher._id}`}>{teacher.name}</Link> <button onClick={() => handleRemoveTeacher(teacher._id)}>Eliminar</button>
                                 </li>
                             ))
                         }
                     </ul>
-                    <AddUser
-                    key={data.course.teachers}
-                        courseId={data.course._id}
-                        onAddUser={handleAddTeacher}
-                        getUsers={getTeachers}
-                        addUser={addTeacher}
-                    />
+                    <TextShowHide
+                        title={<h3>Añadir profesor</h3>}
+                    >
+                        <AddUser
+                            key={data.course.teachers}
+                            courseId={data.course._id}
+                            onAddUser={handleAddTeacher}
+                            getUsers={getTeachers}
+                            addUser={addTeacher}
+                        />
+                    </TextShowHide>
                 </section>
             }
 

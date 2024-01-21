@@ -1,7 +1,7 @@
 import { useState, useEffect, useContext } from 'react'
-import { createExercise, updateExercise } from '../util/apiCalls'
-import { useNavigate, useParams } from 'react-router-dom'
-import loggedInContext from '../context/loggedInContext'
+import { createExercise, updateExercise } from '../../util/apiCalls'
+import { useNavigate, useSearchParams } from 'react-router-dom'
+import loggedInContext from '../../context/loggedInContext'
 import 'highlight.js/styles/atom-one-dark.css';
 import { highlight, languages } from 'highlight.js';
 import Editor from 'react-simple-code-editor';
@@ -16,8 +16,8 @@ function CreateExercise({ oldExercise, onSubmit = null }) {
     const [level, setLevel] = useState('easy')
     const [hasTest, setHasTest] = useState(true)
     const [isDescriptionInHTML, setisDescriptionInHTML] = useState(false)
-    const navigate = useNavigate()
-    const { subjectId } = useParams()
+    const navigate = useNavigate();
+    const  [ searchParams ] = useSearchParams();
     useEffect(() => {
         if (getUserRole() == "student") {
             navigate('/')
@@ -32,7 +32,9 @@ function CreateExercise({ oldExercise, onSubmit = null }) {
     }, [oldExercise])
     const handleSubmit = async (e) => {
         e.preventDefault()
-        const data = { name, description, test, level, subject: subjectId }
+        console.log("subject", searchParams)
+        const subject = searchParams.get("subject")
+        const data = { name, description, test, level, subject: subject }
         e.target.reset()
         let exercise = null;
         if (oldExercise) {

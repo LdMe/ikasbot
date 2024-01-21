@@ -8,8 +8,8 @@ dotenv.config();
 
 const register = async (req, res) => {
     try{
-        const { username, password, passwordConfirm } = req.body;
-        const oldUser =await User.findOne({ username });
+        const { name,email, password, passwordConfirm } = req.body;
+        const oldUser =await User.findOne({ email });
         if (oldUser) {
             res.status(409).json({error:"User already exists"});
             return;
@@ -19,7 +19,7 @@ const register = async (req, res) => {
             return;
         }
         const hashedPassword = await bcrypt.hash(password, 10);
-        const user = new User({ username, password: hashedPassword });
+        const user = new User({ name,email, password: hashedPassword });
         await user.save();
         res.json(user);
     }
@@ -31,8 +31,8 @@ const register = async (req, res) => {
 
 const login = async (req, res) => {
     try {
-        const { username, password } = req.body;
-    const oldUser = await User.findOne({ username });
+        const { email, password } = req.body;
+    const oldUser = await User.findOne({ email });
     if (!oldUser) {
         res.status(404).json({error:"User does not exist"});
         return;
@@ -42,7 +42,7 @@ const login = async (req, res) => {
         res.status(400).json({error:"Invalid credentials"});
         return;
     }
-    const token = Jwt.sign({ username: oldUser.username, id: oldUser._id,role:oldUser.role }, process.env.JWT_SECRET, { expiresIn: "1h" });
+    const token = Jwt.sign({ name: oldUser.name,email:oldUser.email, id: oldUser._id,role:oldUser.role }, process.env.JWT_SECRET, { expiresIn: "1h" });
     /* send token in a cookie */
     res.cookie("token", token, { 
         httpOnly: true,
@@ -55,7 +55,8 @@ const login = async (req, res) => {
     res.status(200).json({
         user:
         {
-            username: oldUser.username,
+            name: oldUser.name,
+            email:oldUser.email,
             id: oldUser._id,
             role: oldUser.role
         },
@@ -88,12 +89,13 @@ const refresh = async (req, res) => {
             return;
         }
         const decoded = Jwt.verify(token, process.env.JWT_SECRET);
+        console.log("decoded",decoded)
         const user = await User.findById(decoded.id);
         if (!user) {
             res.status(401).json({error:"Unauthorized: Invalid token"});
             return;
         }
-        const newToken = Jwt.sign({ username: user.username, id: user._id,role:user.role }, process.env.JWT_SECRET, { expiresIn: "1h" });
+        const newToken = Jwt.sign({ name: user.name,email:user.email, id: user._id,role:user.role }, process.env.JWT_SECRET, { expiresIn: "1h" });
         res.cookie("token", newToken, { 
             httpOnly: true,
             secure: true,
@@ -103,7 +105,8 @@ const refresh = async (req, res) => {
         res.status(200).json({
             user:
             {
-                username: user.username,
+                name: user.name,
+                email:user.email,
                 id: user._id,
                 role: user.role
             },

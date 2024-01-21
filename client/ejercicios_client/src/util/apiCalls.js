@@ -143,6 +143,20 @@ const createCourse = async (data) => {
     }
 }
 
+const deleteCourse = async (id) => {
+    try {
+        const response = await fetch(`http://localhost:3001/course/${id}`, {
+            method: 'DELETE',
+            credentials: "include",
+        });
+        const result = await response.json();
+        return result;
+    }
+    catch (error) {
+        console.error(error)
+        return { success: false, message: error.message };
+    }
+}
 
 const getSubject = async (id) => {
     try {
@@ -311,12 +325,73 @@ const unenrollStudent = async (courseId,studentId) => {
         return { success: false, message: error.message };
     }
 }
+const calculateCourseScores = (courses) => {
+    if(!courses){
+        return [];
+    }
+    for(const course of courses){
+        let totalCourseExercises = 0;
+        let totalCourseExercisesPassed = 0;
+        for(const subject of course.subjects){
+            let totalSubjectExercises = 0;
+            let totalSubjectExercisesPassed = 0;
+            for(const exercise of subject.exercises){
+                totalCourseExercises++;
+                totalSubjectExercises++;
+                if(exercise.bestAttempt?.success){
+                    totalCourseExercisesPassed++;
+                    totalSubjectExercisesPassed++;
+                }
+            }
+            subject.totalExercises = totalSubjectExercises;
+            subject.totalExercisesPassed = totalSubjectExercisesPassed;
+        }
+        course.totalExercises = totalCourseExercises;
+        course.totalExercisesPassed = totalCourseExercisesPassed;
+    }
+    return courses;
+}
 
-const getUserData = async (id) => {
+const getAllUsers = async (query="",limit=10) => {
     try {
-        const response = await fetch(`http://localhost:3001/user/${id}`, {
+        const response = await fetch(`http://localhost:3001/user?limit=${limit}&query=${query}`, {
             method: 'GET',
             credentials: "include",
+        });
+        const result = await response.json();
+        result.courses = calculateCourseScores(result.courses);
+        return result;
+    }
+    catch (error) {
+        console.error(error)
+        return { success: false, message: error.message };
+    }
+}
+
+const getUserData = async (id=null) => {
+    try {
+        let url = id ? `http://localhost:3001/user/${id}` : `http://localhost:3001/user/profile`;
+        const response = await fetch(url, {
+            method: 'GET',
+            credentials: "include",
+        });
+        const result = await response.json();
+        result.courses = calculateCourseScores(result.courses);
+        return result;
+    }
+    catch (error) {
+        console.error(error)
+        return { success: false, message: error.message };
+    }
+}
+
+const changeUserRole = async (id,role) => {
+    try {
+        const response = await fetch(`http://localhost:3001/user/${id}`, {
+            method: 'PUT',
+            credentials: "include",
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({role:role}),
         });
         const result = await response.json();
         return result;
@@ -338,6 +413,7 @@ export {
     getCourses,
     getCourse,
     createCourse,
+    deleteCourse,
     getSubject,
     refreshAuth,
     createSubject,
@@ -350,5 +426,7 @@ export {
     enrollStudent,
     unenrollStudent,
     getUserData,
+    changeUserRole,
+    getAllUsers,
 }
 

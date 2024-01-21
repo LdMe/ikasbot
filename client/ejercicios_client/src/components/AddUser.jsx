@@ -31,13 +31,12 @@ function AddUser({courseId,onAddUser,getUsers,addUser}) {
     }
     return (
         <>
-            <h3>Añadir usuario</h3>
             <input type="text" onChange={handleSearch} value={search}/>
             <ul>
                 {users?.map((user) => (
                     <li key={user._id}>
                         <button type="button" value={JSON.stringify(user)} onClick={()=>handleSelect(user._id)}>Añadir</button>
-                        {user.username}
+                        {user.name}
                     </li>
                 ))}
             </ul>

@@ -6,8 +6,8 @@ import { useContext } from 'react';
 import { logout } from "../util/apiCalls";
 
 const NavBar = () => {
-    const { isLogged, getUserRole,getUser } = useContext(loggedInContext);
-
+    const { isLogged, getUserRole, getUser } = useContext(loggedInContext);
+    const TEACHER_URL = "/profesorado";
     const handleLogout = () => {
         logout();
     }
@@ -19,15 +19,30 @@ const NavBar = () => {
 
                     {isLogged ?
                         <>
+                            {getUserRole() != "student" &&
+                                <>
+                                    <li className="navbar-item">
+                                        <Link to={`${TEACHER_URL}/cursos`} className="nav-link">Cursos</Link>
+                                    </li>
+                                    <li className="navbar-item">
+                                        <Link to={`${TEACHER_URL}/temas`} className="nav-link">Temas</Link>
+                                    </li>
+                                    <li className="navbar-item">
+                                        <Link to={`${TEACHER_URL}/ejercicios`} className="nav-link">Ejercicios</Link>
+                                    </li>
+                                    <li className="navbar-item">
+                                        <Link to={`${TEACHER_URL}/usuarios`} className="nav-link">Usuarios</Link>
+                                    </li>
+
+                                </>
+                            }
                             <li className="navbar-item">
-                                <Link to="/cursos" className="nav-link">Cursos</Link>
-                            </li>
-                            <li className="navbar-item">
-                                <Link to={`/profile/${getUser().id}`} className="nav-link">Perfil</Link>
+                                <Link to={`/aula`} className="nav-link">Aula</Link>
                             </li>
                             <li className="navbar-item">
                                 <Link to="/login" className="nav-link" onClick={handleLogout}>Logout</Link>
                             </li>
+
                         </>
                         :
                         <>

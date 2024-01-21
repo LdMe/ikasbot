@@ -20,19 +20,16 @@ const Subject = () => {
     return (
         <div>
             <h1>Tema {data.subject.name}</h1>
-            <p>Curso: <Link to={`/cursos/${data.subject.course._id}`}>{data.subject.course.name}</Link></p>
+            <p>Curso: <Link to={`../cursos/${data.subject.course._id}`}>{data.subject.course.name}</Link></p>
             <ul>
                 {
                     data.exercises.map((exercise) => (
                         <li key={exercise._id}>
-                            <Link to={`ejercicios/${exercise._id}`}>{exercise.name} | {getMappedLevel(exercise.level)}</Link>
+                            <Link to={`../ejercicios/${exercise._id}`}>{exercise.name} | {getMappedLevel(exercise.level)}</Link>
                         </li>
                     ))
                 }
             </ul>
-            {getUserRole() != "student" &&
-                <Link to={`ejercicios/nuevo`}>Nuevo Ejercicio</Link>
-            }
         </div>
     );
 }
