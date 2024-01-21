@@ -17,6 +17,9 @@ services:
       MONGO_INITDB_DATA_DIR: /data/db
       MONGO_INITDB_USERNAME: ${DB_USERNAME}
       MONGO_INITDB_PASSWORD: ${DB_PASSWORD}
+    networks:
+      - ejercicios-interna
+
 
   api:
     build: .
@@ -27,13 +30,28 @@ services:
       - ${APP_PORT}:${APP_PORT}
     environment:
       - APP_PORT=${APP_PORT}
+      - VIRTUAL_HOST=api.ejercicios.lafuentedanel.com
+      - LETSENCRYPT_HOST=api.ejercicios.lafuentedanel.com
+      - LETSENCRYPT_EMAIL=admin@ejercicios.lafuentedanel.com
     volumes:
       - .:/app
       - /app/node_modules
       - /var/run/docker.sock:/var/run/docker.sock
+    networks:
+      - ejercicios-interna
+      - nginx-proxy
+
   js-test: 
     container_name: js-test
     restart: always
     build: ./test/
     volumes:
       - ./test:/app
+    networks:
+      - ejercicios-interna
+
+networks:
+  ejercicios-interna:
+    name: ejercicios-interna
+  nginx-proxy:
+    external: true
