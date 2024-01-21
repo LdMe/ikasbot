@@ -9,10 +9,9 @@ const DB_PORT = process.env.DB_PORT || '27017';
 const DB_NAME = process.env.DB_NAME || 'exercises';
 const DB_ROOT_USERNAME = process.env.DB_ROOT_USERNAME || '';
 const DB_ROOT_PASSWORD = process.env.DB_ROOT_PASSWORD || '';
-console.log("------------------",DB_HOST, DB_PORT, DB_NAME, DB_ROOT_USERNAME, DB_ROOT_PASSWORD);
 
 
-const DB_URI = `mongodb://${DB_ROOT_USERNAME}:${DB_ROOT_PASSWORD}@${DB_HOST}:${DB_PORT}`;
+const DB_URI = `mongodb://${DB_ROOT_USERNAME}:${DB_ROOT_PASSWORD}@${DB_HOST}:${DB_PORT}/${DB_NAME}?authSource=admin`;
 console.log("DB_URI----",DB_URI);
 const connectDB = async () => {
     try {

@@ -130,4 +130,4 @@ dist
 .pnp.*
 
 data/
-test/
+test/node_modules/

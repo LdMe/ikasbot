@@ -49,7 +49,9 @@ const Courses = () => {
                 {courses.map((course) => (
                     <li key={course._id}>
                         <Link to={`${course._id}`}>{course.name}</Link>
+                        {getUserRole() == "admin" && (
                         <button onClick={() => handleRemoveCourse(course._id)}>Eliminar</button>
+                        )}
                     </li>
                 ))}
             </ul>

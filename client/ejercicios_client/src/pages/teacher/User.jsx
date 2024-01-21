@@ -42,6 +42,8 @@ const User = () => {
                 </select>
             }
             <section className="courses">
+                
+
                 {user.courses.length > 0 ?
                     (
                         <>
@@ -51,7 +53,7 @@ const User = () => {
                                     <TextShowHide key={course._id}
                                         title={
                                             <article key={course._id} className="course-info">
-                                                <Link key={course._id} to={`cursos/${course._id}`}><p>{course.name}</p></Link>
+                                                <Link key={course._id} to={`../cursos/${course._id}`}><p>{course.name}</p></Link>
                                                 <HealthBar hp={course.totalExercisesPassed} maxHp={course.totalExercises} />
                                             </article>
                                         }

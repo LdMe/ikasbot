@@ -1,8 +1,8 @@
 
-
+const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 const getExercises = async () => {
     try {
-        const response = await fetch('http://localhost:3001/exercises', {
+        const response = await fetch(`${BACKEND_URL}/exercises`, {
             method: 'GET',
             credentials: "include",
         });
@@ -17,7 +17,7 @@ const getExercises = async () => {
 
 const getExercise = async (id) => {
     try {
-        const response = await fetch(`http://localhost:3001/exercises/${id}`, {
+        const response = await fetch(`${BACKEND_URL}/exercises/${id}`, {
             method: 'GET',
             credentials: "include",
         });
@@ -31,7 +31,7 @@ const getExercise = async (id) => {
 }
 const createExercise = async (data) => {
     try {
-        const response = await fetch('http://localhost:3001/exercises', {
+        const response = await fetch(`${BACKEND_URL}/exercises`, {
             method: 'POST',
             credentials: "include",
             headers: { 'Content-Type': 'application/json' },
@@ -47,7 +47,7 @@ const createExercise = async (data) => {
 }
 const updateExercise = async (id, data) => {
     try {
-        const response = await fetch(`http://localhost:3001/exercises/${id}`, {
+        const response = await fetch(`${BACKEND_URL}/exercises/${id}`, {
             method: 'PUT',
             credentials: "include",
             headers: { 'Content-Type': 'application/json' },
@@ -63,7 +63,7 @@ const updateExercise = async (id, data) => {
 }
 const deleteExercise = async (id) => {
     try {
-        const response = await fetch(`http://localhost:3001/exercises/${id}`, {
+        const response = await fetch(`${BACKEND_URL}/exercises/${id}`, {
             method: 'DELETE',
             credentials: "include",
         });
@@ -79,7 +79,7 @@ const createAttempt = async (exerciseId, code) => {
     try {
         const data = { code: code, id: exerciseId };
         console.log(data)
-        const response = await fetch('http://localhost:3001/test', {
+        const response = await fetch(`${BACKEND_URL}/test`, {
             method: 'POST',
             credentials: "include",
             headers: { 'Content-Type': 'application/json' },
@@ -98,7 +98,7 @@ const createAttempt = async (exerciseId, code) => {
 
 const getCourses = async () => {
     try {
-        const response = await fetch('http://localhost:3001/course', {
+        const response = await fetch(`${BACKEND_URL}/course`, {
             method: 'GET',
             credentials: "include",
         });
@@ -113,7 +113,7 @@ const getCourses = async () => {
 
 const getCourse = async (id) => {
     try {
-        const response = await fetch(`http://localhost:3001/course/${id}`, {
+        const response = await fetch(`${BACKEND_URL}/course/${id}`, {
             method: 'GET',
             credentials: "include",
         });
@@ -128,7 +128,7 @@ const getCourse = async (id) => {
 }
 const createCourse = async (data) => {
     try {
-        const response = await fetch('http://localhost:3001/course', {
+        const response = await fetch(`${BACKEND_URL}/course`, {
             method: 'POST',
             credentials: "include",
             headers: { 'Content-Type': 'application/json' },
@@ -145,7 +145,7 @@ const createCourse = async (data) => {
 
 const deleteCourse = async (id) => {
     try {
-        const response = await fetch(`http://localhost:3001/course/${id}`, {
+        const response = await fetch(`${BACKEND_URL}/course/${id}`, {
             method: 'DELETE',
             credentials: "include",
         });
@@ -160,7 +160,7 @@ const deleteCourse = async (id) => {
 
 const getSubject = async (id) => {
     try {
-        const response = await fetch(`http://localhost:3001/subject/${id}`, {
+        const response = await fetch(`${BACKEND_URL}/subject/${id}`, {
             method: 'GET',
             credentials: "include",
         });
@@ -176,7 +176,7 @@ const getSubject = async (id) => {
 
 const refreshAuth = async () => {
     try {
-        const response = await fetch('http://localhost:3001/auth/refresh', {
+        const response = await fetch(`${BACKEND_URL}/auth/refresh`, {
             method: 'POST',
             credentials: "include",
         });
@@ -192,7 +192,7 @@ const refreshAuth = async () => {
 
 const createSubject = async (data) => {
     try {
-        const response = await fetch('http://localhost:3001/subject', {
+        const response = await fetch(`${BACKEND_URL}/subject`, {
             method: 'POST',
             credentials: "include",
             headers: { 'Content-Type': 'application/json' },
@@ -210,7 +210,7 @@ const createSubject = async (data) => {
 const deleteSubject = async (id,deleteExercises) => {
     try {
         const cascade = deleteExercises ? true : false;
-        const response = await fetch(`http://localhost:3001/subject/${id}?cascade=${cascade}`, {
+        const response = await fetch(`${BACKEND_URL}/subject/${id}?cascade=${cascade}`, {
             method: 'DELETE',
             credentials: "include",
         });
@@ -225,7 +225,7 @@ const deleteSubject = async (id,deleteExercises) => {
 
 const logout = async () => {
     try {
-        const response = await fetch('http://localhost:3001/auth/logout', {
+        const response = await fetch(`${BACKEND_URL}/auth/logout`, {
             method: 'POST',
             credentials: "include",
         });
@@ -239,7 +239,7 @@ const logout = async () => {
 }
 const getUsersByRole = async (query,limit=10,role,course="") => {
     try {
-        const response = await fetch(`http://localhost:3001/user/by_role?limit=${limit}&query=${query}&not_course=${course}&role=${role}`, {
+        const response = await fetch(`${BACKEND_URL}/user/by_role?limit=${limit}&query=${query}&not_course=${course}&role=${role}`, {
             method: 'GET',
             credentials: "include",
         });
@@ -259,7 +259,7 @@ const getStudents = async (query,limit=10,course="") => {
 }
 const addTeacher = async (courseId,teacherId) => {
     try {
-        const response = await fetch(`http://localhost:3001/course/${courseId}/teacher/`, {
+        const response = await fetch(`${BACKEND_URL}/course/${courseId}/teacher/`, {
             method: 'POST',
             credentials: "include",
             headers: { 'Content-Type': 'application/json' },
@@ -276,7 +276,7 @@ const addTeacher = async (courseId,teacherId) => {
 
 const removeTeacher = async (courseId,teacherId) => {
     try {
-        const response = await fetch(`http://localhost:3001/course/${courseId}/teacher/`, {
+        const response = await fetch(`${BACKEND_URL}/course/${courseId}/teacher/`, {
             method: 'DELETE',
             credentials: "include",
             headers: { 'Content-Type': 'application/json' },
@@ -294,7 +294,7 @@ const removeTeacher = async (courseId,teacherId) => {
 
 const enrollStudent = async (courseId,studentId) => {
     try {
-        const response = await fetch(`http://localhost:3001/course/${courseId}/enroll/`, {
+        const response = await fetch(`${BACKEND_URL}/course/${courseId}/enroll/`, {
             method: 'POST',
             credentials: "include",
             headers: { 'Content-Type': 'application/json' },
@@ -311,7 +311,7 @@ const enrollStudent = async (courseId,studentId) => {
 
 const unenrollStudent = async (courseId,studentId) => {
     try {
-        const response = await fetch(`http://localhost:3001/course/${courseId}/enroll/`, {
+        const response = await fetch(`${BACKEND_URL}/course/${courseId}/enroll/`, {
             method: 'DELETE',
             credentials: "include",
             headers: { 'Content-Type': 'application/json' },
@@ -354,7 +354,7 @@ const calculateCourseScores = (courses) => {
 
 const getAllUsers = async (query="",limit=10) => {
     try {
-        const response = await fetch(`http://localhost:3001/user?limit=${limit}&query=${query}`, {
+        const response = await fetch(`${BACKEND_URL}/user?limit=${limit}&query=${query}`, {
             method: 'GET',
             credentials: "include",
         });
@@ -370,7 +370,7 @@ const getAllUsers = async (query="",limit=10) => {
 
 const getUserData = async (id=null) => {
     try {
-        let url = id ? `http://localhost:3001/user/${id}` : `http://localhost:3001/user/profile`;
+        let url = id ? `${BACKEND_URL}/user/${id}` : `${BACKEND_URL}/user/profile`;
         const response = await fetch(url, {
             method: 'GET',
             credentials: "include",
@@ -387,7 +387,7 @@ const getUserData = async (id=null) => {
 
 const changeUserRole = async (id,role) => {
     try {
-        const response = await fetch(`http://localhost:3001/user/${id}`, {
+        const response = await fetch(`${BACKEND_URL}/user/${id}`, {
             method: 'PUT',
             credentials: "include",
             headers: { 'Content-Type': 'application/json' },

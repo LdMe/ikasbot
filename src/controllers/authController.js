@@ -18,8 +18,8 @@ const register = async (req, res) => {
             res.status(401).json({error:"Passwords do not match"});
             return;
         }
-        const hashedPassword = await bcrypt.hash(password, 10);
-        const user = new User({ name,email, password: hashedPassword });
+        
+        const user = new User({ name,email, password });
         await user.save();
         res.json(user);
     }

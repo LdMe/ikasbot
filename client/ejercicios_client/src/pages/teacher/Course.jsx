@@ -114,7 +114,7 @@ const Course = () => {
                             data.students.map((student) => (
 
                                 <li key={student._id}>
-                                    <Link to={`/perfil/${student._id}`}>{student.name}</Link><button onClick={() => handleUnenrroll(student._id)}>Eliminar</button>
+                                    <Link to={`../usuarios/${student._id}`}>{student.name}</Link><button onClick={() => handleUnenrroll(student._id)}>Eliminar</button>
                                 </li>
                             ))
                         }
@@ -139,7 +139,7 @@ const Course = () => {
                         {
                             data.course.teachers.map((teacher) => (
                                 <li key={teacher._id}>
-                                    <Link to={`/perfil/${teacher._id}`}>{teacher.name}</Link> <button onClick={() => handleRemoveTeacher(teacher._id)}>Eliminar</button>
+                                    <Link to={`../usuarios/${teacher._id}`}>{teacher.name}</Link> <button onClick={() => handleRemoveTeacher(teacher._id)}>Eliminar</button>
                                 </li>
                             ))
                         }

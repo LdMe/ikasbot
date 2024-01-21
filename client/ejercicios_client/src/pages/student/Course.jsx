@@ -16,58 +16,6 @@ const Course = () => {
             navigate('/login', { replace: true })
         }
     }, [])
-    const handleNewSubject = async (e) => {
-        e.preventDefault();
-        const name = e.target.name.value;
-        const subject = { name, course: data.course._id };
-        const response = await createSubject(subject);
-        if (response) {
-            setData({ ...data, subjects: [...data.subjects, response] })
-        }
-        e.target.reset();
-    }
-    const handleDelete = async (id) => {
-
-        if (subjectToDelete === id) {
-            await deleteSubject(id, deleteExercises)
-            navigate('.', { replace: true })
-            setSubjectToDelete(null)
-            setDeleteExercises(true)
-            const newSubjects = data.subjects.filter((subject) => subject._id != id)
-            setData({ ...data, subjects: newSubjects })
-        }
-        else {
-            setSubjectToDelete(id)
-        }
-    }
-    const handleCancelDelete = () => {
-        setSubjectToDelete(null)
-        setDeleteExercises(false)
-    }
-    const handleRemoveTeacher = async (teacherId) => {
-        const response = await removeTeacher(data.course._id, teacherId)
-        const newTeachers = data.course.teachers.filter((teacher) => teacher._id != teacherId)
-        setData({ ...data, course: { ...data.course, teachers: newTeachers } })
-    }
-    const handleAddTeacher = (course) => {
-        const newTeachers = course.teachers;
-        console.log("teacher", newTeachers)
-        setData({ ...data, course: { ...data.course, teachers: newTeachers } })
-    }
-    const handleEnroll = async (course) => {
-        const newStudent = course;
-        console.log("teacher", newStudent)
-        setData({ ...data, students: [...data.students, newStudent] })
-    }
-    const handleUnenrroll = async (studentId) => {
-        const response = await unenrollStudent(data.course._id, studentId)
-        console.log("response", data)
-        console.log("studentId", studentId)
-        const newStudents = data.students.filter((student) => student._id != studentId)
-        console.log("newStudents", newStudents)
-        setData({ ...data, students: newStudents })
-    }
-    console.log("roleeee", getUserRole())
     if (!data.course) return (<div>cargando...</div>)
     return (
         <div>

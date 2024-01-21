@@ -8,26 +8,28 @@ const CourseStats = ({ course }) => {
             <h3>Temas:</h3>
             {course.subjects.map((subject) => {
                 return (
-                    <TextShowHide
-                        key={subject._id}
-                        title={
-                            <article className="subject-info">
-                                <Link to={`/temas/${subject._id}`}><p>{subject.name}</p></Link>
-                                <HealthBar hp={subject.totalExercisesPassed} maxHp={subject.totalExercises} />
-                            </article>
-                        }
-                    >
-                        <>
-                            <h2>Ejercicios:</h2>
-                            {
-                                subject.exercises.map((exercise) => (
-                                    <article key={exercise._id} className="exercise-info">
-                                        <AttemptsShow key={exercise._id} exerciseData={exercise} />
-                                    </article>
-                                ))
+                    <section className="subject-info" key={subject._id}>
+                        <TextShowHide
+                            
+                            title={
+                                <article className="subject-info">
+                                    <Link to={`/temas/${subject._id}`}><p>{subject.name}</p></Link>
+                                    <HealthBar hp={subject.totalExercisesPassed} maxHp={subject.totalExercises} />
+                                </article>
                             }
-                        </>
-                    </TextShowHide>
+                        >
+                            <>
+                                <h2>Ejercicios:</h2>
+                                {
+                                    subject.exercises.map((exercise) => (
+                                        <article key={exercise.exercise._id} className="exercise-info">
+                                            <AttemptsShow exerciseData={exercise} />
+                                        </article>
+                                    ))
+                                }
+                            </>
+                        </TextShowHide>
+                    </section>
                 )
             })}
         </div>

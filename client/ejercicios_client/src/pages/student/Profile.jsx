@@ -49,7 +49,7 @@ const Profile = () => {
                                             </article>
                                             }
                                             >
-                                                <CourseStats  course={course} />
+                                                <CourseStats  key={course._id} course={course} />
                                             </TextShowHide>
                                         )
                                     })}
