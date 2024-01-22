@@ -1,10 +1,9 @@
 import User from '../../models/userModel.js';
-import Course from '../../models/courseModel.js';
-import bcrypt from 'bcryptjs';
 import Attempt from '../../models/attemptModel.js';
 import Subject from '../../models/subjectModel.js';
 import Exercise from '../../models/exerciseModel.js';
 import { isValidObjectId } from '../../utils/helpers.js';
+import {getCourse,} from '../course/courseController.js';
 /**
  * create a user, returns the created user or null if there was an error
  * @param {Object} data
@@ -26,7 +25,7 @@ const createUser = async (data) => {
  * @param {number} limit
  * @returns {Array} users
  */
-const getAllUsers = async (query, limit) => {
+const getAllUsers = async (query, limit,course=null) => {
     try {
         let filter = {};
         if (query) {
@@ -36,6 +35,9 @@ const getAllUsers = async (query, limit) => {
                     { email: { $regex: query, $options: 'i' } },
                 ],
             };
+        }
+        if(course){
+            filter.courses = { $eq: course };
         }
         if (limit) {
             const users = await User.find(filter).limit(parseInt(limit));
@@ -56,11 +58,14 @@ const getAllUsers = async (query, limit) => {
  * @returns {Object} user
  */
 
-const getUser = async (id) => {
+const getUser = async (id,simple=true) => {
     try {  
         const user = await User.findById(id).populate('courses');
         if (user == null) {
             return res.status(404).json({ message: 'Cannot find user' });
+        }
+        if(simple){
+            return user;
         }
         const attempts = await Attempt.find({ createdBy: user._id }).sort({ createdAt: -1 }).populate('exercise');
         const attemptsByExercise = {};
@@ -132,7 +137,7 @@ const updateUser = async (id,data) => {
             user.name = name;
         }
         if(password){
-            user.password = await bcrypt.hash(password, 10);
+            user.password = password;
         }
         if(role){
             user.role = role;
@@ -180,7 +185,7 @@ const getTeachers = async (query="",limit=20,notCourse=null,includeAdmins) => {
         console.log("course", notCourse)
         // if course is a valid id, skip users that are already teachers of the course
         if (isValidObjectId(notCourse)) {
-            const course_obj = await Course.findById(notCourse);
+            const course_obj = await getCourse(notCourse);
             skip_users = course_obj.teachers;
             console.log("skip_users", skip_users)
         }
@@ -227,7 +232,7 @@ const getUsersByRole = async (role,query="",limit=20,notCourse=null,includeAdmin
         let skip_users = [];
         // if course is a valid id, skip users that are already teachers of the course
         if (isValidObjectId(notCourse)) {
-            const notCourse_obj = await Course.findById(notCourse);
+            const notCourse_obj = await getCourse(notCourse);
             skip_users = notCourse_obj.teachers;
             console.log("skip_users", skip_users)
         }

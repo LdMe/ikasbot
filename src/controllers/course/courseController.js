@@ -1,8 +1,7 @@
 import Course from "../../models/courseModel.js";
-import User from "../../models/userModel.js";
 import Subject from "../../models/subjectModel.js";
 import { isValidObjectId } from "../../utils/helpers.js";
-import userController from "../user/userController.js";
+import { getAllUsers,getUser } from "../user/userController.js";
 // Crud for courses
 /**
  * create a course
@@ -46,7 +45,7 @@ const getAllCourses = async (id = null, query = "", limit = 20) => {
         }
         // if there is an id, get courses related to that user
         if (isValidObjectId(id)) {
-            const user = userController.getUser(id).populate('courses');
+            const user =getUser(id).populate('courses');
             // if user is student, get courses from user.courses
             if (user.role == 'student') {
                 courses = user.courses.filter(course => course.name.match(query));
@@ -89,7 +88,7 @@ const getCourse = async (id) => {
             return null;
         }
         const subjects = await Subject.find({ course: course._id });
-        const students = await User.find({ courses: course._id });
+        const students = await getAllUsers(null, null, course._id);
         const response = {
             ...course._doc,
             subjects,
@@ -147,7 +146,7 @@ const deleteCourse = async (id) => {
             return null;
         }
         // delete course from students and subjects
-        const students = await User.find({ courses: course._id });
+        const students = await getAllUsers(null, null, course._id);
         students.forEach(async (student) => {
             student.courses.pull(course._id);
             await student.save();
@@ -179,7 +178,7 @@ const addTeacher = async (courseId, teacherId) => {
         if (course == null) {
             return null;
         }
-        const teacher = await User.findById(teacherId);
+        const teacher = await getUser(teacherId);
         if (teacher == null) {
             return null;
         }
@@ -210,7 +209,7 @@ const removeTeacher = async (courseId, teacherId) => {
         if (course == null) {
             return null;
         }
-        const teacher = await User.findById(teacherId);
+        const teacher = await getUser(teacherId);
         if (teacher == null) {
             return null;
         }
@@ -231,7 +230,7 @@ const removeTeacher = async (courseId, teacherId) => {
  */
 const enrollStudent = async (courseId, studentId) => {
     try {
-        const user = await User.findById(studentId);
+        const user = await getUser(studentId);
         if (user == null) {
             return null;
         }
@@ -264,7 +263,7 @@ const enrollStudent = async (courseId, studentId) => {
  */
 const unenrollStudent = async (courseId, studentId) => {
     try {
-        const user = await User.findById(studentId);
+        const user = await getUser(studentId);
         if (user == null) {
             return null;
         }

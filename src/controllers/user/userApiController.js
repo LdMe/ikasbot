@@ -48,7 +48,7 @@ const getUser = async (req, res) => {
     try {
         console.log("getUser", req.params.id, req.user.id)
         const id = isValidObjectId(req.params.id) ?  req.params.id : req.user.id;
-        const user = await userController.getUser(id);
+        const user = await userController.getUser(id,false);
         if (user == null) {
             return res.status(404).json({ error: 'Cannot find user' });
         }

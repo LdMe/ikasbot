@@ -31,15 +31,8 @@ const calculateCourseScores = (courses) => {
 }
 const getCourses = async () => {
     try {
-        const response = await fetch(`${BACKEND_URL}/course`, {
-            method: 'GET',
-            credentials: "include",
-        });
-        const data = await response.json();
-        if(data.error){
-            return {error: data.error};
-        }
-        return data.data;
+        const url = `/course`;
+        return await fetchApi(url,"GET");
     }
     catch (err) {
         console.error(err);
