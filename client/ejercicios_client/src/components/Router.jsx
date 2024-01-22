@@ -21,8 +21,9 @@ import StudentRoot from "../pages/student/Root";
 import TeacherRoot from "../pages/teacher/Root";
 
 
-import { getExercises,getExercise,getCourses,getCourse,getSubject } from "../util/apiCalls";
+import { getExercises,getExercise,getSubject } from "../util/apiCalls";
 import {getUserData,getAllUsers} from "../util/api/user";
+import {getCourses,getCourse} from "../util/api/course";
 const router = createBrowserRouter([
     {
         path: "/",

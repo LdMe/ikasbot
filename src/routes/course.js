@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { getAllCourses, getCourse, createCourse, updateCourse, deleteCourse,addTeacher,removeTeacher,enrollStudent,unenrollStudent } from "../controllers/courseControler.js";
+import { getAllCourses, getCourse, createCourse, updateCourse, deleteCourse,addTeacher,removeTeacher,enrollStudent,unenrollStudent } from "../controllers/course/courseApiController.js";
 
 import { isAuth } from "../middleware/authMiddleware.js";
 

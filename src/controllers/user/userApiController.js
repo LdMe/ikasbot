@@ -1,9 +1,3 @@
-import User from '../../models/userModel.js';
-import Course from '../../models/courseModel.js';
-import bcrypt from 'bcryptjs';
-import Attempt from '../../models/attemptModel.js';
-import Subject from '../../models/subjectModel.js';
-import Exercise from '../../models/exerciseModel.js';
 import { isValidObjectId } from '../../utils/helpers.js';
 import userController from './userController.js';
 

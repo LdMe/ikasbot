@@ -1,8 +1,9 @@
 import { useLoaderData, Link, useNavigate } from "react-router-dom";
 import { useContext, useEffect, useState } from "react";
 import loggedInContext from "../../context/loggedInContext";
-import { createSubject, deleteSubject,  removeTeacher, addTeacher,  enrollStudent, unenrollStudent } from "../../util/apiCalls";
+import { createSubject, deleteSubject } from "../../util/apiCalls";
 import { getTeachers,getStudents } from "../../util/api/user";
+import {addTeacher,removeTeacher,enrollStudent,unenrollStudent} from "../../util/api/course";
 import AddUser from "../../components/AddUser";
 import TextShowHide from "../../components/TextShowHide";
 const Course = () => {
@@ -20,7 +21,7 @@ const Course = () => {
     const handleNewSubject = async (e) => {
         e.preventDefault();
         const name = e.target.name.value;
-        const subject = { name, course: data.course._id };
+        const subject = { name, course: data._id };
         const response = await createSubject(subject);
         if (response) {
             setData({ ...data, subjects: [...data.subjects, response] })
@@ -46,14 +47,15 @@ const Course = () => {
         setDeleteExercises(false)
     }
     const handleRemoveTeacher = async (teacherId) => {
-        const response = await removeTeacher(data.course._id, teacherId)
-        const newTeachers = data.course.teachers.filter((teacher) => teacher._id != teacherId)
-        setData({ ...data, course: { ...data.course, teachers: newTeachers } })
+        const response = await removeTeacher(data._id, teacherId)
+        const newTeachers = data.teachers.filter((teacher) => teacher._id != teacherId)
+
+        setData({ ...data, teachers: newTeachers})
     }
     const handleAddTeacher = (course) => {
-        const newTeachers = course.teachers;
+        const newTeachers = course.teachers 
         console.log("teacher", newTeachers)
-        setData({ ...data, course: { ...data.course, teachers: newTeachers } })
+        setData({ ...data, teachers: newTeachers  })
     }
     const handleEnroll = async (course) => {
         const newStudent = course;
@@ -61,7 +63,7 @@ const Course = () => {
         setData({ ...data, students: [...data.students, newStudent] })
     }
     const handleUnenrroll = async (studentId) => {
-        const response = await unenrollStudent(data.course._id, studentId)
+        const response = await unenrollStudent(data._id, studentId)
         console.log("response", data)
         console.log("studentId", studentId)
         const newStudents = data.students.filter((student) => student._id != studentId)
@@ -69,10 +71,10 @@ const Course = () => {
         setData({ ...data, students: newStudents })
     }
     console.log("roleeee", getUserRole())
-    if (!data.course) return (<div>cargando...</div>)
+    if (!data) return (<div>cargando...</div>)
     return (
         <div>
-            <h1>Curso {data.course.name}</h1>
+            <h1>Curso {data.name}</h1>
             <section className="subject-section">
                 <h2>Temas</h2>
                 <TextShowHide
@@ -125,7 +127,7 @@ const Course = () => {
                     >
                         <AddUser
                             key={data.students}
-                            courseId={data.course._id}
+                            courseId={data._id}
                             onAddUser={handleEnroll}
                             getUsers={getStudents}
                             addUser={enrollStudent}
@@ -138,7 +140,7 @@ const Course = () => {
                     <h2>Profesores</h2>
                     <ul>
                         {
-                            data.course.teachers.map((teacher) => (
+                            data.teachers.map((teacher) => (
                                 <li key={teacher._id}>
                                     <Link to={`../usuarios/${teacher._id}`}>{teacher.name}</Link> <button onClick={() => handleRemoveTeacher(teacher._id)}>Eliminar</button>
                                 </li>
@@ -149,8 +151,8 @@ const Course = () => {
                         title={<h3>Añadir profesor</h3>}
                     >
                         <AddUser
-                            key={data.course.teachers}
-                            courseId={data.course._id}
+                            key={data.teachers}
+                            courseId={data._id}
                             onAddUser={handleAddTeacher}
                             getUsers={getTeachers}
                             addUser={addTeacher}

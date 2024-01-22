@@ -96,68 +96,6 @@ const createAttempt = async (exerciseId, code) => {
     }
 }
 
-const getCourses = async () => {
-    try {
-        const response = await fetch(`${BACKEND_URL}/course`, {
-            method: 'GET',
-            credentials: "include",
-        });
-        const data = await response.json();
-        return data;
-    }
-    catch (err) {
-        console.error(err);
-        return [];
-    }
-}
-
-const getCourse = async (id) => {
-    try {
-        const response = await fetch(`${BACKEND_URL}/course/${id}`, {
-            method: 'GET',
-            credentials: "include",
-        });
-        const data = await response.json();
-        console.log(data)
-        return data;
-    }
-    catch (err) {
-        console.error(err);
-        return [];
-    }
-}
-const createCourse = async (data) => {
-    try {
-        const response = await fetch(`${BACKEND_URL}/course`, {
-            method: 'POST',
-            credentials: "include",
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(data),
-        });
-        const result = await response.json();
-        return result;
-    }
-    catch (error) {
-        console.error(error)
-        return { success: false, message: error.message };
-    }
-}
-
-const deleteCourse = async (id) => {
-    try {
-        const response = await fetch(`${BACKEND_URL}/course/${id}`, {
-            method: 'DELETE',
-            credentials: "include",
-        });
-        const result = await response.json();
-        return result;
-    }
-    catch (error) {
-        console.error(error)
-        return { success: false, message: error.message };
-    }
-}
-
 const getSubject = async (id) => {
     try {
         const response = await fetch(`${BACKEND_URL}/subject/${id}`, {
@@ -237,62 +175,9 @@ const logout = async () => {
         return { success: false, message: error.message };
     }
 }
-/* const getUsersByRole = async (query,limit=10,role,notInCourse="") => {
-    try {
-        const response = await fetch(`${BACKEND_URL}/user/by_role?limit=${limit}&query=${query}&not_course=${notInCourse}&role=${role}`, {
-            method: 'GET',
-            credentials: "include",
-        });
-        const result = await response.json();
-        if(result.error || !result.data){
-            return {  error: result.error };
-        }
-        return result.data;
-    }
-    catch (error) {
-        console.error(error)
-        return { error: error.message };
-    }
-}
-const getTeachers = async (query,limit=10,course="") => {
-    return getUsersByRole(query,limit,"teacher",course);
-}
-const getStudents = async (query,limit=10,course="") => {
-    return getUsersByRole(query,limit,"student",course);
-} */
-const addTeacher = async (courseId,teacherId) => {
-    try {
-        const response = await fetch(`${BACKEND_URL}/course/${courseId}/teacher/`, {
-            method: 'POST',
-            credentials: "include",
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({teacher:teacherId}),
-        });
-        const result = await response.json();
-        return result;
-    }
-    catch (error) {
-        console.error(error)
-        return { success: false, message: error.message };
-    }
-}
 
-const removeTeacher = async (courseId,teacherId) => {
-    try {
-        const response = await fetch(`${BACKEND_URL}/course/${courseId}/teacher/`, {
-            method: 'DELETE',
-            credentials: "include",
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({teacher:teacherId}),
-        });
-        const result = await response.json();
-        return result;
-    }
-    catch (error) {
-        console.error(error)
-        return { success: false, message: error.message };
-    }
-}
+
+
 
 
 const enrollStudent = async (courseId,studentId) => {
@@ -328,93 +213,6 @@ const unenrollStudent = async (courseId,studentId) => {
         return { success: false, message: error.message };
     }
 }
-const calculateCourseScores = (courses) => {
-    if(!courses){
-        return [];
-    }
-    for(const course of courses){
-        let totalCourseExercises = 0;
-        let totalCourseExercisesPassed = 0;
-        if(!course.subjects){
-            continue;
-        }
-        for(const subject of course.subjects){
-            let totalSubjectExercises = 0;
-            let totalSubjectExercisesPassed = 0;
-            for(const exercise of subject.exercises){
-                totalCourseExercises++;
-                totalSubjectExercises++;
-                if(exercise.bestAttempt?.success){
-                    totalCourseExercisesPassed++;
-                    totalSubjectExercisesPassed++;
-                }
-            }
-            subject.totalExercises = totalSubjectExercises;
-            subject.totalExercisesPassed = totalSubjectExercisesPassed;
-        }
-        course.totalExercises = totalCourseExercises;
-        course.totalExercisesPassed = totalCourseExercisesPassed;
-    }
-    return courses;
-}
-
-/* const getAllUsers = async (query="",limit=10) => {
-    try {
-        const response = await fetch(`${BACKEND_URL}/user?limit=${limit}&query=${query}`, {
-            method: 'GET',
-            credentials: "include",
-        });
-        const result = await response.json();
-        const data = result.data;
-        if(!data){
-            return {error: result.error};
-        }
-        data.courses = calculateCourseScores(data.courses);
-        return data;
-    }
-    catch (error) {
-        console.error(error)
-        return {error: error.message };
-    }
-}
-
-const getUserData = async (id=null) => {
-    try {
-        let url = id ? `${BACKEND_URL}/user/${id}` : `${BACKEND_URL}/user/profile`;
-        const response = await fetch(url, {
-            method: 'GET',
-            credentials: "include",
-        });
-        const result = await response.json();
-        const data = result.data;
-        console.log("getUserData",result)
-        data.courses = calculateCourseScores(data.courses);
-        return data;
-    }
-    catch (error) {
-        console.error(error)
-        return { success: false, message: error.message };
-    }
-}
-
-const changeUserRole = async (id,role) => {
-    try {
-        console.log("id",id,role)
-        const response = await fetch(`${BACKEND_URL}/user/${id}`, {
-            method: 'PUT',
-            credentials: "include",
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({role:role}),
-        });
-        const result = await response.json();
-        return result;
-    }
-    catch (error) {
-        console.error(error)
-        return { success: false, message: error.message };
-    }
-} */
-
 
 export {
     getExercises,
@@ -423,17 +221,11 @@ export {
     updateExercise,
     createAttempt,
     deleteExercise,
-    getCourses,
-    getCourse,
-    createCourse,
-    deleteCourse,
     getSubject,
     refreshAuth,
     createSubject,
     deleteSubject,
     logout,
-    addTeacher,
-    removeTeacher,
     enrollStudent,
     unenrollStudent,
 }

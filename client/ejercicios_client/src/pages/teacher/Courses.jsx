@@ -3,7 +3,7 @@ import { useEffect,useContext,useState } from "react";
 import { useNavigate } from "react-router-dom";
 import loggedInContext from "../../context/loggedInContext";
 import TextShowHide from "../../components/TextShowHide";
-import {createCourse,deleteCourse} from "../../util/apiCalls";
+import {createCourse,deleteCourse} from "../../util/api/course";
 const Courses = () => {
     const data = useLoaderData();
     const [courses, setCourses] = useState([]);
