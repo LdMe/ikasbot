@@ -1,6 +1,3 @@
-import Course from "../../models/courseModel.js";
-import User from "../../models/userModel.js";
-import Subject from "../../models/subjectModel.js";
 import courseController from "./courseController.js";
 
 // Crud for courses
@@ -11,9 +8,11 @@ import courseController from "./courseController.js";
  */
 const createCourse = async (req, res) => {
     try {
-        const course = new Course(req.body);
-        await course.save();
-        res.status(201).json({data:course});
+        const course = await courseController.createCourse(req.body);
+        if (course == null) {
+            return res.status(404).json({ error: 'Cannot create course' });
+        }
+        res.json({data:course});
     } catch (err) {
         res.status(400).json({ error: err.message });
     }
