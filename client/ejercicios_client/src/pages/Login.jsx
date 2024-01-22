@@ -3,7 +3,8 @@
 import { useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import loggedInContext from "../context/loggedInContext";
-const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
+import {login as loginApi,register} from "../util/api/auth";
+
 const Login = () => {
     const [name, setName] = useState("");
     const [email, setEmail] = useState("");
@@ -14,36 +15,30 @@ const Login = () => {
     const navigate = useNavigate();
     const handleLogin = async () => {
         try {
-            const response = await fetch(`${BACKEND_URL}/auth/login`, {
-                method: "POST",
-                credentials: "include",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ email, password })
-            });
-            if (!response.ok) {
-                console.log("error")
+            const data = await loginApi(email, password);
+            if(data.error){
+                console.log(data.error);
+                alert(data.error);
                 return;
             }
-            const data = await response.json();
             login(data.user);
             console.log(data);
             // navigate to home
             navigate("/");
         }
         catch (error) {
-            console.log(error)
+            console.error(error)
         }
     }
 
     const handleRegister = () => {
-        fetch(`${BACKEND_URL}/auth/register`, {
-            method: "POST",
-            credentials: "include",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ name, email, password, passwordConfirm })
-        }).then((response) => response.json()).then((data) => {
-            console.log(data);
-        }).catch((error) => console.log(error))
+        const result = register(name, email, password, passwordConfirm);
+        if(result.error){
+            alert(result.error);
+            return;
+        }
+        login(result.user);
+        navigate("/");
     }
 
     return (

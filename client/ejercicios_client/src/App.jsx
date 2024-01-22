@@ -1,15 +1,9 @@
 import { useState, useEffect } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import CreateExercise from './pages/teacher/CreateExercise.jsx'
 import loggedInContext from './context/loggedInContext';
-import Exercise from './pages/student/Exercise.jsx'
-import Login from './pages/Login.jsx'
 import './App.css'
 import router from './routes/Router.jsx'
 import { RouterProvider } from 'react-router-dom'
-import { refreshAuth } from './util/apiCalls.js'
-import { set } from 'mongoose';
+import { refreshAuth } from './util/api/auth'
 
 function App() {
   const [isLogged, setIsLogged] = useState(false);

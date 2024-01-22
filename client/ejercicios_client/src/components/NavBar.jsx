@@ -3,7 +3,7 @@
 import { Link } from "react-router-dom";
 import loggedInContext from "../context/loggedInContext";
 import { useContext } from 'react';
-import { logout } from "../util/apiCalls";
+import { logout } from "../util/api/auth";
 
 const NavBar = () => {
     const { isLogged, getUserRole, getUser } = useContext(loggedInContext);
