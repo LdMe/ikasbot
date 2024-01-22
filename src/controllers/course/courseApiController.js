@@ -32,7 +32,6 @@ const getAllCourses = async (req, res) => {
             return res.json({data:courses});
         }
         const courses = await courseController.getAllCourses(null,query);
-        console.log("courses", courses)
         res.json({data:courses});
     } catch (err) {
         res.status(500).json({ error: err.message });

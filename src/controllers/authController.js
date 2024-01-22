@@ -89,7 +89,6 @@ const refresh = async (req, res) => {
             return;
         }
         const decoded = Jwt.verify(token, process.env.JWT_SECRET);
-        console.log("decoded",decoded)
         const user = await User.findById(decoded.id);
         if (!user) {
             res.status(401).json({error:"Unauthorized: Invalid token"});

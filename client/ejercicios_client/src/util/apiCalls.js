@@ -96,21 +96,7 @@ const createAttempt = async (exerciseId, code) => {
     }
 }
 
-const getSubject = async (id) => {
-    try {
-        const response = await fetch(`${BACKEND_URL}/subject/${id}`, {
-            method: 'GET',
-            credentials: "include",
-        });
-        const data = await response.json();
-        console.log(data)
-        return data;
-    }
-    catch (err) {
-        console.error(err);
-        return [];
-    }
-}
+
 
 const refreshAuth = async () => {
     try {
@@ -128,38 +114,6 @@ const refreshAuth = async () => {
     }
 }
 
-const createSubject = async (data) => {
-    try {
-        const response = await fetch(`${BACKEND_URL}/subject`, {
-            method: 'POST',
-            credentials: "include",
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(data),
-        });
-        const result = await response.json();
-        return result;
-    }
-    catch (error) {
-        console.error(error)
-        return { success: false, message: error.message };
-    }
-}
-
-const deleteSubject = async (id,deleteExercises) => {
-    try {
-        const cascade = deleteExercises ? true : false;
-        const response = await fetch(`${BACKEND_URL}/subject/${id}?cascade=${cascade}`, {
-            method: 'DELETE',
-            credentials: "include",
-        });
-        const result = await response.json();
-        return result;
-    }
-    catch (error) {
-        console.error(error)
-        return { success: false, message: error.message };
-    }
-}
 
 const logout = async () => {
     try {
@@ -180,39 +134,6 @@ const logout = async () => {
 
 
 
-const enrollStudent = async (courseId,studentId) => {
-    try {
-        const response = await fetch(`${BACKEND_URL}/course/${courseId}/enroll/`, {
-            method: 'POST',
-            credentials: "include",
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({student:studentId}),
-        });
-        const result = await response.json();
-        return result;
-    }
-    catch (error) {
-        console.error(error)
-        return { success: false, message: error.message };
-    }
-}
-
-const unenrollStudent = async (courseId,studentId) => {
-    try {
-        const response = await fetch(`${BACKEND_URL}/course/${courseId}/enroll/`, {
-            method: 'DELETE',
-            credentials: "include",
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({student:studentId}),
-        });
-        const result = await response.json();
-        return result;
-    }
-    catch (error) {
-        console.error(error)
-        return { success: false, message: error.message };
-    }
-}
 
 export {
     getExercises,
@@ -221,12 +142,7 @@ export {
     updateExercise,
     createAttempt,
     deleteExercise,
-    getSubject,
     refreshAuth,
-    createSubject,
-    deleteSubject,
     logout,
-    enrollStudent,
-    unenrollStudent,
 }
 

@@ -19,8 +19,8 @@ const Subject = () => {
     }
     return (
         <div>
-            <h1>Tema {data.subject.name}</h1>
-            <p>Curso: <Link to={`../cursos/${data.subject.course._id}`}>{data.subject.course.name}</Link></p>
+            <h1>Tema {data.name}</h1>
+            <p>Curso: <Link to={`../cursos/${data.course._id}`}>{data.course.name}</Link></p>
             <ul>
                 {
                     data.exercises.map((exercise) => (

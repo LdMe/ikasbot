@@ -1,9 +1,9 @@
 import User from '../../models/userModel.js';
 import Attempt from '../../models/attemptModel.js';
-import Subject from '../../models/subjectModel.js';
 import Exercise from '../../models/exerciseModel.js';
 import { isValidObjectId } from '../../utils/helpers.js';
 import {getCourse,} from '../course/courseController.js';
+import { getAllSubjects } from '../subject/subjectController.js';
 /**
  * create a user, returns the created user or null if there was an error
  * @param {Object} data
@@ -92,7 +92,7 @@ const getUser = async (id,simple=true) => {
         for( const course of formattedCourses){    
             courses.push(course);
             // find subjects and convert them to regular objects
-            const subjects = await Subject.find({ course: course._id });
+            const subjects = await getAllSubjects(course._id);
             const formattedSubjects = subjects.map(subject => subject._doc);
             for( const subject of formattedSubjects){
                 const exercises = await Exercise.find({subject:subject._id});
@@ -182,12 +182,10 @@ const deleteUser = async (id) => {
 const getTeachers = async (query="",limit=20,notCourse=null,includeAdmins) => {
     try {
         let skip_users = [];
-        console.log("course", notCourse)
         // if course is a valid id, skip users that are already teachers of the course
         if (isValidObjectId(notCourse)) {
             const course_obj = await getCourse(notCourse);
             skip_users = course_obj.teachers;
-            console.log("skip_users", skip_users)
         }
         // if includeAdmins is true, include admins in the search
         let roleFilter = { role: 'teacher' };
@@ -226,7 +224,6 @@ const getTeachers = async (query="",limit=20,notCourse=null,includeAdmins) => {
 }
 /** */
 const getUsersByRole = async (role,query="",limit=20,notCourse=null,includeAdmins=false) => {
-    console.log(`getUsersByRole role:${role}, query:${query}, limit:${limit}, notCourse:${notCourse}, includeAdmins:${includeAdmins}`)
     try {
         
         let skip_users = [];
@@ -234,7 +231,6 @@ const getUsersByRole = async (role,query="",limit=20,notCourse=null,includeAdmin
         if (isValidObjectId(notCourse)) {
             const notCourse_obj = await getCourse(notCourse);
             skip_users = notCourse_obj.teachers;
-            console.log("skip_users", skip_users)
         }
         let users = [];
         let filter = {

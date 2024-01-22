@@ -1,6 +1,6 @@
 import { Router } from "express";
 
-import { getAllSubjects, getSubject, createSubject, updateSubject, deleteSubject } from "../controllers/subjectController.js";
+import { getAllSubjects, getSubject, createSubject, updateSubject, deleteSubject } from "../controllers/subject/subjectApiController.js";
 
 const router = Router();
 

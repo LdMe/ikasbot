@@ -89,8 +89,6 @@ async function runInDocker(code, test,username="test-user") {
         ${code}
         ${test}
         `;
-        
-        console.log("userPath", userPath);
         // crear directorio con el nombre del usuario
         if (!fs.existsSync(userPath)) {
             fs.mkdirSync(userPath);
@@ -105,15 +103,11 @@ async function runInDocker(code, test,username="test-user") {
 
         const { stdout, stderr } = await execPromise(dockerCommand);
 
-        //console.log(stdout);
-        //console.log(stderr);
         // Borra el archivo temporal
         fs.unlinkSync(`${userPath}/test.js`);
         // borra la carpeta del usuario
         fs.rmSync(userPath, { recursive: true, force: true });
-        console.log("message----", stderr);
         const [executionCode, message] = stderr.split("test.js\n ");
-        console.log("message----", message);
         return { success: true, message };
         
     }

@@ -12,7 +12,6 @@ const DB_ROOT_PASSWORD = process.env.DB_ROOT_PASSWORD || '';
 
 
 const DB_URI = `mongodb://${DB_ROOT_USERNAME}:${DB_ROOT_PASSWORD}@${DB_HOST}:${DB_PORT}/${DB_NAME}?authSource=admin`;
-console.log("DB_URI----",DB_URI);
 const connectDB = async () => {
     try {
         await mongoose.connect(DB_URI, {
@@ -21,7 +20,7 @@ const connectDB = async () => {
         });
         console.log('Connected to database');
     } catch (err) {
-        console.log(err);
+        console.error(err);
     }
 }
 

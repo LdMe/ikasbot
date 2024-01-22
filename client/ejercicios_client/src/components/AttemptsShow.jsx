@@ -23,18 +23,16 @@ const AttemptsShow = ({ exerciseData }) => {
     })[0]
     return (
         <div key={exercise._id}>
-            <Link to={`/temas/${exercise.subject}/ejercicios/${exercise._id}`}><p>{exercise.name}</p></Link>
+            <Link to={`ejercicios/${exercise._id}`}><p>{exercise.name}</p></Link>
             <HealthBar hp={bestAttempt ? bestAttempt.correct_percentage : 0} />
             {lastAttempt && (
             <p>Último intento: {formatTime(lastAttempt.createdAt)}</p>
             )}
             <TextShowHide title={<h3>Intentos: {attempts.length}</h3>} >
-            
                 <div>
                     <section className="attempt-list">
                         {attempts.map((attempt) => (
                             <article key={attempt._id}>
-
                                 <p>Fecha: {formatTime(attempt.createdAt)}</p>
                                 <p>Porcentaje de aciertos: {formatFloat(attempt.correct_percentage)}%</p>
                                 <p> {attempt.correct_tests || 0}/{attempt.total_tests || 0} tests pasados</p>

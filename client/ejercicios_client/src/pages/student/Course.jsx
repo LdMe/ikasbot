@@ -10,10 +10,10 @@ const Course = () => {
             navigate('/login', { replace: true })
         }
     }, [])
-    if (!data.course) return (<div>cargando...</div>)
+    if (!data) return (<div>cargando...</div>)
     return (
         <div>
-            <h1>Curso {data.course.name}</h1>
+            <h1>Curso {data.name}</h1>
             <section className="subject-section">
                 <h2>Temas</h2>
                 <ul>

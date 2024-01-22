@@ -14,7 +14,6 @@ const createUser = async (req, res) => {
         }
         res.json({data:user});
     } catch (err) {
-        console.log("error", err)
         res.status(400).json({ error: err.message });
     }
 }
@@ -27,8 +26,6 @@ const createUser = async (req, res) => {
 const getAllUsers = async (req, res) => {
     try {
         const { query, limit } = req.query;
-        console.log("query", query)
-        console.log("limit", limit)
         const users = await userController.getAllUsers(query, limit);
         if(users.length==0){
             return res.status(404).json({ error: 'Cannot find users' });
@@ -46,7 +43,6 @@ const getAllUsers = async (req, res) => {
  */
 const getUser = async (req, res) => {
     try {
-        console.log("getUser", req.params.id, req.user.id)
         const id = isValidObjectId(req.params.id) ?  req.params.id : req.user.id;
         const user = await userController.getUser(id,false);
         if (user == null) {
@@ -101,7 +97,6 @@ const deleteUser = async (req, res) => {
 }
 
 const getUsersByRole = async (req, res) => {
-    console.log("getUsersByRole")
     try {
         const role = req.query.role || 'student';
         const limit = req.query.limit || 10;

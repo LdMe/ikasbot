@@ -13,7 +13,7 @@ const CourseStats = ({ course }) => {
                             
                             title={
                                 <article className="subject-info">
-                                    <Link to={`/temas/${subject._id}`}><p>{subject.name}</p></Link>
+                                    <Link to={`temas/${subject._id}`}><p>{subject.name}</p></Link>
                                     <HealthBar hp={subject.totalExercisesPassed} maxHp={subject.totalExercises} />
                                 </article>
                             }
@@ -21,7 +21,7 @@ const CourseStats = ({ course }) => {
                             <>
                                 <h2>Ejercicios:</h2>
                                 {
-                                    subject.exercises.map((exercise) => (
+                                    subject.exercises?.map((exercise) => (
                                         <article key={exercise.exercise._id} className="exercise-info">
                                             <AttemptsShow exerciseData={exercise} />
                                         </article>

@@ -13,6 +13,9 @@ const calculateCourseScores = (courses) => {
         for(const subject of course.subjects){
             let totalSubjectExercises = 0;
             let totalSubjectExercisesPassed = 0;
+            if(!subject.exercises){
+                continue;
+            }
             for(const exercise of subject.exercises){
                 totalCourseExercises++;
                 totalSubjectExercises++;

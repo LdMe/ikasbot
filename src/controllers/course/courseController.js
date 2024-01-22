@@ -1,7 +1,7 @@
 import Course from "../../models/courseModel.js";
-import Subject from "../../models/subjectModel.js";
 import { isValidObjectId } from "../../utils/helpers.js";
 import { getAllUsers,getUser } from "../user/userController.js";
+import { getAllSubjects } from "../subject/subjectController.js";
 // Crud for courses
 /**
  * create a course
@@ -31,7 +31,6 @@ const getAllCourses = async (id = null, query = "", limit = 20) => {
         let filter = {};
         let courses = [];
         if (query && query.length > 0) {
-            console.log("query", query, "----")
             filter = {
                 $and: [
                     {
@@ -63,7 +62,6 @@ const getAllCourses = async (id = null, query = "", limit = 20) => {
         }
         else {
             if (limit) {
-                console.log("limit", limit, filter)
                 courses = await Course.find(filter).limit(parseInt(limit));
             }
             courses = await Course.find(filter);
@@ -87,7 +85,7 @@ const getCourse = async (id) => {
         if (course == null) {
             return null;
         }
-        const subjects = await Subject.find({ course: course._id });
+        const subjects = await getAllSubjects(course._id);
         const students = await getAllUsers(null, null, course._id);
         const response = {
             ...course._doc,
@@ -151,7 +149,7 @@ const deleteCourse = async (id) => {
             student.courses.pull(course._id);
             await student.save();
         });
-        const subjects = await Subject.find({ course: course._id });
+        const subjects = await getAllSubjects(course._id);
         subjects.forEach(async (subject) => {
             subject.course = null;
             await subject.save();
