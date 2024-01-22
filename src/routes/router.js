@@ -15,7 +15,7 @@ router.get('/', (req, res) => {
     res.send('Hello World!');
 });
 
-router.use('/exercises',isAuth, exercisesRouter);
+router.use('/exercise',isAuth, exercisesRouter);
 router.use('/test',isAuth, testRouter);
 router.use('/user',isAuth, userRouter);
 router.use('/auth', authRouter);

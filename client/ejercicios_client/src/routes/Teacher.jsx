@@ -6,7 +6,7 @@ import Exercise from "../pages/teacher/Exercise";
 import CreateExercise from "../pages/teacher/CreateExercise";
 import Users from "../pages/teacher/Users";
 import User from "../pages/teacher/User";
-import {  getExercise} from "../util/apiCalls";
+import {  getExercise} from "../util/api/exercise";
 import { getSubject } from "../util/api/subject";
 import { getAllUsers,getUserData } from "../util/api/user";
 import {getCourses,getCourse} from "../util/api/course";

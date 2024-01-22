@@ -6,7 +6,7 @@ import Highlight from 'react-highlight'
 import { highlight, languages } from 'highlight.js';
 import Editor from 'react-simple-code-editor';
 import { useLoaderData } from 'react-router-dom';
-import { createAttempt,deleteExercise, updateExercise } from '../../util/apiCalls';
+import { createAttempt,deleteExercise, updateExercise } from '../../util/api/exercise';
 import { useNavigate,Link } from 'react-router-dom';
 import CreateExercise from '../../components/CreateExercise';
 import HealthBar from '../../components/healthBar/HealthBar';

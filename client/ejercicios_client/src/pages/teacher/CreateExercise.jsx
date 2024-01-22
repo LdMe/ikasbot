@@ -1,5 +1,5 @@
 import { useState, useEffect, useContext } from 'react'
-import { createExercise, updateExercise } from '../../util/apiCalls'
+import { createExercise, updateExercise } from '../../util/api/exercise'
 import { useNavigate, useSearchParams } from 'react-router-dom'
 import loggedInContext from '../../context/loggedInContext'
 import 'highlight.js/styles/atom-one-dark.css';
