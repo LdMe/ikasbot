@@ -2,7 +2,7 @@ import { useLoaderData,Link } from "react-router-dom";
 import { useEffect,useContext,useState } from "react";
 import { useNavigate } from "react-router-dom";
 import loggedInContext from "../../context/loggedInContext";
-import { getAllUsers } from "../../util/apiCalls";
+import { getAllUsers } from "../../util/api/user";
 import { get } from "mongoose";
 
 const Users = () => {

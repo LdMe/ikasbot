@@ -3,8 +3,8 @@ import Course from "../pages/student/Course";
 import Subject from "../pages/student/Subject";
 import Exercise from "../pages/student/Exercise";
 import Root from "../pages/student/Root";
-import { getCourse, getExercise, getSubject, getUserData } from "../util/apiCalls";
-
+import { getCourse, getExercise, getSubject } from "../util/apiCalls";
+import { getUserData } from "../util/api/user";
 
 
 const router = 

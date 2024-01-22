@@ -6,7 +6,7 @@ const CourseStats = ({ course }) => {
     return (
         <div className="subjects">
             <h3>Temas:</h3>
-            {course.subjects.map((subject) => {
+            {course.subjects?.map((subject) => {
                 return (
                     <section className="subject-info" key={subject._id}>
                         <TextShowHide

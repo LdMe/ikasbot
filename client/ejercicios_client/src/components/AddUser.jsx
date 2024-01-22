@@ -10,16 +10,17 @@ function AddUser({courseId,onAddUser,getUsers,addUser}) {
             if(data.message || data.error || data.success == false) return console.log("error")
             setUsers(data)
         })
-    }, [])
+    }, []);
+    
     const handleSearch = (e) => {
         setSearch(e.target.value)
         getUsers(e.target.value,10,courseId).then((data) => {
             console.log("data", data)
-            if(data.message || data.error || data.success == false) return console.log("error")
+            if(data.error) return console.log("error")
             setUsers(data)
         });
-        
     }
+
     const handleSelect = (userId) => {
         
         addUser(courseId,userId).then((data) => {

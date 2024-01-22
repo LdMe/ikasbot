@@ -1,6 +1,6 @@
 import {Router} from 'express';
 import {isAuth,isAdmin} from '../middleware/authMiddleware.js';
-import {getAllUsers, getUser, updateUser,deleteUser, createUser,getUsersByRole} from '../controllers/usersController.js';
+import {getAllUsers, getUser, updateUser,deleteUser, createUser,getUsersByRole} from '../controllers/user/userApiController.js';
 import { get } from 'mongoose';
 const router = Router();
 

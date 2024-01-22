@@ -3,7 +3,7 @@
 import { useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import loggedInContext from "../context/loggedInContext";
-
+const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 const Login = () => {
     const [name, setName] = useState("");
     const [email, setEmail] = useState("");
@@ -14,7 +14,7 @@ const Login = () => {
     const navigate = useNavigate();
     const handleLogin = async () => {
         try {
-            const response = await fetch("http://localhost:3001/auth/login", {
+            const response = await fetch(`${BACKEND_URL}/auth/login`, {
                 method: "POST",
                 credentials: "include",
                 headers: { "Content-Type": "application/json" },
@@ -36,7 +36,7 @@ const Login = () => {
     }
 
     const handleRegister = () => {
-        fetch("http://localhost:3001/auth/register", {
+        fetch(`${BACKEND_URL}/auth/register`, {
             method: "POST",
             credentials: "include",
             headers: { "Content-Type": "application/json" },

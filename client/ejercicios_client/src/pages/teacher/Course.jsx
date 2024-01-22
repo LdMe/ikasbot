@@ -1,7 +1,8 @@
 import { useLoaderData, Link, useNavigate } from "react-router-dom";
 import { useContext, useEffect, useState } from "react";
 import loggedInContext from "../../context/loggedInContext";
-import { createSubject, deleteSubject, getTeachers, removeTeacher, addTeacher, getStudents, enrollStudent, unenrollStudent } from "../../util/apiCalls";
+import { createSubject, deleteSubject,  removeTeacher, addTeacher,  enrollStudent, unenrollStudent } from "../../util/apiCalls";
+import { getTeachers,getStudents } from "../../util/api/user";
 import AddUser from "../../components/AddUser";
 import TextShowHide from "../../components/TextShowHide";
 const Course = () => {

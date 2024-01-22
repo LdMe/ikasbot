@@ -1,44 +1,33 @@
-import User from '../models/userModel.js';
-import Course from '../models/courseModel.js';
+import User from '../../models/userModel.js';
+import Course from '../../models/courseModel.js';
 import bcrypt from 'bcryptjs';
-import Attempt from '../models/attemptModel.js';
-import Subject from '../models/subjectModel.js';
-import Exercise from '../models/exerciseModel.js';
-import { isValidObjectId } from '../utils/helpers.js';
+import Attempt from '../../models/attemptModel.js';
+import Subject from '../../models/subjectModel.js';
+import Exercise from '../../models/exerciseModel.js';
+import { isValidObjectId } from '../../utils/helpers.js';
 /**
- * create a user 
- * @param {Object} req
- * @param {Object} res
+ * create a user, returns the created user or null if there was an error
+ * @param {Object} data
+ * @returns {Object} user 
  */
-
-const createUser = async (req, res) => {
-    try {
-        console.log("createUser")
-        console.log(req.body)
-        const user = new User(req.body);
-        console.log("user", user)
-        user.password = await bcrypt.hash(user.password, 10);
-
-        console.log("user created", user)
+const createUser = async (data) => {
+    try {     
+        const user = new User(data);
         await user.save();
-        res.status(201).json(user);
+        return user;
     } catch (err) {
-        console.log("error", err)
-        res.status(400).json({ message: err.message });
+        console.error("error", err)
+        return null;
     }
 }
-
 /**
  * get all users
- * @param {Object} req
- * @param {Object} res
+ * @param {string} query
+ * @param {number} limit
+ * @returns {Array} users
  */
-const getAllUsers = async (req, res) => {
+const getAllUsers = async (query, limit) => {
     try {
-        const { query, limit } = req.query;
-        console.log("query", query)
-        console.log("limit", limit)
-
         let filter = {};
         if (query) {
             filter = {
@@ -48,28 +37,27 @@ const getAllUsers = async (req, res) => {
                 ],
             };
         }
-        
-        
-        if(limit){
+        if (limit) {
             const users = await User.find(filter).limit(parseInt(limit));
-            console.log("users",users)
-            return res.json(users);
+            return users;
         }
         const users = await User.find(filter);
-        res.json(users);
-    } catch (err) {
-        res.status(500).json({ message: err.message });
+        return users;
+    }
+    catch (err) {
+        console.error(err)
+        return [];
     }
 }
 
 /**
  * get a single user
- * @param {Object} req
- * @param {Object} res
+ * @param {String} id
+ * @returns {Object} user
  */
-const getUser = async (req, res) => {
-    try {
-        const id = isValidObjectId(req.params.id) ?  req.params.id : req.user.id;
+
+const getUser = async (id) => {
+    try {  
         const user = await User.findById(id).populate('courses');
         if (user == null) {
             return res.status(404).json({ message: 'Cannot find user' });
@@ -96,8 +84,7 @@ const getUser = async (req, res) => {
         // once grouped by exercise, group exercises by subject and subject by course
         const courses = [];
         const formattedCourses = user.courses.map(course => course._doc);
-        for( const course of formattedCourses){
-           
+        for( const course of formattedCourses){    
             courses.push(course);
             // find subjects and convert them to regular objects
             const subjects = await Subject.find({ course: course._id });
@@ -121,26 +108,22 @@ const getUser = async (req, res) => {
         const userData = user._doc;
         delete userData.password;
         const response ={...userData,attempts:attemptsByExercise,courses};
-        res.json(response);
-
+        return response;
     }
     catch (err) {
         console.error(err)
-        res.status(500).json({ message: err.message });
+        return null;
     }
-
 }
 
 /**
  * update a single user
- * @param {Object} req
- * @param {Object} res
+ * @param {String} id
+ * @param {Object} data
  */
-const updateUser = async (req, res) => {
-
+const updateUser = async (id,data) => {
     try {
-        const { name, password, role } = req.body;
-        const id = req.params.id;
+        const { name, password, role } = data;
         const user = await User.findById(id);
         if (user == null) {
             return res.status(404).json({ message: 'Cannot find user' });
@@ -155,69 +138,70 @@ const updateUser = async (req, res) => {
             user.role = role;
         }
         await user.save();
-        res.json(user);
-
+        return user;
     }
     catch (err) {
-        res.status(400).json({ message: err.message });
+        console.error(err)
+        return null;
     }
-
 }
 
 /**
  * delete a single user
- * @param {Object} req
- * @param {Object} res
+ * @param {String} id
+ * @returns {Object} user
  */
-const deleteUser = async (req, res) => {
+const deleteUser = async (id) => {
     try {
-        const id = req.params.id;
         const user = await User.findById(id);
         if (user == null) {
-            return res.status(404).json({ message: 'Cannot find user' });
+            return null;
         }
-        await user.remove();
-        res.json({ message: 'Deleted user' });
+        await User.findByIdAndDelete(id);
+        return user;
 
     }
     catch (err) {
-        res.status(500).json({ message: err.message });
+        return null;
     }
 }
 
-
 /**
- * get all teachers and admins(optional). Limit to "limit" variable, default 10
- * @param {Object} req
- * @param {Object} res
+ * get all teachers and admins(optional). Limit to "limit" variable, default 10. Skip users that are already teachers of the course 'notCourse'
+ * @param {String} query
+ * @param {Number} limit
+ * @param {String} notCourse
+ * @param {Boolean} includeAdmins
+ * @returns {Array} teachers
  */
-const getTeachers = async (req, res) => {
-    console.log("getTeachers")
+const getTeachers = async (query="",limit=20,notCourse=null,includeAdmins) => {
     try {
-        const query = req.query.query || '';
-        const limit = req.query.limit || 10;
-        const course = req.query.course || '';
-        console.log("query", query)
-        console.log("limit", limit)
         let skip_users = [];
-        console.log("course", course)
+        console.log("course", notCourse)
         // if course is a valid id, skip users that are already teachers of the course
-        if (course.match(/^[0-9a-fA-F]{24}$/)) {
-            const course_obj = await Course.findById(course);
+        if (isValidObjectId(notCourse)) {
+            const course_obj = await Course.findById(notCourse);
             skip_users = course_obj.teachers;
             console.log("skip_users", skip_users)
         }
+        // if includeAdmins is true, include admins in the search
+        let roleFilter = { role: 'teacher' };
+        if (includeAdmins) {
+            roleFilter = {
+                $or: [
+                    { role: 'teacher' },
+                    { role: 'admin' }
+                ],
+            }
+        }
         const teachers = await User.find(
             {
-                _id: { $nin: skip_users },
+                
                 $and: [
-
                     {
-                        $or: [
-                            { role: 'teacher' },
-                            { role: 'admin' }
-                        ],
+                        _id: { $nin: skip_users }
                     },
+                    roleFilter,
                     {
                         $or: [
                             { name: { $regex: query, $options: 'i' } },
@@ -229,23 +213,20 @@ const getTeachers = async (req, res) => {
             }
 
         ).sort({ name: 1, email: 1 }).limit(parseInt(limit));
-        res.json(teachers);
+        return teachers;
     } catch (err) {
         console.error(err)
-        res.status(500).json({ message: err.message });
+        return [];
     }
 }
-
-const getUsersByRole = async (req, res) => {
-    console.log("getUsersByRole")
+/** */
+const getUsersByRole = async (role,query="",limit=20,notCourse=null,includeAdmins=false) => {
+    console.log(`getUsersByRole role:${role}, query:${query}, limit:${limit}, notCourse:${notCourse}, includeAdmins:${includeAdmins}`)
     try {
-        const role = req.query.role || 'student';
-        const limit = req.query.limit || 10;
-        const query = req.query.query || '';
-        const notCourse = req.query.not_course || null;
+        
         let skip_users = [];
         // if course is a valid id, skip users that are already teachers of the course
-        if (notCourse.match(/^[0-9a-fA-F]{24}$/)) {
+        if (isValidObjectId(notCourse)) {
             const notCourse_obj = await Course.findById(notCourse);
             skip_users = notCourse_obj.teachers;
             console.log("skip_users", skip_users)
@@ -264,7 +245,7 @@ const getUsersByRole = async (req, res) => {
         }
         if (notCourse) {
             
-            if (role == 'teacher') {
+            if (role != 'student') {
                 filter._id = { $nin: skip_users };
             }
             else {
@@ -272,11 +253,10 @@ const getUsersByRole = async (req, res) => {
             }
         }
          users = await User.find(filter).sort({ name: 1, email: 1 }).limit(parseInt(limit));
-
-        res.json(users);
+        return users;
     } catch (err) {
         console.error(err)
-        res.status(500).json({ message: err.message });
+        return [];
     }
 }
 export {

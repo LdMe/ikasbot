@@ -6,8 +6,8 @@ import Exercise from "../pages/teacher/Exercise";
 import CreateExercise from "../pages/teacher/CreateExercise";
 import Users from "../pages/teacher/Users";
 import User from "../pages/teacher/User";
-import { getCourses, getCourse, getSubject, getExercise, getAllUsers,getUserData } from "../util/apiCalls";
-
+import { getCourses, getCourse, getSubject, getExercise} from "../util/apiCalls";
+import { getAllUsers,getUserData } from "../util/api/user";
 
 const router ={
     path: "profesorado",
