@@ -1,5 +1,5 @@
 #root {
-  max-width: 1280px;
+  width:90%;
   margin: 0 auto;
   padding: 2rem;
   text-align: center;
@@ -92,4 +92,54 @@
 }
 .text-show-hide-title article {
   width: 50%;
+}
+button.selected {
+  background-color: #61dafb;
+  color: #000;
+}
+.subject-card {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1em;
+  border: 1px solid #ccc;
+  border-radius: 0.5em;
+  background-color: #fff;
+  box-shadow: 0 0 1em #ccc;
+  transition: box-shadow 300ms;
+
+}
+.course-card {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  padding: 5px;
+  border: 1px solid #ccc;
+  border-radius: 0.5em;
+  background-color: #fff;
+  box-shadow: 0 0 1em #ccc;
+  transition: box-shadow 300ms;;
+
+}
+.subjects {
+  gap: 1em;
+  width: 90%;
+}
+
+.text-show-hide-content {
+  width: 100%;
+  padding: 1em;
+  border: 1px solid #ccc;
+  border-radius: 0.5em;
+  background-color: #fff;
+  box-shadow: 0 0 1em #ccc;
+  transition: box-shadow 300ms;
+}
+.user-info {
+  margin:0.5em;
+}
+.health-bar{
+  min-width: 150px;
 }

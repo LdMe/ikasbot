@@ -31,10 +31,10 @@ const login = async (email,password) => {
         return { error: error.message };
     }
 }
-const register = async (username,email,password,passwordConfirm) => {
+const register = async (name,email,password,passwordConfirm) => {
     try {
         const url = `/auth/register`;
-        return await fetchApi(url,"POST",{username,email,password,passwordConfirm});
+        return await fetchApi(url,"POST",{name,email,password,passwordConfirm});
     }
     catch (error) {
         console.error(error)

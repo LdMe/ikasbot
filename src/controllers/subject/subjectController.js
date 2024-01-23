@@ -25,13 +25,23 @@ const createSubject = async (data) => {
  * @param {String} courseId
  * @returns {Array} subjects
  */
-const getAllSubjects = async (courseId=null) => {
+const getAllSubjects = async (courseId=null,addExercises=true) => {
     try {
         let filter = {};
         if (courseId) {
             filter = { course: courseId };
         }
         const subjects = await Subject.find(filter);
+        if(addExercises){
+            const newSubjects = subjects.map(async subject => {
+                const exercises = await getAllExercises(subject._id);
+                return {
+                    ...subject._doc,
+                    exercises
+                }
+            });
+            return await Promise.all(newSubjects);
+        }
         return subjects;
     } catch (err) {
         console.error(err)
@@ -104,6 +114,7 @@ const deleteSubject = async (id,cascade=true) => {
         }
         if(cascade){
             // get all the exercises for this subject and the attempts for each exercise, then delete them
+            const exercises = await getAllExercises(subject._id);
             const attempts = await Attempt.find({ exercise: { $in: exercises } });
             await Attempt.deleteMany({ _id: { $in: attempts } });
             await deleteExercises(subject._id);
@@ -117,9 +128,10 @@ const deleteSubject = async (id,cascade=true) => {
             }
         }
         await Subject.deleteOne({ _id: id });
-        res.json({ message: 'Subject deleted successfully' });
+        return subject;
     } catch (err) {
-        res.status(500).json({ message: err.message });
+        console.error(err)
+        return null;
     }
 }
 

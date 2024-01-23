@@ -32,7 +32,7 @@ function App() {
     return user?.email;
   }
   const getUserRole = () => {
-      return user?.role;
+      return user?.role ? user.role : "student";
   }
   const getUser = () => {
     return user;

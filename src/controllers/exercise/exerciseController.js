@@ -29,6 +29,10 @@ const getAllExercises = async (subject=null) => {
         if(subject){
             filter = {subject};
         }
+        // if subject is an array, get exercises for each subject
+        if(Array.isArray(subject)){
+            filter = {subject:{$in:subject}};
+        }
         const exercises = await Exercise.find(filter).populate('createdBy', 'name email');
         return exercises;
     } catch (err) {
@@ -101,10 +105,11 @@ const deleteExercise = async (id) => {
         const attempts = await Attempt.deleteMany({ exercise: exercise._id });
 
         await Exercise.findByIdAndDelete(id);
-        res.json({ message: 'Exercise deleted' });
+        return exercise;
     }
     catch (err) {
-        res.status(500).json({ message: err.message });
+        console.error(err);
+        return null;
     }
 };
 

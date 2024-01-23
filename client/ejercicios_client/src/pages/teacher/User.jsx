@@ -3,7 +3,7 @@ import {   Link,  useLoaderData } from 'react-router-dom'
 import { changeUserRole } from '../../util/api/user'
 import loggedInContext from '../../context/loggedInContext'
 import HealthBar from '../../components/healthBar/HealthBar'
-import CourseStats from '../../components/CourseStats'
+import CourseStats from '../../components/stats/CourseStats'
 import TextShowHide from '../../components/TextShowHide'
 
 const User = () => {
@@ -32,7 +32,7 @@ const User = () => {
             <section className="courses">
                 
 
-                {user.courses.length > 0 ?
+                {user.courses?.length > 0 ?
                     (
                         <>
                             <h2>Cursos:</h2>
@@ -46,7 +46,7 @@ const User = () => {
                                             </article>
                                         }
                                     >
-                                        <CourseStats  key={course._id} course={course} />
+                                        <CourseStats  key={course._id} course={course} students={[user]} />
                                     </TextShowHide>
                                 )
                             })}

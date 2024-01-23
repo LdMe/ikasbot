@@ -1,5 +1,4 @@
 import { fetchApi } from "../helpers";
-import { calculateCourseScores } from "./course";
 
 
 const getUsersByRole = async (query,limit=10,role,notInCourse="") => {
@@ -13,17 +12,20 @@ const getUsersByRole = async (query,limit=10,role,notInCourse="") => {
     }
 }
 
-const getTeachers = async (query,limit=10,course="") => {
-    return getUsersByRole(query,limit,"teacher",course);
+const getTeachers = async (query,limit=10,notCourse="") => {
+    return getUsersByRole(query,limit,"teacher",notCourse);
 }
 
-const getStudents = async (query,limit=10,course="") => {
-    return getUsersByRole(query,limit,"student",course);
+const getStudents = async (query,limit=10,notCourse="") => {
+    return getUsersByRole(query,limit,"student",notCourse);
 }
 
-const getAllUsers = async (query="",limit=10) => {
+const getAllUsers = async (query="",limit=10,course=null) => {
     try {
-        const url = `/user?limit=${limit}&query=${query}`;
+        let url = `/user?limit=${limit}&query=${query}`;
+        if(course){
+            url+=`&course=${course}`;
+        }
         return await fetchApi(url,"GET");
     }
     catch (error) {
@@ -40,7 +42,7 @@ const getUserData = async (id=null) => {
             return {error: data.error};
         }
         console.log("user courses",data)
-        data.courses = calculateCourseScores(data.courses);
+        //data.courses = calculateCourseScores(data.courses);
         return data;
     }
     catch (error) {

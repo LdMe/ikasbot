@@ -4,7 +4,7 @@ import { changeUserRole } from '../../util/api/user'
 import loggedInContext from '../../context/loggedInContext'
 import HealthBar from '../../components/healthBar/HealthBar'
 import AttemptsShow from '../../components/AttemptsShow'
-import CourseStats from '../../components/CourseStats'
+import CourseStats from '../../components/stats/CourseStats'
 import TextShowHide from '../../components/TextShowHide'
 
 const Profile = () => {
@@ -27,11 +27,10 @@ const Profile = () => {
                                             title ={
                                             <article key={course._id} className="course-info">
                                                 <Link key={course._id} to={`${getBasePath()}/cursos/${course._id}`}><p>{course.name}</p></Link>
-                                                <HealthBar hp={course.totalExercisesPassed} maxHp={course.totalExercises} />
                                             </article>
                                             }
                                             >
-                                                <CourseStats  key={course._id} course={course} />
+                                                <CourseStats  key={course._id} course={course} students={[user]} />
                                             </TextShowHide>
                                         )
                                     })}

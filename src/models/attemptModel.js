@@ -1,6 +1,5 @@
 // Attempt model
 import mongoose from 'mongoose';
-
 const attemptSchema = new mongoose.Schema({
     code: String,
     createdBy: {
@@ -34,6 +33,7 @@ attemptSchema.pre('save', async function (next) {
     if(!attempt.message){
         return next();
     }
+    
     // get correct percentage
     let regex = /Tests:\s+(\d+)\s+passed,\s+(\d+)\s+total/;
     if(!attempt.success){

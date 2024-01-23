@@ -25,8 +25,8 @@ const createUser = async (req, res) => {
  */
 const getAllUsers = async (req, res) => {
     try {
-        const { query, limit } = req.query;
-        const users = await userController.getAllUsers(query, limit);
+        const { query, limit,course } = req.query;
+        const users = await userController.getAllUsers(query, limit,course);
         if(users.length==0){
             return res.status(404).json({ error: 'Cannot find users' });
         }

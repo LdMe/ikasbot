@@ -8,6 +8,7 @@ import { logout } from "../util/api/auth";
 const NavBar = () => {
     const { isLogged, getUserRole, getUser } = useContext(loggedInContext);
     const TEACHER_URL = "/profesorado";
+    console.log("userRole", getUserRole())
     const handleLogout = () => {
         logout();
     }
@@ -24,12 +25,12 @@ const NavBar = () => {
                                     <li className="navbar-item">
                                         <Link to={`${TEACHER_URL}/cursos`} className="nav-link">Cursos</Link>
                                     </li>
-                                    <li className="navbar-item">
+                                    {/* <li className="navbar-item">
                                         <Link to={`${TEACHER_URL}/temas`} className="nav-link">Temas</Link>
                                     </li>
                                     <li className="navbar-item">
                                         <Link to={`${TEACHER_URL}/ejercicios`} className="nav-link">Ejercicios</Link>
-                                    </li>
+                                    </li> */}
                                     <li className="navbar-item">
                                         <Link to={`${TEACHER_URL}/usuarios`} className="nav-link">Usuarios</Link>
                                     </li>

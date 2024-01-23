@@ -17,10 +17,30 @@ const userSchema = new mongoose.Schema({
     courses: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Course',
-        required: false
+        required: false,
+        default: []
     }],
+    completed: {
+        exercises: [{
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'Exercise',
+            required: false,
+            default: []
+        }],
+        subjects: [{
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'Subject',
+            required: false,
+            default: []
+        }],
+        courses: [{
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'Course',
+            required: false,
+            default: []
+        }]
+    }
 });
-
 
 
 userSchema.methods.toJSON = function () {

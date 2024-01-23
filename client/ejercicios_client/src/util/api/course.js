@@ -1,6 +1,6 @@
 import { fetchApi } from '../helpers';
 
-const calculateCourseScores = (courses) => {
+/* const calculateCourseScores = (courses) => {
     if(!courses){
         return [];
     }
@@ -31,7 +31,7 @@ const calculateCourseScores = (courses) => {
         course.totalExercisesPassed = totalCourseExercisesPassed;
     }
     return courses;
-}
+} */
 const getCourses = async () => {
     try {
         const url = `/course`;
@@ -122,7 +122,7 @@ const unenrollStudent = async (courseId,studentId) => {
 }
 
 export{
-    calculateCourseScores,
+    
     getCourses,
     getCourse,
     createCourse,
