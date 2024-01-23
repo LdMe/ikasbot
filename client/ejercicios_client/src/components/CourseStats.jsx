@@ -2,7 +2,10 @@ import { Link } from 'react-router-dom';
 import HealthBar from './healthBar/HealthBar';
 import TextShowHide from './TextShowHide';
 import AttemptsShow from './AttemptsShow';
+import loggedInContext from '../context/loggedInContext';
+import { useContext } from 'react';
 const CourseStats = ({ course }) => {
+    const {getBasePath} = useContext(loggedInContext)
     return (
         <div className="subjects">
             <h3>Temas:</h3>
@@ -13,7 +16,7 @@ const CourseStats = ({ course }) => {
                             
                             title={
                                 <article className="subject-info">
-                                    <Link to={`temas/${subject._id}`}><p>{subject.name}</p></Link>
+                                    <Link to={`${getBasePath()}/temas/${subject._id}`}><p>{subject.name}</p></Link>
                                     <HealthBar hp={subject.totalExercisesPassed} maxHp={subject.totalExercises} />
                                 </article>
                             }

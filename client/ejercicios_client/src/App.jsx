@@ -37,6 +37,10 @@ function App() {
   const getUser = () => {
     return user;
   }
+  const getBasePath = () => {
+    return getUserRole() === "student" ? "/aula" : "/profesorado";
+  }
+
   const loggedInContextValue = {
     isLogged,
     login,
@@ -45,7 +49,8 @@ function App() {
     getUserRole,
     getUser,
     getEmail,
-    user
+    user,
+    getBasePath
   }
 
 

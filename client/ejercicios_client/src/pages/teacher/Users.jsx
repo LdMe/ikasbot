@@ -3,14 +3,12 @@ import { useEffect,useContext,useState } from "react";
 import { useNavigate } from "react-router-dom";
 import loggedInContext from "../../context/loggedInContext";
 import { getAllUsers } from "../../util/api/user";
-import { get } from "mongoose";
 
 const Users = () => {
     const data = useLoaderData();
     const [users, setUsers] = useState([]);
     const [filter, setFilter] = useState("");
-    const [filteredUsers, setFilteredUsers] = useState([]);
-    const {getUserRole} = useContext(loggedInContext);
+    const {getBasePath} = useContext(loggedInContext);
     const navigate = useNavigate();
     useEffect(() => {
         console.log("data",data)
@@ -44,7 +42,7 @@ const Users = () => {
             <ul>
                 {users.map((user) => (
                     <li key={user._id}>
-                        <Link to={`${user._id}`}>{user.name} | {user.email}</Link>
+                        <Link to={`${getBasePath()}/usuarios/${user._id}`}>{user.name} | {user.email}</Link>
                     </li>
                 ))}
             </ul>

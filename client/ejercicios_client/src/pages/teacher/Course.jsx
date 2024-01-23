@@ -10,14 +10,9 @@ const Course = () => {
     const [data, setData] = useState(useLoaderData())
     const [subjectToDelete, setSubjectToDelete] = useState(null);
     const [deleteExercises, setDeleteExercises] = useState(true);
-    const { getUserRole } = useContext(loggedInContext);
+    const { getUserRole,getBasePath } = useContext(loggedInContext);
     const navigate = useNavigate();
-    useEffect(() => {
-        console.log("dtaaa", data)
-        if (data.error) {
-            navigate('/login', { replace: true })
-        }
-    }, [])
+    
     const handleNewSubject = async (e) => {
         e.preventDefault();
         const name = e.target.name.value;
@@ -93,7 +88,7 @@ const Course = () => {
                 <ul>
                     {data.subjects.map((subject) => (
                         <li key={subject._id}>
-                            <Link to={`../temas/${subject._id}`}>{subject.name}</Link>
+                            <Link to={`${getBasePath()}/temas/${subject._id}`}>{subject.name}</Link>
                             <>
                                 {subjectToDelete === subject._id ?
                                     <>
@@ -117,7 +112,7 @@ const Course = () => {
                             data.students.map((student) => (
 
                                 <li key={student._id}>
-                                    <Link to={`../usuarios/${student._id}`}>{student.name}</Link><button onClick={() => handleUnenrroll(student._id)}>Eliminar</button>
+                                    <Link to={`${getBasePath()}/usuarios/${student._id}`}>{student.name}</Link><button onClick={() => handleUnenrroll(student._id)}>Eliminar</button>
                                 </li>
                             ))
                         }
@@ -142,7 +137,7 @@ const Course = () => {
                         {
                             data.teachers.map((teacher) => (
                                 <li key={teacher._id}>
-                                    <Link to={`../usuarios/${teacher._id}`}>{teacher.name}</Link> <button onClick={() => handleRemoveTeacher(teacher._id)}>Eliminar</button>
+                                    <Link to={`${getBasePath()}/usuarios/${teacher._id}`}>{teacher.name}</Link> <button onClick={() => handleRemoveTeacher(teacher._id)}>Eliminar</button>
                                 </li>
                             ))
                         }

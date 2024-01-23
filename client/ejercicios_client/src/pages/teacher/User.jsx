@@ -1,26 +1,14 @@
-import { useEffect, useContext, useState } from 'react'
-import { useParams, useNavigate, Link, useOutletContext, useLoaderData } from 'react-router-dom'
+import {  useContext, useState } from 'react'
+import {   Link,  useLoaderData } from 'react-router-dom'
 import { changeUserRole } from '../../util/api/user'
 import loggedInContext from '../../context/loggedInContext'
 import HealthBar from '../../components/healthBar/HealthBar'
-import AttemptsShow from '../../components/AttemptsShow'
 import CourseStats from '../../components/CourseStats'
 import TextShowHide from '../../components/TextShowHide'
 
 const User = () => {
     const [user, setUser] = useState(useLoaderData())
-    const { getUserName, getUserRole } = useContext(loggedInContext)
-
-    const mapRole = (role) => {
-        switch (role) {
-            case "admin":
-                return "Administrador"
-            case "teacher":
-                return "Profesor"
-            case "student":
-                return "Estudiante"
-        }
-    }
+    const { getBasePath, getUserRole } = useContext(loggedInContext)
 
 
     const handleChangeRole = (e) => {
@@ -53,7 +41,7 @@ const User = () => {
                                     <TextShowHide key={course._id}
                                         title={
                                             <article key={course._id} className="course-info">
-                                                <Link key={course._id} to={`../cursos/${course._id}`}><p>{course.name}</p></Link>
+                                                <Link key={course._id} to={`${getBasePath()}/cursos/${course._id}`}><p>{course.name}</p></Link>
                                                 <HealthBar hp={course.totalExercisesPassed} maxHp={course.totalExercises} />
                                             </article>
                                         }

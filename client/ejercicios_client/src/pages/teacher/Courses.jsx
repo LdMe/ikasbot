@@ -8,7 +8,7 @@ const Courses = () => {
     const data = useLoaderData();
     const [courses, setCourses] = useState([]);
     const navigate = useNavigate();
-    const {getUserRole} = useContext(loggedInContext);
+    const {getUserRole,getBasePath} = useContext(loggedInContext);
     useEffect(() => {
         if (data.error) {
             navigate('/login', { replace: true })
@@ -48,7 +48,7 @@ const Courses = () => {
             <ul>
                 {courses.map((course) => (
                     <li key={course._id}>
-                        <Link to={`${course._id}`}>{course.name}</Link>
+                        <Link to={`${getBasePath()}/cursos/${course._id}`}>{course.name}</Link>
                         {getUserRole() == "admin" && (
                         <button onClick={() => handleRemoveCourse(course._id)}>Eliminar</button>
                         )}

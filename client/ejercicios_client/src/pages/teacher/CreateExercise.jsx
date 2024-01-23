@@ -17,7 +17,7 @@ function CreateExercise({ oldExercise, onSubmit = null }) {
     const [hasTest, setHasTest] = useState(true)
     const [isDescriptionInHTML, setisDescriptionInHTML] = useState(false)
     const navigate = useNavigate();
-    const  [ searchParams ] = useSearchParams();
+    const [searchParams] = useSearchParams();
     useEffect(() => {
         if (getUserRole() == "student") {
             navigate('/')
@@ -75,7 +75,18 @@ function CreateExercise({ oldExercise, onSubmit = null }) {
                 <input type="checkbox" name="isDescriptionInHTML" id="isDescriptionInHTML" value={isDescriptionInHTML} onChange={(e) => setisDescriptionInHTML(e.target.checked)} checked={isDescriptionInHTML} />
                 <label htmlFor="description">Descripción</label>
                 {isDescriptionInHTML ?
-                    <textarea className="ql-editor" name="description" onChange={(e) => setDescription(e.target.value)} value={description} />
+                    <Editor
+                        value={description}
+                        className='hljs editor'
+                        onValueChange={description => setDescription(description)}
+                        highlight={text => highlight(text, { language: "html" }).value}
+                        padding={10}
+                        style={{
+                            fontFamily: '"Fira code", "Fira Mono", monospace',
+                            fontSize: 12,
+                        }}
+                    />
+                    // <textarea className="ql-editor" name="description" onChange={(e) => setDescription(e.target.value)} value={description} />
                     :
                     <ReactQuill theme="snow" value={description} onChange={setDescription} />
                 }

@@ -4,8 +4,10 @@ import HealthBar from './healthBar/HealthBar'
 import Highlight from 'react-highlight'
 import { FaAngleDown, FaAngleUp } from "react-icons/fa6";
 import TextShowHide from './TextShowHide';
+import loggedInContext from '../context/loggedInContext';
+import { useContext } from 'react';
 const formatTime = (time) => {
-    const date = new Date(time)
+    const date = new Date(time);
     return date.toLocaleDateString("es-ES", { weekday: "long", year: "numeric", month: "long", day: "numeric" }).replace("de", "") + " " + date.toLocaleTimeString()
 }
 const formatFloat = (number, decimals = 2) => {
@@ -13,6 +15,7 @@ const formatFloat = (number, decimals = 2) => {
 }
 const AttemptsShow = ({ exerciseData }) => {
     const [showAttempts, setShowAttempts] = useState(false)
+    const {getBasePath} = useContext(loggedInContext)
     console.log("new exercise", exerciseData)
     const exercise = exerciseData.exercise
     const attempts = exerciseData.attempts
@@ -23,7 +26,7 @@ const AttemptsShow = ({ exerciseData }) => {
     })[0]
     return (
         <div key={exercise._id}>
-            <Link to={`ejercicios/${exercise._id}`}><p>{exercise.name}</p></Link>
+            <Link to={`${getBasePath()}/ejercicios/${exercise._id}`}><p>{exercise.name}</p></Link>
             <HealthBar hp={bestAttempt ? bestAttempt.correct_percentage : 0} />
             {lastAttempt && (
             <p>Último intento: {formatTime(lastAttempt.createdAt)}</p>
