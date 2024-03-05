@@ -16,7 +16,7 @@ const SubjectStats = ({ subject, students }) => {
                         return (
                             <section className="subject-info" key={student._id}>
                                 <article className="subject-info">
-                                    <HealthBar hp={20} />
+                                    <HealthBar hp={0} />
                                 </article>
                             </section>
                         )
