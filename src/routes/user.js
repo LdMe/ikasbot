@@ -7,11 +7,7 @@ const router = Router();
 router.get('/', getAllUsers);
 router.get('/by_role', getUsersByRole);
 
-router.get('/profile',async(req,res)=>{
-    const id = req.user.id;
-    const user = await getUser(id);
-    res.json(user);
-})
+router.get('/profile',isAuth,getUser);
 router.get('/:id', getUser);
 router.put('/:id', updateUser);
 router.delete('/:id', deleteUser);

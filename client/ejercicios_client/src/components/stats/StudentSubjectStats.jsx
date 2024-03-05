@@ -8,7 +8,7 @@ const SubjectStats = ({ subject, students }) => {
     const { getBasePath } = useContext(loggedInContext)
     return (
         <section className="subject-card">
-            <h2>tema: {subject.name}</h2>
+            <h2> {subject.name}</h2>
             {students?.length > 1 && <h3>Estudiantes:</h3>}
             <section className="students">
             {students?.map((student) => {

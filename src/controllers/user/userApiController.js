@@ -43,7 +43,10 @@ const getAllUsers = async (req, res) => {
  */
 const getUser = async (req, res) => {
     try {
-        const id = isValidObjectId(req.params.id) ?  req.params.id : req.user.id;
+        const id = isValidObjectId(req.params?.id) ?  req.params.id : req.user?.id;
+        if(!id){
+            return res.status(400).json({ error: 'Invalid user id' });
+        }
         const user = await userController.getUser(id,false);
         if (user == null) {
             return res.status(404).json({ error: 'Cannot find user' });

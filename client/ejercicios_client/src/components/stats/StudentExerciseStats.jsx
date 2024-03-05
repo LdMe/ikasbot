@@ -8,8 +8,8 @@ const ExerciseStats = ({ exercise, students }) => {
     const { getBasePath } = useContext(loggedInContext)
 
     return (
-        <div className="exercises-card">
-            <h2><Link to={`${getBasePath()}/ejercicios/${exercise._id}`}> {exercise.name}</Link></h2>
+        <div className="exercise">
+            <h3><Link to={`${getBasePath()}/ejercicios/${exercise._id}`}> {exercise.name}</Link></h3>
             {students?.length > 1 && <h3>Estudiantes:</h3>}
             <section className="students">
                 {students?.map((student) => {

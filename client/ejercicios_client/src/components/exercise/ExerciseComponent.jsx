@@ -6,12 +6,13 @@ import Editor from 'react-simple-code-editor';
 import HealthBar from '../healthBar/HealthBar';
 import TextShowHide from '../TextShowHide';
 import { Link } from 'react-router-dom';
-import { useState, useContext } from 'react'
+import { useState, useContext, useEffect } from 'react'
 import { createAttempt } from '../../util/api/exercise';
 import loggedInContext from '../../context/loggedInContext';
+import { set } from 'mongoose';
 
 
-const ExetrciseComponent = ({ exercise, isAdminOrTeacher = false, functions = {} }) => {
+const ExetrciseComponent = ({ exercise, user=null, isAdminOrTeacher = false, functions = {} }) => {
     const { setIsEditing, handleDelete } = functions
     const { getBasePath } = useContext(loggedInContext)
     const [solution, setSolution] = useState('function add(a, b) {\n  return a + b;\n}')
@@ -28,6 +29,38 @@ const ExetrciseComponent = ({ exercise, isAdminOrTeacher = false, functions = {}
                 return "Fácil";
         }
     }
+    const loadBestAttempt = (user) => {
+        console.log("attempts", user.attempts)
+        console.log("exercise", exercise)
+        let attemptsForExercise = user.attempts.filter(attempt => attempt.course == exercise.subject.course);
+        if(attemptsForExercise.length == 0){
+            return null
+        }
+        console.log("attemptForExercise", attemptsForExercise)
+        attemptsForExercise = attemptsForExercise.filter(attempt => attempt.subjects.find(subjectAttempt => subjectAttempt.subject == exercise.subject._id))
+        attemptsForExercise = attemptsForExercise.map(attempt => attempt.subjects.find(subjectAttempt => subjectAttempt.subject == exercise.subject._id).exercises)
+        attemptsForExercise = attemptsForExercise.flat()
+        attemptsForExercise = attemptsForExercise.filter(attempt => attempt.exercise == exercise._id)
+
+        console.log("attemptsForExercise", attemptsForExercise)
+        if(attemptsForExercise.length == 0){
+            return null
+        }
+        let bestAttempt =  attemptsForExercise[0].bestAttempt;
+        return bestAttempt
+    }
+    useEffect(() => {
+    if (user) {
+        console.log("userrr", user)
+        const bestAttempt = loadBestAttempt(user)
+        if (bestAttempt) {
+            console.log("bestAttempt", bestAttempt)
+            setSolution(bestAttempt.code)
+            setResult(bestAttempt)
+        }
+    }
+    }, [user])
+
     const handleSubmit = async (e) => {
         e.preventDefault()
         const newResult = { ...result }
@@ -37,6 +70,7 @@ const ExetrciseComponent = ({ exercise, isAdminOrTeacher = false, functions = {}
         const response = await createAttempt(id, solution)
         setResult(response);
     }
+    console.log("exercise user", user)
     return (
         <div key={exercise._id}>
             <h1>{exercise.name}</h1>

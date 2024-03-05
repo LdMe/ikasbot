@@ -1,7 +1,7 @@
 #root {
-  width:90%;
+  width:95%;
   margin: 0 auto;
-  padding: 2rem;
+  padding: 1rem;
   text-align: center;
 }
 
@@ -143,19 +143,19 @@ button.selected {
   display: flex;
   justify-content: space-between;
   gap: 1em;
-  width: 90%;
+  width: 100%;
   overflow-x: scroll;
-
+  
 }
 
 .subjects {
   gap: 1em;
-  width: 90%;
+  width: 100%;
 }
 
 .text-show-hide-content {
-  width: 100%;
-  padding: 1em;
+  margin: 1em auto;
+  padding: 5px;
   border: 1px solid #ccc;
   border-radius: 0.5em;
   background-color: #fff;
