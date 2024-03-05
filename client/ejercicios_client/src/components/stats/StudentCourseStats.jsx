@@ -5,6 +5,8 @@ import SubjectStats from './StudentSubjectStats';
 const CourseStats = ({ course, students }) => {
     return (
         <div className="course-card">
+            {students?.length > 1 && <h3>Estudiantes:</h3>}
+            <section className="students">
             {students?.map((student) => {
                 console.log('student', student)
                 const courseSubjects = course.subjects
@@ -26,6 +28,9 @@ const CourseStats = ({ course, students }) => {
                 return (
                     <section className="user-info" key={student._id}>
                         <article className="user-info">
+                            {students?.length > 1 &&
+                                <p>{student.name}</p>
+                            }
                             {maxHp!=0 ?
                                 <HealthBar hp={hp} maxHp={maxHp} />
                                 :
@@ -35,6 +40,7 @@ const CourseStats = ({ course, students }) => {
                     </section>
                 )
             })}
+            </section>
             <h3>Temas:</h3>
             <section className="subjects" >
                 {course.subjects?.map((subject) => {

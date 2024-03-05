@@ -3,11 +3,11 @@ import {   Link,  useLoaderData } from 'react-router-dom'
 import { changeUserRole } from '../../util/api/user'
 import loggedInContext from '../../context/loggedInContext'
 import HealthBar from '../../components/healthBar/HealthBar'
-import CourseStats from '../../components/stats/CourseStats'
+import CourseStats from '../../components/stats/StudentCourseStats'
 import TextShowHide from '../../components/TextShowHide'
 
 const User = () => {
-    const [user, setUser] = useState(useLoaderData())
+    const [user, setUser] = useState(useLoaderData().user)
     const { getBasePath, getUserRole } = useContext(loggedInContext)
 
 
@@ -17,6 +17,7 @@ const User = () => {
         changeUserRole(user._id, role).then((response) => {
         })
     }
+    console.log("User", user)
     return (
         <div className="container">
             <h1>Perfil</h1>
@@ -40,8 +41,8 @@ const User = () => {
                                     <TextShowHide key={course._id}
                                         title={
                                             <article key={course._id} className="course-info">
-                                                <Link key={course._id} to={`${getBasePath()}/cursos/${course._id}`}><p>{course.name}</p></Link>
-                                                <HealthBar hp={course.totalExercisesPassed} maxHp={course.totalExercises} />
+                                                <p>{course.name}</p>
+                                                
                                             </article>
                                         }
                                     >

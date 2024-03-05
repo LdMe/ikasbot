@@ -123,6 +123,31 @@ button.selected {
   transition: box-shadow 300ms;;
 
 }
+
+.exercise-card {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1em;
+  border: 1px solid #ccc;
+  border-radius: 0.5em;
+  background-color: #fff;
+  box-shadow: 0 0 1em #ccc;
+  transition: box-shadow 300ms;
+  width: 100%;
+  min-width: 30%;
+}
+
+.exercises {
+  display: flex;
+  justify-content: space-between;
+  gap: 1em;
+  width: 90%;
+  overflow-x: scroll;
+
+}
+
 .subjects {
   gap: 1em;
   width: 90%;
@@ -172,5 +197,16 @@ button.selected {
   display: flex;
   flex-direction: row;
   gap: 1em;
+}
+
+
+/*
+media query for phones to make exercise-card min width: 50%
+*/
+
+@media (max-width: 780px) {
+  .exercise-card {
+    min-width: 50%;
+  }
 }
 
