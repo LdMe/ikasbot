@@ -8,7 +8,6 @@ import { logout } from "../util/api/auth";
 const NavBar = () => {
     const { isLogged, getUserRole, getUser } = useContext(loggedInContext);
     const TEACHER_URL = "/profesorado";
-    console.log("userRole", getUserRole())
     const handleLogout = () => {
         logout();
     }
@@ -16,43 +15,43 @@ const NavBar = () => {
         <nav className="navbar navbar-dark bg-dark navbar-expand-lg">
             <Link to="/" className="navbar-brand">Inicio</Link>
             <div className="collapse navbar-collapse">
-                <ul className="navbar-nav mr-auto">
+                <section className="navbar-nav mr-auto">
 
                     {isLogged ?
                         <>
                             {getUserRole() != "student" &&
                                 <>
-                                    <li className="navbar-item">
+                                    <div className="navbar-item">
                                         <Link to={`${TEACHER_URL}/cursos`} className="nav-link">Cursos</Link>
-                                    </li>
-                                    {/* <li className="navbar-item">
+                                    </div>
+                                    {/* <div className="navbar-item">
                                         <Link to={`${TEACHER_URL}/temas`} className="nav-link">Temas</Link>
-                                    </li>
-                                    <li className="navbar-item">
+                                    </div>
+                                    <div className="navbar-item">
                                         <Link to={`${TEACHER_URL}/ejercicios`} className="nav-link">Ejercicios</Link>
-                                    </li> */}
-                                    <li className="navbar-item">
+                                    </div> */}
+                                    <div className="navbar-item">
                                         <Link to={`${TEACHER_URL}/usuarios`} className="nav-link">Usuarios</Link>
-                                    </li>
+                                    </div>
 
                                 </>
                             }
-                            <li className="navbar-item">
+                            <div className="navbar-item">
                                 <Link to={`/aula`} className="nav-link">Aula</Link>
-                            </li>
-                            <li className="navbar-item">
+                            </div>
+                            <div className="navbar-item">
                                 <Link to="/login" className="nav-link" onClick={handleLogout}>Logout</Link>
-                            </li>
+                            </div>
 
                         </>
                         :
                         <>
-                            <li className="navbar-item">
+                            <div className="navbar-item">
                                 <Link to="/login" className="nav-link">Login</Link>
-                            </li>
+                            </div>
                         </>
                     }
-                </ul>
+                </section>
             </div>
         </nav>
     );

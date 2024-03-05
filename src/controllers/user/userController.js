@@ -144,7 +144,7 @@ const getAttemptsByCourse = async (userId) => {
             });
         }
         attemptsByCourse.find(course => course.course == subject.course).subjects.push(subjectAttempt);
-        attemptsByCourse.find(course => course.course == subject.course).correct += subjectAttempt.correct / subjectAttempt.total;
+        attemptsByCourse.find(course => course.course == subject.course).correct = subjectAttempt.correct ;
 
     }
     return attemptsByCourse;

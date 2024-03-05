@@ -15,7 +15,6 @@ const User = () => {
         const role = e.target.value;
         setUser({ ...user, role })
         changeUserRole(user._id, role).then((response) => {
-            console.log(response)
         })
     }
     return (

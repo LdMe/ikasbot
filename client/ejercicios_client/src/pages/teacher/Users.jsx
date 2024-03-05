@@ -11,7 +11,6 @@ const Users = () => {
     const {getBasePath} = useContext(loggedInContext);
     const navigate = useNavigate();
     useEffect(() => {
-        console.log("data",data)
         if (data.error) {
             navigate('/login', { replace: true })
         }

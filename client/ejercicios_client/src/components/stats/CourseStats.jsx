@@ -20,7 +20,6 @@ const CourseStats = ({ course, students }) => {
                 {students?.length > 1 && <h3>Estudiantes:</h3>}
                 {students?.map((student) => {
                     const attempt = student.attempts.find(attempt => attempt.course == course._id)
-                    console.log("attempt", attempt)
                     if (!attempt) {
                         return (
                             <section className="user-info" key={student._id}>

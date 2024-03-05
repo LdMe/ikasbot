@@ -1,17 +1,15 @@
-import { useEffect, useContext, useState } from 'react'
-import { useParams, useNavigate,  Link,useOutletContext } from 'react-router-dom'
-import { changeUserRole } from '../../util/api/user'
+import { useContext} from 'react'
+import {  useLoaderData } from 'react-router-dom'
 import loggedInContext from '../../context/loggedInContext'
-import HealthBar from '../../components/healthBar/HealthBar'
-import AttemptsShow from '../../components/AttemptsShow'
-import CourseStats from '../../components/stats/CourseStats'
+import CourseStats from '../../components/stats/StudentCourseStats'
 import TextShowHide from '../../components/TextShowHide'
 
+
 const Profile = () => {
-    const [user, setUser] = useState(useOutletContext())
+    const {user} = useLoaderData()
     const { getBasePath } = useContext(loggedInContext)
 
-    
+    console.log("Profile", user)
     return (
         <div className="container">
 
@@ -26,7 +24,7 @@ const Profile = () => {
                                             <TextShowHide key={course._id}
                                             title ={
                                             <article key={course._id} className="course-info">
-                                                <Link key={course._id} to={`${getBasePath()}/cursos/${course._id}`}><p>{course.name}</p></Link>
+                                                <p>{course.name}</p>
                                             </article>
                                             }
                                             >

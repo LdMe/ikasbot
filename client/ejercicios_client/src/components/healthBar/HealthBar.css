@@ -1,4 +1,4 @@
-
+/* 
 .health-bar {
     height:10px;
     width: 100%;
@@ -18,9 +18,66 @@
     background-color: red;
 }
 
-/*
-animate the health bar using --from-width 
-*/
+.health-bar-fill.animated {
+    animation: health-bar-fill var(--duration) ease-out;
+    animation-fill-mode: forwards;
+}
+
+@keyframes health-bar-fill {
+    from {
+        width: var(--from-width);
+        background-color: var(--from-color)
+    }
+    to {
+        width: var(--to-width);
+        background-color: var(--to-color)
+    }
+} */
+
+.health-bar {
+    height: 15px;
+    width: 100%;
+    border-radius: 20px;
+    display: inline-block;
+    background-color: #cacaca;
+    box-shadow: 0px 1px 10px rgba(0,0,0,0.1);
+    overflow: hidden;
+    position: relative;
+}
+
+/* Use linear gradients for smooth color transition */
+.health-bar-fill {
+    height:100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(to right, var(--from-color), var(--to-color));
+    transition: width var(--duration) ease-out;
+}
+
+.medium-health::before,
+.low-health::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background: inherit;
+}
+
+.medium-health::before {
+    opacity: 0.5;
+}
+
+.low-health::before {
+    opacity: 0.2;
+}
+
+/* Animate the health bar using CSS transitions instead of animations for better performance */
+.health-bar-fill.animated {
+    width: var(--to-width);
+}
 .health-bar-fill.animated {
     animation: health-bar-fill var(--duration) ease-out;
     animation-fill-mode: forwards;

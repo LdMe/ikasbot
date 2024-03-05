@@ -56,8 +56,6 @@ function App() {
 
   return (
     <loggedInContext.Provider value={loggedInContextValue}>
-      <h1>Hola {user?.name}</h1>
-      
       <RouterProvider router={router} />
     </loggedInContext.Provider>
   )

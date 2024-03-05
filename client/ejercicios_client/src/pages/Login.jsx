@@ -17,12 +17,10 @@ const Login = () => {
         try {
             const data = await loginApi(email, password);
             if(data.error){
-                console.log(data.error);
                 alert(data.error);
                 return;
             }
             login(data.user);
-            console.log(data);
             // navigate to home
             navigate("/");
         }

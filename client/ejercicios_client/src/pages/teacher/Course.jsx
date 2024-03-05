@@ -52,23 +52,17 @@ const Course = () => {
     }
     const handleAddTeacher = (course) => {
         const newTeachers = course.teachers
-        console.log("teacher", newTeachers)
         setCourse({ ...course, teachers: newTeachers })
     }
     const handleEnroll = async (course) => {
         const newStudent = course;
-        console.log("teacher", newStudent)
         setCourse({ ...course, students: [...course.students, newStudent] })
     }
     const handleUnenrroll = async (studentId) => {
         const response = await unenrollStudent(course._id, studentId)
-        console.log("response", course)
-        console.log("studentId", studentId)
         const newStudents = course.students.filter((student) => student._id != studentId)
-        console.log("newStudents", newStudents)
         setCourse({ ...course, students: newStudents })
     }
-    console.log("roleeee", getUserRole())
     if (!course) return (<div>cargando...</div>)
     if (showStats) {
         return (

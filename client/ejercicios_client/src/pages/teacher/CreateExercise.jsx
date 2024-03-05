@@ -23,7 +23,6 @@ function CreateExercise({ oldExercise, onSubmit = null }) {
             navigate('/')
         }
         if (oldExercise) {
-            console.log("oldExercise", oldExercise)
             setName(oldExercise.name)
             setDescription(oldExercise.description)
             setTest(oldExercise.test)
@@ -32,7 +31,6 @@ function CreateExercise({ oldExercise, onSubmit = null }) {
     }, [oldExercise])
     const handleSubmit = async (e) => {
         e.preventDefault()
-        console.log("subject", searchParams)
         const subject = searchParams.get("subject")
         const data = { name, description, test, level, subject: subject }
         e.target.reset()

@@ -41,9 +41,8 @@ const getUserData = async (id=null) => {
         if(data.error){
             return {error: data.error};
         }
-        console.log("user courses",data)
         //data.courses = calculateCourseScores(data.courses);
-        return data;
+        return {user: data};
     }
     catch (error) {
         console.error(error)

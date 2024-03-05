@@ -101,7 +101,6 @@ const enrollStudent = async (courseId,studentId) => {
     try {
         const url = `/course/${courseId}/enroll/`;
         const result = await fetchApi(url,"POST",{student:studentId});
-        console.log("sressulkt",result)
         return result;
     }
     catch (error) {

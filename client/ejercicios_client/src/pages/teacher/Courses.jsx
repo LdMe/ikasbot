@@ -27,7 +27,6 @@ const Courses = () => {
         const course = { name };
         const response = await createCourse(course);
         if (response) {
-            console.log("response",response)
             setCourses([...courses, response])
         }
         e.target.reset();

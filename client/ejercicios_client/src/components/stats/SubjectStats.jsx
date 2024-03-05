@@ -68,7 +68,6 @@ const SubjectStats = ({ subject, students }) => {
             </div>
             <h3>Ejercicios:</h3>
             {subject.exercises?.map((exercise) => {
-                console.log("exercise", exercise)
                 return (
                     <section className="exercise-card" key={exercise._id}>
                         <ExerciseStats exercise={exercise} students={students} />

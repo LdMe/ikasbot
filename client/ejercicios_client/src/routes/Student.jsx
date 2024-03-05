@@ -18,6 +18,7 @@ const router =
             {
                 path: "",
                 element: <Profile/>,
+                loader: getUserData,
             },
             {
                 path: "cursos/:id",

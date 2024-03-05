@@ -4,7 +4,6 @@ const getSubject = async (id) => {
     try {
         const url = `/subject/${id}`;
         const result = await fetchApi(url,"GET");
-        console.log("getSubject",result);
         return result;
     }
     catch (err) {

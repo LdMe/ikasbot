@@ -14,13 +14,10 @@ const formatFloat = (number, decimals = 2) => {
     return number.toFixed(decimals)
 }
 const AttemptsShow = ({ exerciseData }) => {
-    const [showAttempts, setShowAttempts] = useState(false)
     const {getBasePath} = useContext(loggedInContext)
-    console.log("new exercise", exerciseData)
     const exercise = exerciseData.exercise
     const attempts = exerciseData.attempts
     const bestAttempt = exerciseData.bestAttempt
-    const isCorrect = exerciseData.isCorrect
     const lastAttempt = attempts.sort((a, b) => {
         return new Date(b.createdAt) - new Date(a.createdAt)
     })[0]

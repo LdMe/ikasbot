@@ -143,3 +143,34 @@ button.selected {
 .health-bar{
   min-width: 150px;
 }
+
+.navbar {
+  /* on top */
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1;
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1em;
+  border: 1px solid #ccc;
+  border-radius: 0.5em;
+  background-color: #fff;
+  box-shadow: 0 0 1em #ccc;
+  transition: box-shadow 300ms;
+}
+.navbar-collapse {
+  display: flex;
+  flex-direction: column;
+  gap: 1em;
+
+}
+.navbar-nav {
+  display: flex;
+  flex-direction: row;
+  gap: 1em;
+}
+

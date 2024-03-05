@@ -7,12 +7,10 @@ const TeacherRoot = () => {
     
     const navigate = useNavigate();
     useEffect(() => {
-        console.log("user", user);
         if(!user){
             return;
         }
         if( user.error || (user.role != "teacher" && user.role != "admin") ){
-            console.log("no logueado")
             navigate('/login', { replace: true })
         }
     },[user])

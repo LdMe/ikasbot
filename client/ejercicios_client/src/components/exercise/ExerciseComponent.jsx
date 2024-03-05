@@ -4,21 +4,33 @@ import Highlight from 'react-highlight'
 import { highlight } from 'highlight.js';
 import Editor from 'react-simple-code-editor';
 import HealthBar from '../healthBar/HealthBar';
+import TextShowHide from '../TextShowHide';
 import { Link } from 'react-router-dom';
-import {useState,useContext} from 'react'
+import { useState, useContext } from 'react'
 import { createAttempt } from '../../util/api/exercise';
 import loggedInContext from '../../context/loggedInContext';
 
 
-const ExetrciseComponent = ({exercise, isAdminOrTeacher=false,functions={}}) => {
-    const {setIsEditing,handleDelete} = functions
-    const {getBasePath} = useContext(loggedInContext)
+const ExetrciseComponent = ({ exercise, isAdminOrTeacher = false, functions = {} }) => {
+    const { setIsEditing, handleDelete } = functions
+    const { getBasePath } = useContext(loggedInContext)
     const [solution, setSolution] = useState('function add(a, b) {\n  return a + b;\n}')
     const [result, setResult] = useState(null)
-
+    const getMappedLevel = (level) => {
+        switch (level) {
+            case "easy":
+                return "Fácil";
+            case "medium":
+                return "Medio";
+            case "difficult":
+                return "Avanzado";
+            default:
+                return "Fácil";
+        }
+    }
     const handleSubmit = async (e) => {
         e.preventDefault()
-        const newResult = {...result}
+        const newResult = { ...result }
         newResult.message = "Ejecutando tests..."
         setResult(newResult)
         const id = e.target.id.value;
@@ -28,12 +40,13 @@ const ExetrciseComponent = ({exercise, isAdminOrTeacher=false,functions={}}) => 
     return (
         <div key={exercise._id}>
             <h1>{exercise.name}</h1>
-            
-            <p> Tema:
+
+            <p>Tema:
                 <Link to={`${getBasePath()}/temas/${exercise.subject?._id}`}>
                     {exercise.subject?.name}
                 </Link>
             </p>
+            <p>Dificultad: {getMappedLevel(exercise.level)}</p>
             {isAdminOrTeacher && (
                 <>
                     <button onClick={() => setIsEditing(true)}>Editar</button>
@@ -42,16 +55,7 @@ const ExetrciseComponent = ({exercise, isAdminOrTeacher=false,functions={}}) => 
             )
             }
             <div dangerouslySetInnerHTML={{ __html: exercise.description }}></div>
-            <Highlight className='javascript'>
-                <code dangerouslySetInnerHTML={{ __html: exercise.test }}></code>
-            </Highlight>
 
-            <form onSubmit={handleSubmit} key={solution.length} >
-
-                <input type="hidden" name="id" value={exercise._id} />
-
-                <button>Ejecutar tests</button>
-            </form>
             <Editor
                 value={solution}
                 className='hljs editor'
@@ -63,6 +67,18 @@ const ExetrciseComponent = ({exercise, isAdminOrTeacher=false,functions={}}) => 
                     fontSize: 12,
                 }}
             />
+            <form onSubmit={handleSubmit} key={solution.length} >
+
+                <input type="hidden" name="id" value={exercise._id} />
+
+                <button>Ejecutar tests</button>
+            </form>
+            <TextShowHide title="Tests">
+                <Highlight className='javascript'>
+                    <code dangerouslySetInnerHTML={{ __html: exercise.test }}></code>
+                </Highlight>
+            </TextShowHide>
+
             {result &&
                 <section className={"result-section " + (result.success ? "correct" : "incorrect")} >
                     <HealthBar

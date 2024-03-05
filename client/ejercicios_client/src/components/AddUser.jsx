@@ -6,8 +6,7 @@ function AddUser({courseId,onAddUser,getUsers,addUser}) {
     const [search, setSearch] = useState('')
     useEffect(() => {
         getUsers("",10,courseId).then((data) => {
-            console.log("data", data)
-            if(data.message || data.error || data.success == false) return console.log("error")
+            if(data.message || data.error || data.success == false) return console.error("error")
             setUsers(data)
         })
     }, []);
@@ -15,8 +14,7 @@ function AddUser({courseId,onAddUser,getUsers,addUser}) {
     const handleSearch = (e) => {
         setSearch(e.target.value)
         getUsers(e.target.value,10,courseId).then((data) => {
-            console.log("data", data)
-            if(data.error) return console.log("error")
+            if(data.error) return console.error("error")
             setUsers(data)
         });
     }
@@ -24,7 +22,6 @@ function AddUser({courseId,onAddUser,getUsers,addUser}) {
     const handleSelect = (userId) => {
         
         addUser(courseId,userId).then((data) => {
-            console.log("add user",data)
             setUsers(users.filter((user) => user._id != userId))
             onAddUser(data)
             
