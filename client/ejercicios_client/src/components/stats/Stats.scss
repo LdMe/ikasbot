@@ -59,3 +59,13 @@
   .students {
     width: 100%;
   }
+
+  /*
+media query for phones to make exercise-card min width: 50%
+*/
+
+@media (max-width: 780px) {
+    .exercise-card {
+      min-width: 80%;
+    }
+  }
