@@ -9,7 +9,7 @@ const colors = ["#F5F4ED", "#CAC9C4"]
 const SubjectStats = ({ subject, students, id = 0 }) => {
     const { getBasePath } = useContext(loggedInContext)
     return (
-        <section className="subject-card" style={{ "--bg-color": colors[id % colors.length] }}>
+        <section className="subject-card" style={{ "--bg-color": colors[0] }}>
             <h2> {subject.name}</h2>
             {students?.length > 1 && <h3>Estudiantes:</h3>}
             <section className="students">
@@ -23,7 +23,7 @@ const SubjectStats = ({ subject, students, id = 0 }) => {
                         <section className="subject-info" key={student._id}>
                             <article className="subject-info">
                                 {students?.length > 1 &&
-                                    <Link to={`${getBasePath()}/usuarios/${student._id}`}><p>{student.name}</p></Link>
+                                    <Link   to={`${getBasePath()}/usuarios/${student._id}`}><p>{student.name}</p></Link>
                                 }
                                 {subjectAttempt ?
                                     <HealthBar hp={subjectAttempt.correct} maxHp={subjectAttempt.total} />
@@ -40,7 +40,9 @@ const SubjectStats = ({ subject, students, id = 0 }) => {
                 <section className="exercises">
                     {subject.exercises?.map((exercise, index) => {
                         return (
+                            
                             <section className="exercise-card"  style={{"--bg-color":colors[index % colors.length]}} key={exercise._id}>
+                                
                                 <ExerciseStats
                                     id={index}
                                     exercise={exercise}

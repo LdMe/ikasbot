@@ -19,6 +19,10 @@ const ExetrciseComponent = ({ exercise, user=null, isAdminOrTeacher = false, fun
     const [result, setResult] = useState(null)
 
     useEffect(() => {
+        console.log("result", result)
+    }, [result])
+
+    useEffect(() => {
         if (user) {
             console.log("userrr", user)
             const bestAttempt = loadBestAttempt(user)
@@ -124,8 +128,8 @@ const ExetrciseComponent = ({ exercise, user=null, isAdminOrTeacher = false, fun
                 <section className={"result-section " + (result.success ? "correct" : "incorrect")} >
                     <h3>Resultado:</h3>
                     <HealthBar
-                        maxHp={100}
-                        hp={result.correct_percentage}
+                        maxHp={result.total_tests}
+                        hp={result.correct_tests}
                     />
                     <code dangerouslySetInnerHTML={{ __html:formatMessage(result.message)}}/>
                 </section>

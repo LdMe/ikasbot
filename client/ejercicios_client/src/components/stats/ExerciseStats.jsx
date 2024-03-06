@@ -21,10 +21,14 @@ const ExerciseStats = ({ exercise, students }) => {
         }
     }
     return (
+        
         <div className="exercise">
-            <h3><Link to={`${getBasePath()}/ejercicios/${exercise._id}`}> {exercise.name}</Link></h3>
+            <Link to={`${getBasePath()}/ejercicios/${exercise._id}`}>
+            <h3> {exercise.name}</h3>
             <p>Nivel: {getMappedLevel(exercise.level)}</p>
-            {students?.length > 1 && <h3>Estudiantes:</h3>}
+            </Link>
+            
+            {students?.length > 1 && <h4>Estudiantes:</h4>}
             <section className="students">
                 {students?.map((student) => {
                     // get attempts for an exercise inside a subject inside a course, we don't have course id, so we have to search in all courses

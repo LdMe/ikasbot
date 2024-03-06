@@ -49,6 +49,13 @@ attemptSchema.pre('save', async function (next) {
          correct_percentage = correct_tests / total_tests * 100;
         
     }
+    else {
+        regex = /Tests:\s+\d+\s+failed,\s+(\d+)\s+total/;
+        const match = attempt.message.match(regex);
+        if (match) {
+            total_tests = parseInt(match[1]);
+        }
+    }
     attempt.correct_percentage = correct_percentage;
     attempt.correct_tests = correct_tests;
     attempt.total_tests = total_tests;

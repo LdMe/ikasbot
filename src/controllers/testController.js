@@ -21,11 +21,11 @@ const testCode = async (userId,exerciseId, code) => {
     // get exercise
     try {
         const attempts = await Attempt.find({ exercise: exerciseId, createdBy: userId }).sort({ createdAt: 1 });
-        // if code is the same as any of the previous attempts, throw error
-        if(attempts.some(attempt => attempt.code === code)){
+        // if code is the same as any of the previous attempts, return the previous attempt
+        /* if(attempts.some(attempt => attempt.code === code)){
             const attempt = attempts.find(attempt => attempt.code === code);
             return attempt;
-        }
+        } */
         // if number of attempts for this exercise is greater than 3, remove the oldest attempt
         if (attempts.length > 3) {
             const notSuccessAttempts = attempts.filter(attempt => !attempt.success);

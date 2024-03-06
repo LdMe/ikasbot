@@ -95,7 +95,6 @@
 @keyframes health-bar-fill {
     from {
         width: var(--from-width);
-        background-color: var(--from-color)
     }
     to {
         width: var(--to-width);

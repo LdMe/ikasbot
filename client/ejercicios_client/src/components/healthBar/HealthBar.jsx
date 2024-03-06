@@ -3,8 +3,8 @@ import './HealthBar.css';
 const MEDIUM_HP = 50;
 const LOW_HP = 34;
 const HealthBar = ({maxHp=100,hp=100,showHp=true})=>{
-    const currentWidthRef = useRef((hp/maxHp)*100);
-    const prevWidthRef = useRef((hp/maxHp)*100);
+    const currentWidthRef = useRef((hp/maxHp)*100 || 0);
+    const prevWidthRef = useRef((hp/maxHp)*100 || 0);
     const [isAnimated,setIsAnimated] = useState(true);
     const [prevWidth,setPrevWidth] = useState(prevWidthRef.current);
     const [currentWidth,setCurrentWidth] = useState(currentWidthRef.current);
@@ -26,12 +26,11 @@ const HealthBar = ({maxHp=100,hp=100,showHp=true})=>{
         setCurrentWidth(currentWidthRef.current);
     },[currentWidthRef.current]);
     const width = prevWidth;
-    const green ="green";
-    const yellow ="yellow";
-    const red ="red";
-    const color = width > MEDIUM_HP ? green : width > LOW_HP ? yellow : red;
+    const green ="#31e054";
+    const yellow ="#d2e031";
+    const red ="#e03a31";
     const toColor = currentWidth > MEDIUM_HP ? green : currentWidth > LOW_HP ? yellow : red
-    const style = {width: prevWidth+"%", "--to-width":currentWidth+"%", "--from-width":prevWidth+"%", "--from-color":color,"--to-color":toColor}
+    const style = {width: prevWidth+"%", "--to-width":currentWidth+"%", "--from-width":prevWidth+"%","--to-color":toColor}
     const speed = prevWidth - currentWidth;
     const duration = Math.min(Math.abs(speed/10),0.5);
     style["--duration"] = duration+"s";
@@ -39,7 +38,7 @@ const HealthBar = ({maxHp=100,hp=100,showHp=true})=>{
     
     return (
         <div className="health-bar">
-            <div className={"health-bar-fill "+color + isAnimatedClass } style={style}/>
+            <div className={"health-bar-fill " + isAnimatedClass } style={style}/>
             {showHp && <div className="health-bar-text">{hp}/{maxHp}</div>}
         </div>
     )

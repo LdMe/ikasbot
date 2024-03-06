@@ -7,6 +7,7 @@ import { createBrowserRouter } from "react-router-dom";
 import Login from "../pages/login/Login";
 import NotFound from "../pages/NotFound";
 import Root from "../pages/Root";
+import Home from "../pages/Home";
 import StudentRouter from "./Student";
 import TeacherRouter from "./Teacher";
 
@@ -16,6 +17,10 @@ const router = createBrowserRouter([
         element: <Root/>,
         errorElement: <NotFound/>,
         children:[
+            {
+                path: "",
+                element: <Home/>,
+            },
             {
                 path: "notfound",
                 element: <NotFound/>,

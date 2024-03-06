@@ -102,22 +102,6 @@ button.selected {
 }
 
 
-.exercises {
-  display: flex;
-  justify-content: space-between;
-  gap: 1em;
-  width: 100%;
-  overflow-x: scroll;
-  
-}
-
-.subjects {
-  display: flex;
-  justify-content: space-between;
-  flex-direction: column;
-  gap: 2em;
-  width: 100%;
-}
 
 .text-show-hide-content {
   margin: 1em auto;
@@ -161,6 +145,10 @@ button.selected {
   flex-direction: row;
   gap: 1em;
 }
+.navbar-icon {
+  width: 4em;
+  margin:0;
+}
 
 .icon.correct {
   color: #28a745;
@@ -184,13 +172,5 @@ button.selected {
   transition: box-shadow 300ms;
 }
 
-/*
-media query for phones to make exercise-card min width: 50%
-*/
 
-@media (max-width: 780px) {
-  .exercise-card {
-    min-width: 50%;
-  }
-}
 
