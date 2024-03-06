@@ -1,5 +1,5 @@
 import {useState,useEffect,useContext} from 'react'
-
+import { FaCalendarCheck } from "react-icons/fa";
 // input para añadir un profesor a un curso. Debajo del input se muestra una lista de profesores que se pueden añadir al curso, y al hacer click en uno de ellos se añade al curso.
 function AddUser({courseId,onAddUser,getUsers,addUser}) {
     const [users, setUsers] = useState([])
@@ -31,9 +31,10 @@ function AddUser({courseId,onAddUser,getUsers,addUser}) {
         <>
             <input type="text" onChange={handleSearch} value={search}/>
             <ul>
+                {users.length == 0 && <li>No hay usuarios</li>}
                 {users?.map((user) => (
                     <li key={user._id}>
-                        <button type="button" value={JSON.stringify(user)} onClick={()=>handleSelect(user._id)}>Añadir</button>
+                        <button type="button" className='icon correct' value={JSON.stringify(user)} onClick={()=>handleSelect(user._id)}><FaCalendarCheck/></button>
                         {user.name}
                     </li>
                 ))}

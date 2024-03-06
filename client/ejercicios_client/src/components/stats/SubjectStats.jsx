@@ -41,7 +41,7 @@ const SubjectStats = ({ subject, students, id = 0 }) => {
                     {subject.exercises?.map((exercise, index) => {
                         return (
                             
-                            <section className="exercise-card"  style={{"--bg-color":colors[index % colors.length]}} key={exercise._id}>
+                            <section className="exercise-card"   key={exercise._id}>
                                 
                                 <ExerciseStats
                                     id={index}

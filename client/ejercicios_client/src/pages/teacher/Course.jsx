@@ -4,6 +4,7 @@ import loggedInContext from "../../context/loggedInContext";
 import { createSubject, deleteSubject } from "../../util/api/subject";
 import { getTeachers, getStudents } from "../../util/api/user";
 import { addTeacher, removeTeacher, enrollStudent, unenrollStudent } from "../../util/api/course";
+import { FaXmark } from "react-icons/fa6";
 import AddUser from "../../components/AddUser";
 import TextShowHide from "../../components/TextShowHide";
 import CourseStats from "../../components/stats/CourseStats";
@@ -42,7 +43,7 @@ const Course = () => {
     }
     const handleCancelDelete = () => {
         setSubjectToDelete(null)
-        setDeleteExercises(false)
+        setDeleteExercises(true)
     }
     const handleRemoveTeacher = async (teacherId) => {
         const response = await removeTeacher(course._id, teacherId)
@@ -81,18 +82,6 @@ const Course = () => {
             <button onClick={() => setShowStats(true)}>Estadísticas</button>
             <section className="subject-section">
                 <h2>Temas</h2>
-                <TextShowHide
-                    title={<h3>Crear nuevo tema</h3>}
-                >
-                    <section className="new-subject">
-
-                        <form onSubmit={handleNewSubject}>
-                            <label htmlFor="name">Nombre</label>
-                            <input type="text" id="name" />
-                            <button type="submit">Crear</button>
-                        </form>
-                    </section>
-                </TextShowHide>
 
                 <ul>
                     {course.subjects.map((subject) => (
@@ -107,18 +96,37 @@ const Course = () => {
                                         <button onClick={handleCancelDelete}>Cancelar</button>
                                     </>
                                     :
-                                    <button onClick={() => handleDelete(subject._id)}>Eliminar</button>
+                                    <button className="icon incorrect" onClick={() => handleDelete(subject._id)}><FaXmark/></button>
                                 }
                             </>
                         </li>
                     ))}
                 </ul>
+                <section className="new-subject">
+                    <h3>Crear nuevo tema</h3>
+                    <form onSubmit={handleNewSubject}>
+                        <label htmlFor="name">Nombre</label>
+                        <input type="text" id="name" />
+                        <button type="submit">Crear</button>
+                    </form>
+                </section>
             </section>
             <section className="student-section">
                 <h2>Alumnos</h2>
-                <TextShowHide
-                    title={<h3>Añadir alumno</h3>}
-                >
+
+                <ul>
+                    {
+                        course.students.map((student) => (
+
+                            <li key={student._id}>
+                                <Link to={`${getBasePath()}/usuarios/${student._id}`}>{student.name}</Link><button className="icon incorrect" onClick={() => handleUnenrroll(student._id)}><FaXmark/></button>
+                            </li>
+                        ))
+                    }
+                </ul>
+
+                <section className="add-student">
+                    <h3>Matricular alumnos</h3>
                     <AddUser
                         key={course.students}
                         courseId={course._id}
@@ -126,18 +134,7 @@ const Course = () => {
                         getUsers={getStudents}
                         addUser={enrollStudent}
                     />
-                </TextShowHide>
-                <ul>
-                    {
-                        course.students.map((student) => (
-
-                            <li key={student._id}>
-                                <Link to={`${getBasePath()}/usuarios/${student._id}`}>{student.name}</Link><button onClick={() => handleUnenrroll(student._id)}>Eliminar</button>
-                            </li>
-                        ))
-                    }
-                </ul>
-                
+                </section>
             </section>
 
             {getUserRole() == "admin" &&
@@ -147,7 +144,7 @@ const Course = () => {
                         {
                             course.teachers.map((teacher) => (
                                 <li key={teacher._id}>
-                                    <Link to={`${getBasePath()}/usuarios/${teacher._id}`}>{teacher.name}</Link> <button onClick={() => handleRemoveTeacher(teacher._id)}>Eliminar</button>
+                                    <Link to={`${getBasePath()}/usuarios/${teacher._id}`}>{teacher.name}</Link> <button className="icon incorrect" onClick={() => handleRemoveTeacher(teacher._id)}><FaXmark/></button>
                                 </li>
                             ))
                         }

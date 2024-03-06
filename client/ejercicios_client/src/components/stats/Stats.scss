@@ -1,3 +1,5 @@
+@use "../../variables" as v;
+
 .subject-card {
     display: flex;
     flex-direction: column;
@@ -21,7 +23,8 @@
 
 .exercises {
     display: flex;
-    justify-content: flex-start;
+    box-sizing: border-box;
+    justify-content: space-around;
     gap: 1em;
     width: 100%;
     padding: 1em;
@@ -69,9 +72,10 @@
     border-radius: 0.5em;
     box-shadow: 0 0 1em #ccc;
     transition: box-shadow 300ms;
-    background-color: var(--bg-color);
     min-width: 20%;
-
+    &:hover {
+        box-shadow: 0 0 1em #aaa;
+    }
     &>a {
         color: black;
         text-decoration: none;
@@ -80,6 +84,10 @@
         &:hover {
             color: black;
         }
+    }
+    // change color for even and odd exercises
+    &:nth-child(odd) {
+        background-color: v.$light-gray;
     }
 
 }
