@@ -1,79 +1,56 @@
 import { Link } from 'react-router-dom';
+import { useContext } from 'react';
 import HealthBar from '../healthBar/HealthBar';
-import TextShowHide from '../TextShowHide';
-import AttemptsShow from '../AttemptsShow';
-import loggedInContext from '../../context/loggedInContext';
-import { useContext, useEffect, useState } from 'react';
 import ExerciseStats from './ExerciseStats';
-const SubjectStats = ({ subject, students }) => {
+import loggedInContext from '../../context/loggedInContext';
+import TextShowHide from '../TextShowHide';
+import "./Stats.scss";
+const colors = ["#F5F4ED", "#CAC9C4"]
+const SubjectStats = ({ subject, students, id = 0 }) => {
     const { getBasePath } = useContext(loggedInContext)
-    const [showStudents, setShowStudents] = useState(false);
-
-    if (showStudents) {
-        return (
-            <section className="subject-card">
-                <h2>{subject.name}</h2>
-                <div className="section-buttons">
-                    <button onClick={() => setShowStudents(false)}>Ejercicios</button>
-                    <button className="selected" >Resultados</button>
-                </div>
-                {students?.length > 1 && <h3>Estudiantes:</h3>}
+    return (
+        <section className="subject-card" style={{ "--bg-color": colors[id % colors.length] }}>
+            <h2> {subject.name}</h2>
+            {students?.length > 1 && <h3>Estudiantes:</h3>}
+            <section className="students">
                 {students?.map((student) => {
-                    const attempt = student.attempts.find(attempt => attempt.course == subject.course)
-                    if (!attempt) {
-                        return (
-                            <section className="subject-info" key={student._id}>
-                                <article className="subject-info">
-                                    {students?.length > 1 &&
-                                        <Link to={`${getBasePath()}/usuarios/${student._id}`}><p>{student.name}</p></Link>
-                                    }
-                                    <HealthBar hp={0} />
-                                </article>
-                            </section>
-                        )
-                    }
-                    const subjectAttempt = attempt.subjects.find(subjectAttempt => subjectAttempt.subject == subject._id)
-                    if (!subjectAttempt) {
-                        return (
-                            <section className="subject-info" key={student._id}>
-                                <article className="subject-info">
-                                    {students?.length > 1 &&
-                                        <Link to={`${getBasePath()}/usuarios/${student._id}`}><p>{student.name}</p></Link>
-                                    }
-                                    <HealthBar hp={0} />
-                                </article>
-                            </section>
-                        )
-                    }
+                    const subjectAttempt = student.attempts.find(attempt => {
+                        const subjectAttempt = attempt.subjects.find(subjectAttempt => subjectAttempt.subject == subject._id)
+                        return subjectAttempt
+                    })?.subjects[0]
+                    console.log("attempt", subjectAttempt)
                     return (
                         <section className="subject-info" key={student._id}>
                             <article className="subject-info">
                                 {students?.length > 1 &&
                                     <Link to={`${getBasePath()}/usuarios/${student._id}`}><p>{student.name}</p></Link>
                                 }
-                                <HealthBar hp={subjectAttempt.correct} maxHp={subjectAttempt.total} />
+                                {subjectAttempt ?
+                                    <HealthBar hp={subjectAttempt.correct} maxHp={subjectAttempt.total} />
+                                    :
+                                    <HealthBar hp={0} />
+                                }
+
                             </article>
                         </section>
                     )
                 })}
             </section>
-        );
-    }
-    return (
-        <section className="subject-card">
-            <h2>{subject.name}</h2>
-            <div className="section-buttons">
-                <button className="selected" >Ejercicios</button>
-                <button onClick={() => setShowStudents(true)}>Resultados</button>
-            </div>
-            <h3>Ejercicios:</h3>
-            {subject.exercises?.map((exercise) => {
-                return (
-                    <section className="exercise-card" key={exercise._id}>
-                        <ExerciseStats exercise={exercise} students={students} />
-                    </section>
-                )
-            })}
+            <TextShowHide title={<h2>Ejercicios:</h2>}>
+                <section className="exercises">
+                    {subject.exercises?.map((exercise, index) => {
+                        return (
+                            <section className="exercise-card"  style={{"--bg-color":colors[index % colors.length]}} key={exercise._id}>
+                                <ExerciseStats
+                                    id={index}
+                                    exercise={exercise}
+                                    students={students}
+                                />
+                            </section>
+                        )
+                    })}
+                </section>
+            </TextShowHide>
         </section>
     );
 }

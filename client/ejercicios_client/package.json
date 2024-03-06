@@ -15,7 +15,8 @@
     "react-highlight": "^0.15.0",
     "react-quill": "^2.0.0",
     "react-router-dom": "^6.21.2",
-    "react-simple-code-editor": "^0.13.1"
+    "react-simple-code-editor": "^0.13.1",
+    "sass": "^1.71.1"
   },
   "devDependencies": {
     "@types/react": "^18.2.43",

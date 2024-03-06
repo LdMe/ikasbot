@@ -1,0 +1,61 @@
+
+.subject-card {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1em;
+    border: 1px solid #ccc;
+    border-radius: 0.5em;
+    background-color: var(--bg-color);
+    box-shadow: 0 0 1em #ccc;
+    transition: box-shadow 300ms;
+
+    & h2 {
+        width: 100%;
+        text-align: center;
+        padding: 10px;
+        margin: 10px 0;
+    }
+  
+  }
+
+
+.course-card {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    padding: 5px;
+    transition: box-shadow 300ms;;
+  
+  }
+  
+  .exercise-card {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1em;
+    border: 1px solid #ccc;
+    border-radius: 0.5em;
+    box-shadow: 0 0 1em #ccc;
+    transition: box-shadow 300ms;
+    background-color: var(--bg-color);
+    width: 100%;
+    min-width: 30%;
+  }
+
+  article.subject-info,article.exercise-info,article.user-info {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    width: 100%;
+    & > * {
+        width:50%;
+    }
+  }
+
+  .students {
+    width: 100%;
+  }

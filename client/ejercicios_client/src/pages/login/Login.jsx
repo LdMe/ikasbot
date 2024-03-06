@@ -1,10 +1,10 @@
 
 
 import { useState, useContext } from "react";
-import { useNavigate } from "react-router-dom";
-import loggedInContext from "../context/loggedInContext";
-import {login as loginApi,register} from "../util/api/auth";
-
+import { useNavigate,Link } from "react-router-dom";
+import loggedInContext from "../../context/loggedInContext";
+import {login as loginApi,register} from "../../util/api/auth";
+import "./Login.scss";
 const Login = () => {
     const [name, setName] = useState("");
     const [email, setEmail] = useState("");
@@ -61,7 +61,7 @@ const Login = () => {
                 }
                 <button type="button" onClick={isRegister ? handleRegister : handleLogin}>{isRegister ? "Registrarse" : "Login"}</button>
                 <button type="button" onClick={() => setIsRegister(!isRegister)}>{isRegister ? "Ya tengo cuenta" : "Crear cuenta"}</button>
-                <button type="button" onClick={() => onFinish("map")}>Volver</button>
+                <button type="button" ><Link to="/">Volver</Link></button>
 
             </form>
         </section>

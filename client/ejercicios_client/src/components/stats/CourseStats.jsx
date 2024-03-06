@@ -1,62 +1,53 @@
-import { Link } from 'react-router-dom';
+
 import HealthBar from '../healthBar/HealthBar';
-import TextShowHide from '../TextShowHide';
-import AttemptsShow from '../AttemptsShow';
-import loggedInContext from '../../context/loggedInContext';
 import { useContext, useEffect, useState } from 'react';
 import SubjectStats from './SubjectStats';
+import TextShowHide from '../TextShowHide';
+import "./Stats.scss";
 const CourseStats = ({ course, students }) => {
-    const { getBasePath } = useContext(loggedInContext)
-    const [showStudents, setShowStudents] = useState(false);
-
-    if (showStudents) {
-        return (
-            <div className="course-card">
-
-                <div className="section-buttons">
-                    <button onClick={() => setShowStudents(false)}>Temas</button>
-                    <button className="selected" >Resultados</button>
-                </div>
-                {students?.length > 1 && <h3>Estudiantes:</h3>}
-                {students?.map((student) => {
-                    const attempt = student.attempts.find(attempt => attempt.course == course._id)
-                    if (!attempt) {
-                        return (
-                            <section className="user-info" key={student._id}>
-                                <article className="user-info">
-                                    {students?.length > 1 &&
-                                        <Link to={`${getBasePath()}/usuarios/${student._id}`}><p>{student.name}</p></Link>
-                                    }
-                                    <HealthBar hp={0} />
-                                </article>
-                            </section>
-                        )
-                    }
-                    return (
-                        <section className="user-info" key={student._id}>
-                            <article className="user-info">
-                                {students?.length > 1 &&
-                                    <Link to={`${getBasePath()}/usuarios/${student._id}`}><p>{student.name}</p></Link>
-                                }
-                                <HealthBar hp={attempt.correct} maxHp={attempt.total} />
-                            </article>
-                        </section>
-                    )
-                })}
-            </div>
-        );
-    }
     return (
         <div className="course-card">
-            <div className="section-buttons">
-                <button className="selected">Temas</button>
-                <button onClick={() => setShowStudents(true)}>Resultados</button>
-            </div>
-            <h3>Temas:</h3>
+            {students?.length > 1 && <h3>Estudiantes:</h3>}
+            <section className="students">
+            {students?.map((student) => {
+                console.log('student', student)
+                const courseSubjects = course.subjects
+                console.log('courseSubjects', courseSubjects)
+                let hp = 0;
+                let maxHp = 0;
+                courseSubjects.forEach(subject => {
+                    const exercisesLength = subject.exercises.length
+                    maxHp += exercisesLength
+                    const subjectAttempt = student.attempts.find(attempt => {
+                        const foundAttempt = attempt.subjects.find(subjectAttempt => subjectAttempt.subject == subject._id)
+                        return foundAttempt
+                    });
+                    if (subjectAttempt) {
+                        hp += subjectAttempt.correct
+                    }
+                });
+
+                return (
+                    <section className="user-info" key={student._id}>
+                        <article className="user-info">
+                            {students?.length > 1 &&
+                                <p>{student.name}</p>
+                            }
+                            {maxHp!=0 ?
+                                <HealthBar hp={hp} maxHp={maxHp} />
+                                :
+                                <HealthBar hp={0} />
+                            }
+                        </article>
+                    </section>
+                )
+            })}
+            </section>
+            <h2>Temas:</h2>
             <section className="subjects" >
-                {course.subjects?.map((subject) => {
+                {course.subjects?.map((subject,index) => {
                     return (
-                        <SubjectStats key={subject._id} subject={subject} students={students} />
+                            <SubjectStats key={subject._id} id={index} subject={subject} students={students} />
                     )
                 })
                 }

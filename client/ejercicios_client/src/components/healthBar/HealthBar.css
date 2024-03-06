@@ -82,7 +82,16 @@
     animation: health-bar-fill var(--duration) ease-out;
     animation-fill-mode: forwards;
 }
+.health-bar-text{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: rgb(2, 2, 2);
+    font-weight: bold;
+    font-size: 0.8em;
 
+}
 @keyframes health-bar-fill {
     from {
         width: var(--from-width);

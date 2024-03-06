@@ -28,7 +28,9 @@ const router =
         {
             path: "temas/:id",
             element: <Subject />,
-            loader: ({ params }) => getSubject(params.id),
+            loader: async({ params }) => {
+                return { subject: await getSubject(params.id), user:  await getUserData()}
+            }
         },
         {
             path: "ejercicios/:id",

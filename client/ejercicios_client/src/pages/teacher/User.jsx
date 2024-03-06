@@ -3,7 +3,7 @@ import {   Link,  useLoaderData } from 'react-router-dom'
 import { changeUserRole } from '../../util/api/user'
 import loggedInContext from '../../context/loggedInContext'
 import HealthBar from '../../components/healthBar/HealthBar'
-import CourseStats from '../../components/stats/StudentCourseStats'
+import CourseStats from '../../components/stats/CourseStats'
 import TextShowHide from '../../components/TextShowHide'
 
 const User = () => {

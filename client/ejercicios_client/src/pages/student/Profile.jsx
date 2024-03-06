@@ -1,7 +1,7 @@
 import { useContext} from 'react'
 import {  useLoaderData } from 'react-router-dom'
 import loggedInContext from '../../context/loggedInContext'
-import CourseStats from '../../components/stats/StudentCourseStats'
+import CourseStats from '../../components/stats/CourseStats'
 import TextShowHide from '../../components/TextShowHide'
 
 

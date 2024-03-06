@@ -80,6 +80,9 @@
   scroll-behavior: smooth;
   gap: 1em;
 }
+.text-show-hide {
+  width: 100%;
+}
 
 .text-show-hide-title {
   cursor: pointer;
@@ -97,47 +100,7 @@ button.selected {
   background-color: #61dafb;
   color: #000;
 }
-.subject-card {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  align-items: center;
-  padding: 1em;
-  border: 1px solid #ccc;
-  border-radius: 0.5em;
-  background-color: #fff;
-  box-shadow: 0 0 1em #ccc;
-  transition: box-shadow 300ms;
 
-}
-.course-card {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  align-items: center;
-  padding: 5px;
-  border: 1px solid #ccc;
-  border-radius: 0.5em;
-  background-color: #fff;
-  box-shadow: 0 0 1em #ccc;
-  transition: box-shadow 300ms;;
-
-}
-
-.exercise-card {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  align-items: center;
-  padding: 1em;
-  border: 1px solid #ccc;
-  border-radius: 0.5em;
-  background-color: #fff;
-  box-shadow: 0 0 1em #ccc;
-  transition: box-shadow 300ms;
-  width: 100%;
-  min-width: 30%;
-}
 
 .exercises {
   display: flex;
@@ -149,22 +112,22 @@ button.selected {
 }
 
 .subjects {
-  gap: 1em;
+  display: flex;
+  justify-content: space-between;
+  flex-direction: column;
+  gap: 2em;
   width: 100%;
 }
 
 .text-show-hide-content {
   margin: 1em auto;
   padding: 5px;
-  border: 1px solid #ccc;
-  border-radius: 0.5em;
-  background-color: #fff;
-  box-shadow: 0 0 1em #ccc;
   transition: box-shadow 300ms;
 }
 .user-info {
   margin:0.5em;
 }
+
 .health-bar{
   min-width: 150px;
 }
@@ -199,6 +162,27 @@ button.selected {
   gap: 1em;
 }
 
+.icon.correct {
+  color: #28a745;
+  font-size: 1.5rem;
+  background: none;
+}
+.icon.incorrect {
+  color: #dc3545;
+  font-size: 1.5rem;
+  background: none;
+}
+.result-section{
+  display: flex;
+  flex-direction: column;
+  gap: 1em;
+  padding: 1em;
+  border: 1px solid #ccc;
+  border-radius: 0.5em;
+  
+  box-shadow: 0 0 1em #ccc;
+  transition: box-shadow 300ms;
+}
 
 /*
 media query for phones to make exercise-card min width: 50%

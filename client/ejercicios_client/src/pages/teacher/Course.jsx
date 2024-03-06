@@ -6,7 +6,7 @@ import { getTeachers, getStudents } from "../../util/api/user";
 import { addTeacher, removeTeacher, enrollStudent, unenrollStudent } from "../../util/api/course";
 import AddUser from "../../components/AddUser";
 import TextShowHide from "../../components/TextShowHide";
-import CourseStats from "../../components/stats/StudentCourseStats";
+import CourseStats from "../../components/stats/CourseStats";
 
 const Course = () => {
     const [course, setCourse] = useState(useLoaderData());

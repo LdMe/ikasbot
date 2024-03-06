@@ -14,7 +14,6 @@ const StudentRoot = () => {
     },[user])
     return (
         <div>
-            <h1>Aula</h1>
             <Outlet/>
         </div>
     )

@@ -4,7 +4,7 @@
 
 import { createBrowserRouter } from "react-router-dom";
 
-import Login from "../pages/Login";
+import Login from "../pages/login/Login";
 import NotFound from "../pages/NotFound";
 import Root from "../pages/Root";
 import StudentRouter from "./Student";

@@ -17,6 +17,19 @@ const ExetrciseComponent = ({ exercise, user=null, isAdminOrTeacher = false, fun
     const { getBasePath } = useContext(loggedInContext)
     const [solution, setSolution] = useState('function add(a, b) {\n  return a + b;\n}')
     const [result, setResult] = useState(null)
+
+    useEffect(() => {
+        if (user) {
+            console.log("userrr", user)
+            const bestAttempt = loadBestAttempt(user)
+            if (bestAttempt) {
+                console.log("bestAttempt", bestAttempt)
+                setSolution(bestAttempt.code)
+                setResult(bestAttempt)
+            }
+        }
+        }, [user])
+    
     const getMappedLevel = (level) => {
         switch (level) {
             case "easy":
@@ -49,18 +62,7 @@ const ExetrciseComponent = ({ exercise, user=null, isAdminOrTeacher = false, fun
         let bestAttempt =  attemptsForExercise[0].bestAttempt;
         return bestAttempt
     }
-    useEffect(() => {
-    if (user) {
-        console.log("userrr", user)
-        const bestAttempt = loadBestAttempt(user)
-        if (bestAttempt) {
-            console.log("bestAttempt", bestAttempt)
-            setSolution(bestAttempt.code)
-            setResult(bestAttempt)
-        }
-    }
-    }, [user])
-
+    
     const handleSubmit = async (e) => {
         e.preventDefault()
         const newResult = { ...result }
@@ -69,6 +71,11 @@ const ExetrciseComponent = ({ exercise, user=null, isAdminOrTeacher = false, fun
         const id = e.target.id.value;
         const response = await createAttempt(id, solution)
         setResult(response);
+    }
+    const formatMessage = (message) => {
+        let newMessage = message.replaceAll(/\s*✓/gi, "<br><span class='icon correct'>✓</span>")
+        newMessage = newMessage.replaceAll(/\s*✕/gi, "<br><span class='icon incorrect'>✗</span>")
+        return newMessage
     }
     console.log("exercise user", user)
     return (
@@ -80,7 +87,7 @@ const ExetrciseComponent = ({ exercise, user=null, isAdminOrTeacher = false, fun
                     {exercise.subject?.name}
                 </Link>
             </p>
-            <p>Dificultad: {getMappedLevel(exercise.level)}</p>
+            <p>Nivel: {getMappedLevel(exercise.level)}</p>
             {isAdminOrTeacher && (
                 <>
                     <button onClick={() => setIsEditing(true)}>Editar</button>
@@ -107,7 +114,7 @@ const ExetrciseComponent = ({ exercise, user=null, isAdminOrTeacher = false, fun
 
                 <button>Ejecutar tests</button>
             </form>
-            <TextShowHide title="Tests">
+            <TextShowHide title="Ver tests">
                 <Highlight className='javascript'>
                     <code dangerouslySetInnerHTML={{ __html: exercise.test }}></code>
                 </Highlight>
@@ -115,11 +122,12 @@ const ExetrciseComponent = ({ exercise, user=null, isAdminOrTeacher = false, fun
 
             {result &&
                 <section className={"result-section " + (result.success ? "correct" : "incorrect")} >
+                    <h3>Resultado:</h3>
                     <HealthBar
                         maxHp={100}
                         hp={result.correct_percentage}
                     />
-                    <code>{result.message}</code>
+                    <code dangerouslySetInnerHTML={{ __html:formatMessage(result.message)}}/>
                 </section>
             }
 

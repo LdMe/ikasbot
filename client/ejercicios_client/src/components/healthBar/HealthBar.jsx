@@ -2,7 +2,7 @@ import {useRef,useEffect,useState} from 'react';
 import './HealthBar.css';
 const MEDIUM_HP = 50;
 const LOW_HP = 34;
-const HealthBar = ({maxHp=100,hp=100})=>{
+const HealthBar = ({maxHp=100,hp=100,showHp=true})=>{
     const currentWidthRef = useRef((hp/maxHp)*100);
     const prevWidthRef = useRef((hp/maxHp)*100);
     const [isAnimated,setIsAnimated] = useState(true);
@@ -40,6 +40,7 @@ const HealthBar = ({maxHp=100,hp=100})=>{
     return (
         <div className="health-bar">
             <div className={"health-bar-fill "+color + isAnimatedClass } style={style}/>
+            {showHp && <div className="health-bar-text">{hp}/{maxHp}</div>}
         </div>
     )
 }
