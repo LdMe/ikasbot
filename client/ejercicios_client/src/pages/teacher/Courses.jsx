@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import loggedInContext from "../../context/loggedInContext";
 import TextShowHide from "../../components/TextShowHide";
 import {createCourse,deleteCourse} from "../../util/api/course";
+import { FaXmark } from "react-icons/fa6";
 const Courses = () => {
     const data = useLoaderData();
     const [courses, setCourses] = useState([]);
@@ -32,6 +33,9 @@ const Courses = () => {
         e.target.reset();
     }
     const handleRemoveCourse = (id) => {
+        if(!confirm("¿Estás seguro de que quieres eliminar el tema?") ){
+            return;
+        }
         const newCourses = courses.filter((course) => course._id != id)
         setCourses(newCourses)
         deleteCourse(id)
@@ -49,7 +53,7 @@ const Courses = () => {
                     <li key={course._id}>
                         <Link to={`${getBasePath()}/cursos/${course._id}`}>{course.name}</Link>
                         {getUserRole() == "admin" && (
-                        <button onClick={() => handleRemoveCourse(course._id)}>Eliminar</button>
+                        <button className="icon incorrect" onClick={() => handleRemoveCourse(course._id)}><FaXmark/></button>
                         )}
                     </li>
                 ))}
