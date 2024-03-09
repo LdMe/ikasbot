@@ -6,6 +6,8 @@ import 'highlight.js/styles/atom-one-dark.css';
 import { highlight, languages } from 'highlight.js';
 import Editor from 'react-simple-code-editor';
 import ReactQuill from 'react-quill';
+import ClaudeComponent from '../../components/AI/Claude';
+import { createExerciseText } from '../../util/api/exercise';
 import 'react-quill/dist/quill.snow.css';
 
 function CreateExercise({ oldExercise, onSubmit = null }) {
@@ -48,6 +50,11 @@ function CreateExercise({ oldExercise, onSubmit = null }) {
             navigate(-1)
         }
     }
+    const handleAutoTest = async () => {
+        const data = await createExerciseText(description, true)
+        console.log("data", data)
+        setTest(data.content[0].text)
+    }
     const handleCancel = () => {
         if (onSubmit) {
             onSubmit(null)
@@ -59,6 +66,7 @@ function CreateExercise({ oldExercise, onSubmit = null }) {
     return (
         <>
             <h1>{oldExercise ? "Editar" : "Crear"} Ejercicio</h1>
+            <ClaudeComponent onResponse={setDescription}/>
             <form onSubmit={handleSubmit}>
                 <label htmlFor="name">Nombre</label>
                 <input type="text" name="name" onChange={(e) => setName(e.target.value)} value={name} />
@@ -68,7 +76,7 @@ function CreateExercise({ oldExercise, onSubmit = null }) {
                     <option value="medium">Medio</option>
                     <option value="difficult">Avanzado</option>
                 </select>
-
+                
                 <label htmlFor="isDescriptionInHTML">Descripción en HTML</label>
                 <input type="checkbox" name="isDescriptionInHTML" id="isDescriptionInHTML" value={isDescriptionInHTML} onChange={(e) => setisDescriptionInHTML(e.target.checked)} checked={isDescriptionInHTML} />
                 <label htmlFor="description">Descripción</label>
@@ -93,6 +101,7 @@ function CreateExercise({ oldExercise, onSubmit = null }) {
                 {hasTest &&
                     <>
                         <label htmlFor="test">Test</label>
+                        <button type="button" onClick={handleAutoTest}>Crear automáticamente</button>
                         <Editor
                             value={test}
                             className='hljs editor'
