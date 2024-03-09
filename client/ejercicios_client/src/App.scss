@@ -191,3 +191,35 @@ button.selected {
 }
 
 
+form.exercise fieldset {
+  display: flex;
+  flex-wrap: wrap;
+  padding: 1em;
+  border: 1px solid #ccc;
+  border-radius: 0.5em;
+  background-color: #fff;
+  box-shadow: 0 0 1em #ccc;
+  transition: box-shadow 300ms;
+  & > * {
+    box-sizing: border-box;
+    margin: 0;
+  }
+  /*
+  when an input is a checkbox , the label and the input must be in the same line
+  */
+  label {
+    display: flex;
+    align-items: center;
+    width: 50%;
+
+  }
+  input:not([type="checkbox"]) {
+    width: 100%;
+  }
+  select {
+    width: 50%;
+
+  }
+
+  
+}

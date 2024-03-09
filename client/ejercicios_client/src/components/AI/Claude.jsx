@@ -1,11 +1,7 @@
-import Anthropic from "@anthropic-ai/sdk";
 import { useState } from "react";
 import {createExerciseText} from "../../util/api/exercise";
-// import api key from .env using vite
-const anthropic = new Anthropic({
-    apiKey: import.meta.env.VITE_ANTHROPIC_API_KEY,
-});
 
+import TextShowHide from "../TextShowHide";
 
 
 const ClaudeComponent = ({onResponse}) => {
@@ -23,16 +19,21 @@ const ClaudeComponent = ({onResponse}) => {
         onResponse(data.content[0].text)
         setIsGenerating(false)
     }
+    if(isGenerating){
+        return <p>Generando...</p>
+    }
     return (
         <section className="claude">
-            
+            <TextShowHide
+            title={<h2>Generador de ejercicios</h2>}
+            >
             <form onSubmit={handleSubmit}>
-                <label htmlFor="prompt">Introduce el texto</label>
+                <label htmlFor="prompt">tema:</label>
             <input type="text" id="prompt" name="prompt"/>
-            <button id="submit">Enviar</button>
+            <button id="submit">Generar</button>
             </form>
-            {isGenerating && <p>Generando ejercicio...</p>}
             
+            </TextShowHide>
         </section>
     )
 }

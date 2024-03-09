@@ -18,6 +18,7 @@ function CreateExercise({ oldExercise, onSubmit = null }) {
     const [level, setLevel] = useState('easy')
     const [hasTest, setHasTest] = useState(true)
     const [isDescriptionInHTML, setisDescriptionInHTML] = useState(false)
+    const [isCreatingTest, setIsCreatingTest] = useState(false)
     const navigate = useNavigate();
     const [searchParams] = useSearchParams();
     useEffect(() => {
@@ -51,9 +52,11 @@ function CreateExercise({ oldExercise, onSubmit = null }) {
         }
     }
     const handleAutoTest = async () => {
+        setIsCreatingTest(true)
         const data = await createExerciseText(description, true)
         console.log("data", data)
         setTest(data.content[0].text)
+        setIsCreatingTest(false)
     }
     const handleCancel = () => {
         if (onSubmit) {
@@ -66,8 +69,9 @@ function CreateExercise({ oldExercise, onSubmit = null }) {
     return (
         <>
             <h1>{oldExercise ? "Editar" : "Crear"} Ejercicio</h1>
-            <ClaudeComponent onResponse={setDescription}/>
-            <form onSubmit={handleSubmit}>
+            <ClaudeComponent onResponse={setDescription} />
+            <form className="exercise" onSubmit={handleSubmit}>
+                <fieldset>
                 <label htmlFor="name">Nombre</label>
                 <input type="text" name="name" onChange={(e) => setName(e.target.value)} value={name} />
                 <label htmlFor="level">Nivel</label>
@@ -76,9 +80,10 @@ function CreateExercise({ oldExercise, onSubmit = null }) {
                     <option value="medium">Medio</option>
                     <option value="difficult">Avanzado</option>
                 </select>
-                
                 <label htmlFor="isDescriptionInHTML">Descripción en HTML</label>
                 <input type="checkbox" name="isDescriptionInHTML" id="isDescriptionInHTML" value={isDescriptionInHTML} onChange={(e) => setisDescriptionInHTML(e.target.checked)} checked={isDescriptionInHTML} />
+
+                </fieldset>
                 <label htmlFor="description">Descripción</label>
                 {isDescriptionInHTML ?
                     <Editor
@@ -99,9 +104,11 @@ function CreateExercise({ oldExercise, onSubmit = null }) {
                 <label htmlFor="test">Tiene test</label>
                 <input type="checkbox" name="hasTest" id="hasTest" value={hasTest} onChange={(e) => setHasTest(e.target.checked)} checked={hasTest} />
                 {hasTest &&
-                    <>
-                        <label htmlFor="test">Test</label>
-                        <button type="button" onClick={handleAutoTest}>Crear automáticamente</button>
+                    <section className="test">
+                        {isCreatingTest ? <p>Generando Tests...</p>
+                            :
+                            <button type="button" onClick={handleAutoTest}>Crear automáticamente</button>
+                        }
                         <Editor
                             value={test}
                             className='hljs editor'
@@ -113,7 +120,8 @@ function CreateExercise({ oldExercise, onSubmit = null }) {
                                 fontSize: 12,
                             }}
                         />
-                    </>
+
+                    </section>
                 }
                 <button>{oldExercise ? "Guardar" : "Crear"}</button>
                 <button type="button" onClick={handleCancel}>Cancelar</button>
