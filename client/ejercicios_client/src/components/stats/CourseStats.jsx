@@ -10,9 +10,7 @@ const CourseStats = ({ course, students }) => {
             {students?.length > 1 && <h3>Estudiantes:</h3>}
             <section className="students">
             {students?.map((student) => {
-                console.log('student', student)
                 const courseSubjects = course.subjects
-                console.log('courseSubjects', courseSubjects)
                 let hp = 0;
                 let maxHp = 0;
                 courseSubjects.forEach(subject => {

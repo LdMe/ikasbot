@@ -18,7 +18,6 @@ const SubjectStats = ({ subject, students, id = 0 }) => {
                         const subjectAttempt = attempt.subjects.find(subjectAttempt => subjectAttempt.subject == subject._id)
                         return subjectAttempt
                     })?.subjects[0]
-                    console.log("attempt", subjectAttempt)
                     return (
                         <section className="subject-info" key={student._id}>
                             <article className="subject-info">

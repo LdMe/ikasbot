@@ -54,7 +54,6 @@ function CreateExercise({ oldExercise, onSubmit = null }) {
     const handleAutoTest = async () => {
         setIsCreatingTest(true)
         const data = await createExerciseText(description, true)
-        console.log("data", data)
         setTest(data.content[0].text)
         setIsCreatingTest(false)
     }

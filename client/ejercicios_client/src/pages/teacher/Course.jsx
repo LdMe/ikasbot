@@ -86,7 +86,9 @@ const Course = () => {
                 <ul>
                     {course.subjects.map((subject) => (
                         <li key={subject._id}>
-                            <Link to={`${getBasePath()}/temas/${subject._id}`}>{subject.name}</Link>
+                            <Link to={`${getBasePath()}/temas/${subject._id}`}>
+                                <h3>{subject.name}</h3>
+                                </Link>
                             <>
                                 {subjectToDelete === subject._id ?
                                     <>
@@ -103,12 +105,13 @@ const Course = () => {
                     ))}
                 </ul>
                 <section className="new-subject">
-                    <h3>Crear nuevo tema</h3>
-                    <form onSubmit={handleNewSubject}>
+                    <TextShowHide title={<h3>Crear nuevo tema</h3>}>
+                    <form className="form-new" onSubmit={handleNewSubject}>
                         <label htmlFor="name">Nombre</label>
                         <input type="text" id="name" />
                         <button type="submit">Crear</button>
                     </form>
+                    </TextShowHide>
                 </section>
             </section>
             <section className="student-section">
@@ -119,7 +122,7 @@ const Course = () => {
                         course.students.map((student) => (
 
                             <li key={student._id}>
-                                <Link to={`${getBasePath()}/usuarios/${student._id}`}>{student.name}</Link><button className="icon incorrect" onClick={() => handleUnenrroll(student._id)}><FaXmark/></button>
+                                <Link to={`${getBasePath()}/usuarios/${student._id}`}><h3>{student.name}</h3></Link><button className="icon incorrect" onClick={() => handleUnenrroll(student._id)}><FaXmark/></button>
                             </li>
                         ))
                     }
@@ -144,7 +147,7 @@ const Course = () => {
                         {
                             course.teachers.map((teacher) => (
                                 <li key={teacher._id}>
-                                    <Link to={`${getBasePath()}/usuarios/${teacher._id}`}>{teacher.name}</Link> <button className="icon incorrect" onClick={() => handleRemoveTeacher(teacher._id)}><FaXmark/></button>
+                                    <Link to={`${getBasePath()}/usuarios/${teacher._id}`}><h3>{teacher.name}</h3></Link> <button className="icon incorrect" onClick={() => handleRemoveTeacher(teacher._id)}><FaXmark/></button>
                                 </li>
                             ))
                         }

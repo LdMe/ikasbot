@@ -32,17 +32,19 @@ const ExerciseStats = ({ exercise, students }) => {
             <section className="students">
                 {students?.map((student) => {
                     // get attempts for an exercise inside a subject inside a course, we don't have course id, so we have to search in all courses
-                    let attempt = null
-                    student.attempts.forEach(studentAttempt => {
-                        studentAttempt.subjects.forEach(subjectAttempt => {
-                            subjectAttempt.exercises.forEach(exerciseAttempt => {
-                                if (exerciseAttempt.exercise == exercise._id) {
-                                    attempt = exerciseAttempt
-                                }
-                            }
-                            )
-                        })
-                    })
+                    let bestAttempt = null;
+                    let totalAttempts = 0;
+                    // get attempts from the course of the exercise
+                    const subjectAttempts = student.attempts.filter(attempt => attempt.subjects.find(subjectAttempt => subjectAttempt.subject == exercise.subject));
+                    // get only the exercise attempts
+                    const exercisesAttempts = subjectAttempts.map(attempt => attempt.subjects.find(subjectAttempt => subjectAttempt.subject == exercise.subject).exercises);
+
+                    const thisExerciseAttempts = exercisesAttempts.flat().filter(attempt => attempt.exercise == exercise._id);
+                    if(thisExerciseAttempts.length > 0){
+                        const attempts = thisExerciseAttempts[0];
+                        bestAttempt = attempts.bestAttempt;
+                        totalAttempts = attempts.attempts.length;
+                    }
 
                     return (
                         <section className="exercise-info" key={student._id}>
@@ -50,11 +52,12 @@ const ExerciseStats = ({ exercise, students }) => {
                                 {students?.length > 1 &&
                                     <Link to={`${getBasePath()}/usuarios/${student._id}`}><p>{student.name}</p></Link>
                                 }
-                                {attempt ?
-                                    <HealthBar hp={attempt.correct} maxHp={attempt.total} />
+                                {bestAttempt ?
+                                    <HealthBar hp={bestAttempt.correct} maxHp={bestAttempt.total} />
                                     :
                                     <HealthBar hp={0} />
                                 }
+                                <p>{totalAttempts} int.</p>
 
                             </article>
                         </section>

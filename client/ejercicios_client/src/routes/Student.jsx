@@ -23,7 +23,9 @@ const router =
         {
             path: "cursos/:id",
             element: <Course />,
-            loader: ({ params }) => getCourse(params.id),
+            loader: async({ params }) => {
+                return { course: await getCourse(params.id), user:  await getUserData()}
+            }
         },
         {
             path: "temas/:id",

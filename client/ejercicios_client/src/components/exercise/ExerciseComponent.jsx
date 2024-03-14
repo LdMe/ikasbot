@@ -18,16 +18,11 @@ const ExetrciseComponent = ({ exercise, user = null, isAdminOrTeacher = false, f
     const [solution, setSolution] = useState('const message="Hello World";')
     const [result, setResult] = useState(null)
 
-    useEffect(() => {
-        console.log("result", result)
-    }, [result])
 
     useEffect(() => {
         if (user) {
-            console.log("userrr", user)
             const bestAttempt = loadBestAttempt(user)
             if (bestAttempt) {
-                console.log("bestAttempt", bestAttempt)
                 setSolution(bestAttempt.code)
                 setResult(bestAttempt)
             }
@@ -48,19 +43,15 @@ const ExetrciseComponent = ({ exercise, user = null, isAdminOrTeacher = false, f
     }
     const loadBestAttempt = (user) => {
         try {
-            console.log("attempts", user.attempts)
-            console.log("exercise", exercise)
             let attemptsForExercise = user.attempts.filter(attempt => attempt.course == exercise.subject.course);
             if (attemptsForExercise.length == 0) {
                 return null
             }
-            console.log("attemptForExercise", attemptsForExercise)
             attemptsForExercise = attemptsForExercise.filter(attempt => attempt.subjects.find(subjectAttempt => subjectAttempt.subject == exercise.subject._id))
             attemptsForExercise = attemptsForExercise.map(attempt => attempt.subjects.find(subjectAttempt => subjectAttempt.subject == exercise.subject._id).exercises)
             attemptsForExercise = attemptsForExercise.flat()
             attemptsForExercise = attemptsForExercise.filter(attempt => attempt.exercise == exercise._id)
 
-            console.log("attemptsForExercise", attemptsForExercise)
             if (attemptsForExercise.length == 0) {
                 return null
             }
@@ -87,7 +78,6 @@ const ExetrciseComponent = ({ exercise, user = null, isAdminOrTeacher = false, f
         newMessage = newMessage.replaceAll(/\s*✕/gi, "<br><span class='icon incorrect'>✗</span>")
         return newMessage
     }
-    console.log("exercise user", user)
     return (
         <div key={exercise._id}>
             <h1>{exercise.name}</h1>
@@ -106,42 +96,49 @@ const ExetrciseComponent = ({ exercise, user = null, isAdminOrTeacher = false, f
             )
             }
             <div dangerouslySetInnerHTML={{ __html: exercise.description }}></div>
-
-            <Editor
-                value={solution}
-                className='hljs editor'
-                onValueChange={solution => setSolution(solution)}
-                highlight={text => highlight(text, { language: "javascript" }).value}
-                padding={10}
-                style={{
-                    fontFamily: '"Fira code", "Fira Mono", monospace',
-                    fontSize: 12,
-                }}
-            />
-            <form onSubmit={handleSubmit} key={solution.length} >
-
-                <input type="hidden" name="id" value={exercise._id} />
-
-                <button>Ejecutar tests</button>
-            </form>
-            <TextShowHide title="Ver tests">
-                <Highlight className='javascript'>
-                    <code dangerouslySetInnerHTML={{ __html: exercise.test }}></code>
-                </Highlight>
-            </TextShowHide>
-
-            {result &&
-                <section className={"result-section " + (result.success ? "correct" : "incorrect")} >
-                    <h3>Resultado:</h3>
-                    <HealthBar
-                        maxHp={result.total_tests}
-                        hp={result.correct_tests}
+            <section className="test">
+                <section className="test-input">
+                    <Editor
+                        value={solution}
+                        className='hljs editor'
+                        onValueChange={solution => setSolution(solution)}
+                        highlight={text => highlight(text, { language: "javascript" }).value}
+                        padding={10}
+                        style={{
+                            fontFamily: '"Fira code", "Fira Mono", monospace',
+                            fontSize: 12,
+                        }}
                     />
-                    {result.message &&
-                        <code dangerouslySetInnerHTML={{ __html: formatMessage(result.message) }} />
+                    <form className="run-test-form" onSubmit={handleSubmit} key={solution.length} >
+
+                        <input type="hidden" name="id" value={exercise._id} />
+
+                        <button>Ejecutar tests</button>
+                    </form>
+                </section>
+
+                <section className="test-result">
+                    {result &&
+                        <section className={"result-section " + (result.success ? "correct" : "incorrect")} >
+                            <h3>Resultado:</h3>
+                            <HealthBar
+                                maxHp={result.total_tests}
+                                hp={result.correct_tests}
+                            />
+                            {result.message &&
+                                <code dangerouslySetInnerHTML={{ __html: formatMessage(result.message) }} />
+                            }
+                        </section>
                     }
                 </section>
-            }
+                <section className="test-tests">
+                    <TextShowHide title="Ver tests">
+                        <Highlight className='javascript'>
+                            <code dangerouslySetInnerHTML={{ __html: exercise.test }}></code>
+                        </Highlight>
+                    </TextShowHide>
+                </section>
+            </section>
 
 
         </div>

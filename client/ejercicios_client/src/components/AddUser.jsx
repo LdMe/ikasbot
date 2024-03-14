@@ -35,7 +35,7 @@ function AddUser({courseId,onAddUser,getUsers,addUser}) {
                 {users?.map((user) => (
                     <li key={user._id}>
                         <button type="button" className='icon correct' value={JSON.stringify(user)} onClick={()=>handleSelect(user._id)}><FaCalendarCheck/></button>
-                        {user.name}
+                        <h3>{user.name}</h3>
                     </li>
                 ))}
             </ul>

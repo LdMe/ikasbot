@@ -9,7 +9,6 @@ const Profile = () => {
     const {user} = useLoaderData()
     const { getBasePath } = useContext(loggedInContext)
 
-    console.log("Profile", user)
     return (
         <div className="container">
 

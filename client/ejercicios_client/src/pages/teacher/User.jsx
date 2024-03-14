@@ -17,7 +17,6 @@ const User = () => {
         changeUserRole(user._id, role).then((response) => {
         })
     }
-    console.log("User", user)
     return (
         <div className="container">
             <h1>Perfil</h1>
