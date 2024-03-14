@@ -30,7 +30,7 @@ function AddUser({courseId,onAddUser,getUsers,addUser}) {
     return (
         <>
             <input type="text" onChange={handleSearch} value={search}/>
-            <ul>
+            <ul className="list">
                 {users.length == 0 && <li>No hay usuarios</li>}
                 {users?.map((user) => (
                     <li key={user._id}>

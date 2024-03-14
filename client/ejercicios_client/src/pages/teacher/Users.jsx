@@ -38,7 +38,7 @@ const Users = () => {
         <div>
             <h1>Usuarios</h1>
             <input type="text" value={filter} onChange={handleFilter}/>
-            <ul>
+            <ul className="list">
                 {users.map((user) => (
                     <li key={user._id}>
                         <Link to={`${getBasePath()}/usuarios/${user._id}`}>{user.name} | {user.email}</Link>

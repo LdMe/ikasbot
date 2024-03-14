@@ -47,7 +47,7 @@ const Courses = () => {
     return (
         <div>
             <h1>Cursos</h1>
-            <ul className="courses">
+            <ul className="courses-list">
                 {courses.map((course) => (
                     <li className="link" key={course._id}>
                         <Link to={`${getBasePath()}/cursos/${course._id}`}>

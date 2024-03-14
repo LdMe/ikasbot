@@ -20,7 +20,7 @@ const SubjectComponent = ({subject}) => {
             <h1>Tema {subject.name}</h1>
             <p>Curso: <Link to={`${getBasePath()}/cursos/${subject.course._id}`}>{subject.course.name}</Link></p>
             <h2>Ejercicios:</h2>
-            <ul>
+            <ul className="list">
                 {
                     subject.exercises.map((exercise) => (
                         <li key={exercise._id}>

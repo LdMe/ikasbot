@@ -83,7 +83,7 @@ const Course = () => {
             <section className="subject-section">
                 <h2>Temas</h2>
 
-                <ul>
+                <ul className="list">
                     {course.subjects.map((subject) => (
                         <li key={subject._id}>
                             <Link to={`${getBasePath()}/temas/${subject._id}`}>
@@ -117,7 +117,7 @@ const Course = () => {
             <section className="student-section">
                 <h2>Alumnos</h2>
 
-                <ul>
+                <ul className="list">
                     {
                         course.students.map((student) => (
 
@@ -143,7 +143,7 @@ const Course = () => {
             {getUserRole() == "admin" &&
                 <section className="teacher-section">
                     <h2>Profesores</h2>
-                    <ul>
+                    <ul className="list">
                         {
                             course.teachers.map((teacher) => (
                                 <li key={teacher._id}>
