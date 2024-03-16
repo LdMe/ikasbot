@@ -5,11 +5,10 @@ import ExerciseStats from './ExerciseStats';
 import loggedInContext from '../../context/loggedInContext';
 import TextShowHide from '../TextShowHide';
 import "./Stats.scss";
-const colors = ["#F5F4ED", "#CAC9C4"]
 const SubjectStats = ({ subject, students, id = 0 }) => {
     const { getBasePath } = useContext(loggedInContext)
     return (
-        <section className="subject-card" style={{ "--bg-color": colors[0] }}>
+        <section className="subject-card" >
             <h2> {subject.name}</h2>
             {students?.length > 1 && <h3>Estudiantes:</h3>}
             <section className="students">

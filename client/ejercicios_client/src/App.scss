@@ -4,8 +4,9 @@ body{
   color:#000;
 }
 #root {
-  width:95%;
-  margin: 0 auto;
+  width:100%;
+  box-sizing: border-box;
+  margin: 0;
   padding: 1rem;
   
 }
@@ -137,7 +138,6 @@ button.selected {
   left: 0;
   right: 0;
   z-index: 1;
-  font-size: 1.2em;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -236,7 +236,6 @@ form.exercise fieldset {
   padding: 1em;
   border: 1px solid #ccc;
   border-radius: 0.5em;
-  background-color: #fff;
   box-shadow: 0 0 1em #ccc;
   transition: box-shadow 300ms;
   & > * {
@@ -295,5 +294,28 @@ form.exercise fieldset {
 @media screen and (max-width: 768px) {
   .test > * {
     width: 100%;
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  body {
+      background-color: black;
+      color: white;
+  }
+  a {
+    color: #b2fef7;
+    &:hover{
+      color: #00bfbf;
+    }
+  }
+  .subject-card {
+    background-color: #444;
+  }
+  .result-section {
+    color: #000;
+  }
+  .navbar {
+    background-color: #444;
+    color: #000;
   }
 }

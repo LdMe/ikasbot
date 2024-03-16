@@ -97,13 +97,9 @@ const deleteExercise = async (id) => {
     try {
         const exercise = await Exercise.findById(id);
         if (exercise == null) {
-            return res.status(404).json({ message: 'Cannot find exercise' });
-        }
-        if (exercise.createdBy != req.user.id && req.user.role != 'admin') {
-            return res.status(401).json({ message: 'Unauthorized' });
+            return null;
         }
         const attempts = await Attempt.deleteMany({ exercise: exercise._id });
-
         await Exercise.findByIdAndDelete(id);
         return exercise;
     }

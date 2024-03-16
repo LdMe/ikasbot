@@ -1,10 +1,11 @@
 import { useEffect,useContext } from "react";
-import {Outlet, useNavigate,useLoaderData} from "react-router-dom"
+import {Outlet, useNavigate,useLoaderData,useLocation} from "react-router-dom"
 import loggedInContext from "../../context/loggedInContext";
 
 const StudentRoot = () => {
     const {user} = useLoaderData();
     const {getUser} = useContext(loggedInContext);
+    const location = useLocation();
     
     const navigate = useNavigate();
     useEffect(() => {

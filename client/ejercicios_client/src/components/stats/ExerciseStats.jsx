@@ -43,6 +43,8 @@ const ExerciseStats = ({ exercise, students }) => {
                     if(thisExerciseAttempts.length > 0){
                         const attempts = thisExerciseAttempts[0];
                         bestAttempt = attempts.bestAttempt;
+                        console.log("bestAttempt", bestAttempt);
+                        console.log("attempts", attempts.attempts);
                         totalAttempts = attempts.attempts.length;
                     }
 
@@ -53,7 +55,7 @@ const ExerciseStats = ({ exercise, students }) => {
                                     <Link to={`${getBasePath()}/usuarios/${student._id}`}><p>{student.name}</p></Link>
                                 }
                                 {bestAttempt ?
-                                    <HealthBar hp={bestAttempt.correct} maxHp={bestAttempt.total} />
+                                    <HealthBar hp={bestAttempt.correct_tests} maxHp={bestAttempt.total_tests} />
                                     :
                                     <HealthBar hp={0} />
                                 }

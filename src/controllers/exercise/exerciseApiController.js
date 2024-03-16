@@ -103,7 +103,11 @@ const updateExercise = async (req, res) => {
 // Delete a single exercise
 const deleteExercise = async (req, res) => {
     try {
+        if(req.user.role != "admin"){
+            return res.status(401).json({ error: 'Unauthorized' });
+        }
         const exercise = await exerciseController.deleteExercise(req.params.id);
+        res.json({ data: exercise });
     }
     catch (err) {
         console.error(err);

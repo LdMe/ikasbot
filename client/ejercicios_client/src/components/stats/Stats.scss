@@ -8,7 +8,6 @@
     padding: 1em;
     border: 1px solid #ccc;
     border-radius: 0.5em;
-    background-color: var(--bg-color);
     box-shadow: 0 0 1em #ccc;
     transition: box-shadow 300ms;
 
@@ -55,7 +54,6 @@
     width: 90%;
 
     &>a {
-        color: black;
         text-decoration: none;
         width: 100%;
         
@@ -70,7 +68,7 @@ a:hover {
     flex-direction: column;
     justify-content: space-between;
     align-items: center;
-    padding: 1em;
+    padding: 0.5em;
     border: 1px solid #ccc;
     border-radius: 0.5em;
     box-shadow: 0 0 1em #ccc;
@@ -92,29 +90,49 @@ a:hover {
     &:nth-child(odd) {
         background-color: v.$light-gray;
     }
+    & .health-bar {
+        margin-right:5px;
+    }
+    
 
 }
 
 article.subject-info,
-article.exercise-info,
 article.user-info {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    width: 100%;
+
+    &>* {
+        max-width:50%;
+    }
+    & > p, & > a {
+        width: 20%;
+    }
+}
+article.exercise-info {
     display: flex;
     align-items: center;
     justify-content: space-between;
     width: 100%;
-
-    &>* {
-        width: 50%;
+    & > *:nth-child(1) {
+        width: 40%;
     }
-}
+    & > *:nth-child(2) {
+        width: 40%;
+    }
+    & > *:nth-child(3) {
+        width: 20%;
+        text-align: center;
+    }
 
+}
 .students {
     width: 100%;
 }
 
-.health-bar {
-    width: 100% !important;
-}
+
 
 /*
 media query for phones to make exercise-card min width: 50%
@@ -122,6 +140,16 @@ media query for phones to make exercise-card min width: 50%
 
 @media (max-width: 780px) {
     .exercise-card {
-        min-width: 80%;
+        min-width: 90%;
+    }
+}
+
+@media (prefers-color-scheme: dark) {
+    .exercise-card {
+        border: 1px solid #fff;
+        box-shadow: 0 0 1em #fff;
+    }
+    .exercise-card:nth-child(odd) {
+        background-color: black;
     }
 }

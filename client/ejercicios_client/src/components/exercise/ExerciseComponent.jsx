@@ -9,7 +9,6 @@ import { Link } from 'react-router-dom';
 import { useState, useContext, useEffect } from 'react'
 import { createAttempt } from '../../util/api/exercise';
 import loggedInContext from '../../context/loggedInContext';
-import { set } from 'mongoose';
 
 
 const ExetrciseComponent = ({ exercise, user = null, isAdminOrTeacher = false, functions = {} }) => {
@@ -28,7 +27,9 @@ const ExetrciseComponent = ({ exercise, user = null, isAdminOrTeacher = false, f
             }
         }
     }, [user])
-
+    useEffect(() => {
+        console.log("result", result)
+    }, [result])
     const getMappedLevel = (level) => {
         switch (level) {
             case "easy":
@@ -43,19 +44,17 @@ const ExetrciseComponent = ({ exercise, user = null, isAdminOrTeacher = false, f
     }
     const loadBestAttempt = (user) => {
         try {
-            let attemptsForExercise = user.attempts.filter(attempt => attempt.course == exercise.subject.course);
+            const attemptsForSubject = user.attempts.map(attempt => {
+                return attempt.subjects[0];
+            });
+            const attemptsForExercise = attemptsForSubject.filter(attempt => attempt.exercises.find(exerciseAttempt => exerciseAttempt.exercise == exercise._id));
             if (attemptsForExercise.length == 0) {
                 return null
             }
-            attemptsForExercise = attemptsForExercise.filter(attempt => attempt.subjects.find(subjectAttempt => subjectAttempt.subject == exercise.subject._id))
-            attemptsForExercise = attemptsForExercise.map(attempt => attempt.subjects.find(subjectAttempt => subjectAttempt.subject == exercise.subject._id).exercises)
-            attemptsForExercise = attemptsForExercise.flat()
-            attemptsForExercise = attemptsForExercise.filter(attempt => attempt.exercise == exercise._id)
-
-            if (attemptsForExercise.length == 0) {
-                return null
-            }
-            let bestAttempt = attemptsForExercise[0].bestAttempt;
+            const exerciseAttempts = attemptsForExercise[0].exercises.find(exerciseAttempt => exerciseAttempt.exercise == exercise._id);
+            const bestAttempt = exerciseAttempts.attempts.find(attempt => attempt._id = exerciseAttempts.bestAttempt._id);
+            console.log("attemptsForSubject", exerciseAttempts)
+            console.log("bestAttempt", bestAttempt);
             return bestAttempt
         }
         catch (err) {
@@ -74,8 +73,10 @@ const ExetrciseComponent = ({ exercise, user = null, isAdminOrTeacher = false, f
         setResult(response);
     }
     const formatMessage = (message) => {
+        console.log("message",message)
         let newMessage = message.replaceAll(/\s*✓/gi, "<br><span class='icon correct'>✓</span>")
         newMessage = newMessage.replaceAll(/\s*✕/gi, "<br><span class='icon incorrect'>✗</span>")
+        newMessage = newMessage.replaceAll(/\n/gi, "<br>")
         return newMessage
     }
     return (
@@ -126,7 +127,9 @@ const ExetrciseComponent = ({ exercise, user = null, isAdminOrTeacher = false, f
                                 hp={result.correct_tests}
                             />
                             {result.message &&
+                            
                                 <code dangerouslySetInnerHTML={{ __html: formatMessage(result.message) }} />
+                            
                             }
                         </section>
                     }
