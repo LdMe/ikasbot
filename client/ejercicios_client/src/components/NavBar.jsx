@@ -3,22 +3,22 @@
 import { Link } from "react-router-dom";
 import loggedInContext from "../context/loggedInContext";
 import { useContext } from 'react';
-import { logout } from "../util/api/auth";
 const NavBar = () => {
-    const { isLogged, getUserRole, getUser } = useContext(loggedInContext);
+    const { isLogged, user,logout } = useContext(loggedInContext);
     const TEACHER_URL = "/profesorado";
     const handleLogout = () => {
         logout();
     }
     return (
         <nav className="navbar navbar-dark bg-dark navbar-expand-lg">
-            <Link to="/" className="navbar-brand"><img className="navbar-icon" src="/robot.png"></img></Link>
+            <Link to="/" className="navbar-brand"><img className="navbar-icon" src="/robot.png"></img><p className="navbar-brand">IkasBot</p></Link>
+            
             <div className="collapse navbar-collapse">
                 <section className="navbar-nav mr-auto">
 
                     {isLogged ?
                         <>
-                            {getUserRole() != "student" &&
+                            {user?.role != "student" &&
                                 <>
                                     <div className="navbar-item">
                                         <Link to={`${TEACHER_URL}/cursos`} className="nav-link">Cursos</Link>

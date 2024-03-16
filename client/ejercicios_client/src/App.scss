@@ -163,7 +163,13 @@ button.selected {
   width: 4em;
   margin:0;
 }
-
+.navbar-brand {
+  display: flex;
+  & >p {
+    font-size: large;
+    font-weight: bold;
+  }
+}
 .icon.correct {
   color: #28a745;
   font-size: 1.5rem;

@@ -3,17 +3,24 @@ import loggedInContext from './context/loggedInContext';
 import './App.scss'
 import router from './routes/Router.jsx'
 import { RouterProvider } from 'react-router-dom'
-import { refreshAuth } from './util/api/auth'
+import { refreshAuth,logout as logoutApi } from './util/api/auth'
+
 
 function App() {
   const [isLogged, setIsLogged] = useState(false);
   const [user, setUser] = useState(null);
+  const [isCheckingLogin, setIsCheckingLogin] = useState(true);
   useEffect(() => {
     refreshAuth().then((data) => {
       if (!data.error) {
         setIsLogged(true);
         setUser(data.user);
       }
+      else {
+        setIsLogged(false);
+        setUser(null);
+      }
+      setIsCheckingLogin(false);
     })
   }, [])
 
@@ -22,6 +29,7 @@ function App() {
     setUser(user);
   }
   const logout = () => {
+    logoutApi();
     setIsLogged(false);
     setUser(null)
   }
@@ -50,7 +58,8 @@ function App() {
     getUser,
     getEmail,
     user,
-    getBasePath
+    getBasePath,
+    isCheckingLogin
   }
 
 

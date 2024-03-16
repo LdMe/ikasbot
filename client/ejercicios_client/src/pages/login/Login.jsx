@@ -61,7 +61,6 @@ const Login = () => {
                 }
                 <button type="button" onClick={isRegister ? handleRegister : handleLogin}>{isRegister ? "Registrarse" : "Login"}</button>
                 <button type="button" onClick={() => setIsRegister(!isRegister)}>{isRegister ? "Ya tengo cuenta" : "Crear cuenta"}</button>
-                <button type="button" ><Link to="/">Volver</Link></button>
 
             </form>
         </section>
