@@ -2,7 +2,7 @@ import { useLoaderData,Link } from "react-router-dom";
 import { useEffect,useContext,useState } from "react";
 import { useNavigate } from "react-router-dom";
 import loggedInContext from "../../context/loggedInContext";
-import { getAllUsers } from "../../util/api/user";
+import { getAllUsers,deleteUser } from "../../util/api/user";
 
 const Users = () => {
     const data = useLoaderData();
@@ -28,7 +28,13 @@ const Users = () => {
         const value = e.target.value;
         setFilter(value);
     }
-
+    const handleDelete = (id) => {
+        if(!confirm('Seguro que quieres borrar el usuario?')) return;   
+        deleteUser(id).then(() => {
+            const newUsers = users.filter((user) => user._id !== id);
+            setUsers(newUsers);
+        })
+    }
     if(data && data.error)
     {
         return <div>error</div>
@@ -42,6 +48,7 @@ const Users = () => {
                 {users.map((user) => (
                     <li key={user._id}>
                         <Link to={`${getBasePath()}/usuarios/${user._id}`}>{user.name} | {user.email}</Link>
+                        <button onClick={() => handleDelete(user._id)}>Borrar</button>
                     </li>
                 ))}
             </ul>

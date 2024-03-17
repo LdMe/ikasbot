@@ -222,6 +222,9 @@ const deleteUser = async (id) => {
         if (user == null) {
             return null;
         }
+        // delete attempts from user
+        await Attempt.deleteMany({ createdBy: id });
+        
         await User.findByIdAndDelete(id);
         return user;
 

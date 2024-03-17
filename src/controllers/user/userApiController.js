@@ -87,6 +87,10 @@ const updateUser = async (req, res) => {
 const deleteUser = async (req, res) => {
     try {
         const id = req.params.id;
+        const isAdmin = req.user?.role === 'admin';
+        if (!isAdmin) {
+            return res.status(401).json({ error: 'Unauthorized' });
+        }
         const user = await userController.deleteUser(id);
         if (user == null) {
             return res.status(404).json({ error: 'Cannot find user' });
