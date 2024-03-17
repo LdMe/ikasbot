@@ -7,7 +7,7 @@ const Subject = () => {
     const subject = useLoaderData();
     return (
         <div>
-            <SubjectComponent subject={subject} />
+            <SubjectComponent originalSubject={subject} />
             <Link to={`${getBasePath()}/ejercicios/nuevo?subject=${subject._id}`}>Nuevo Ejercicio</Link>
         </div>
     );

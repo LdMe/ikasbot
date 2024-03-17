@@ -33,4 +33,15 @@ const deleteSubject = async (id,deleteExercises=true) => {
     }
 }
 
-export {createSubject, getSubject, deleteSubject};
+const renameSubject = async (id, name) => {
+    try {
+        const url = `/subject/${id}`;
+        return await fetchApi(url,"PUT",{name:name});
+    }
+    catch (error) {
+        console.error(error)
+        return { error: error.message };
+    }
+}
+
+export {createSubject, getSubject, deleteSubject, renameSubject};

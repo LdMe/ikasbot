@@ -180,6 +180,11 @@ button.selected {
   font-size: 1.5rem;
   background: none;
 }
+.icon.danger {
+  color: #efab17;
+  font-size: 1.5rem;
+  background: none;
+}
 .result-section{
   display: flex;
   flex-direction: column;
@@ -270,7 +275,7 @@ form.exercise fieldset {
   display: flex;
   flex-wrap: wrap;
 
-  & > *:not(button) {
+  & > * {
     width:50%;
     box-sizing: border-box;
     min-height: 50vh;

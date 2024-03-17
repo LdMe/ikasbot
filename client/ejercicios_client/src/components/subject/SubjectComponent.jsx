@@ -1,8 +1,12 @@
 import {  Link } from "react-router-dom";
-import { useContext } from "react";
+import { useContext,useState } from "react";
 import loggedInContext from "../../context/loggedInContext";
-const SubjectComponent = ({subject}) => {
-    const {getBasePath} = useContext(loggedInContext)
+import { FaPencil } from "react-icons/fa6";
+import { renameSubject } from "../../util/api/subject";
+const SubjectComponent = ({originalSubject}) => {
+    const[subject,setSubject] = useState(originalSubject);
+    const [isEditing,setIsEditing] = useState(false);
+    const {getBasePath,user} = useContext(loggedInContext)
     const getMappedLevel = (level) => {
         switch (level) {
             case "easy":
@@ -15,9 +19,34 @@ const SubjectComponent = ({subject}) => {
                 return "Fácil";
         }
     }
+    const handleRename = async(e) => {
+        e.preventDefault();
+        const name = e.target.name.value.trim();
+        if (!name) {
+            return;
+        }
+        const response = await renameSubject(subject._id,name);
+        console.log("response",response);
+        const newSubject = {...subject,name:response.name};
+        setSubject(newSubject);
+        setIsEditing(false);
+
+    }
+    if(!subject)
+    {
+        return <div>cargando...</div>
+    }
     return (
         <div>
-            <h1>Tema {subject.name}</h1>
+            {isEditing ? (
+                <form onSubmit={handleRename}>
+                    <input type="text" name="name" defaultValue={subject.name} />
+                    <button type="submit">Guardar</button>
+                    <button onClick={() => setIsEditing(false)}>Cancelar</button>
+                </form>
+            ) : (
+                <h1>Tema {subject.name}{user.role !="student" && <button onClick={() => setIsEditing(true)} className="icon danger"><FaPencil/></button>}</h1>
+            )}
             <p>Curso: <Link to={`${getBasePath()}/cursos/${subject.course._id}`}>{subject.course.name}</Link></p>
             <h2>Ejercicios:</h2>
             <ul className="list">
