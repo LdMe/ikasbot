@@ -1,15 +1,16 @@
 import {  useContext, useState } from 'react'
-import {   Link,  useLoaderData } from 'react-router-dom'
-import { changeUserRole } from '../../util/api/user'
+import {   Link,  useLoaderData,useNavigate } from 'react-router-dom'
+import { changeUserRole,deleteUser } from '../../util/api/user'
 import loggedInContext from '../../context/loggedInContext'
 import HealthBar from '../../components/healthBar/HealthBar'
 import CourseStats from '../../components/stats/CourseStats'
 import TextShowHide from '../../components/TextShowHide'
+import { FaXmark } from 'react-icons/fa6'
 
 const User = () => {
     const [user, setUser] = useState(useLoaderData().user)
     const { getBasePath, getUserRole } = useContext(loggedInContext)
-
+    const navigate = useNavigate()
 
     const handleChangeRole = (e) => {
         const role = e.target.value;
@@ -17,10 +18,17 @@ const User = () => {
         changeUserRole(user._id, role).then((response) => {
         })
     }
+    const handleDelete = (id) => {
+        if(!confirm('Seguro que quieres borrar el usuario?')) return;   
+        deleteUser(id).then(() => {
+            navigate('/profesorado/usuarios')
+        })
+    }
     return (
         <div className="container">
             <h1>Perfil</h1>
-            <h2>Nombre: {user.name}</h2>
+            <h2>Nombre: {user.name} <button className="icon incorrect" onClick={() => handleDelete(user._id)}><FaXmark /></button></h2>
+            
             {getUserRole() == "admin" &&
                 <select name="role" id="role" value={user.role} onChange={handleChangeRole}>
                     <option value="student">Estudiante</option>

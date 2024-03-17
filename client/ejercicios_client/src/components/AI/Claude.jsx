@@ -6,14 +6,16 @@ import TextShowHide from "../TextShowHide";
 
 const ClaudeComponent = ({onResponse}) => {
     const [isGenerating, setIsGenerating] = useState(false)
+    const [prompt, setPrompt] = useState('')
     const handleSubmit = async (e) => {
         e.preventDefault()
         if (isGenerating) {
             return
         }
         setIsGenerating(true)
-        const prompt = document.getElementById("prompt").value
-        const data = await createExerciseText(prompt)
+        const newPrompt = document.getElementById("prompt").value
+        setPrompt(prompt)
+        const data = await createExerciseText(newPrompt)
         onResponse(data.content[0].text)
         setIsGenerating(false)
     }
@@ -25,9 +27,9 @@ const ClaudeComponent = ({onResponse}) => {
             <TextShowHide
             title={<h2>Generador de ejercicios</h2>}
             >
-            <form onSubmit={handleSubmit}>
-                <label htmlFor="prompt">tema:</label>
-            <input type="text" id="prompt" name="prompt"/>
+            <form className="form-new" onSubmit={handleSubmit}>
+                <label htmlFor="prompt">prompt:</label>
+            <textarea id="prompt" name="prompt" defaultValue={prompt}></textarea>
             <button id="submit">Generar</button>
             </form>
             

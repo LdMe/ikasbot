@@ -103,7 +103,7 @@ function CreateExercise({ oldExercise, onSubmit = null }) {
                 <label htmlFor="test">Tiene test</label>
                 <input type="checkbox" name="hasTest" id="hasTest" value={hasTest} onChange={(e) => setHasTest(e.target.checked)} checked={hasTest} />
                 {hasTest &&
-                    <section className="test">
+                    <section className="create-test">
                         {isCreatingTest ? <p>Generando Tests...</p>
                             :
                             <button type="button" onClick={handleAutoTest}>Crear automáticamente</button>

@@ -270,7 +270,7 @@ form.exercise fieldset {
   display: flex;
   flex-wrap: wrap;
 
-  & > * {
+  & > *:not(button) {
     width:50%;
     box-sizing: border-box;
     min-height: 50vh;

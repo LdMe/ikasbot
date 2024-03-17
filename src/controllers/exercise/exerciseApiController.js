@@ -12,9 +12,9 @@ const createExerciseText = async (req, res) => {
         const isTest = req.body.isTest
         console.log("prompt", prompt)
         console.log("isTest", isTest)
-        let completePrompt = `Crea un ejercicio sobre ${prompt}. el ejercicio se debe poder testear mediante tests unitarios que haremos a continuación, para que el alumno sepa el resultado. Devuelve solo el enunciado. El enunciado debe ser en formato html directamente`
+        let completePrompt = `Crea un ejercicio sobre ${prompt}. El código debe ser en javascript. El ejercicio se debe poder testear mediante tests unitarios que haremos a continuación, para que el alumno sepa el resultado. Devuelve solo el enunciado. El enunciado debe ser en formato html directamente. El enunciado debe tener un título ingenioso y dejar muy claro las variables o funciones que se deben crear. A ser posible, el ejercicio debe hacer referencia a un tema de actualidad o de interés general, o a alguna situación graciosa de la vida real. Devuelve únicamente el enunciado.`
         if (isTest) {
-            completePrompt = `Crea un test unitario para el ejercicio sobre ${prompt} usando jest. La respuesta debe ser sin formato,solo código`
+            completePrompt = `Crea tests unitarios para el ejercicio sobre ${prompt} usando jest. La respuesta debe ser sin formato y sin la solución, solo los tests unitarios.`
         }
         const msg = await anthropic.messages.create({
             model: "claude-3-sonnet-20240229",
