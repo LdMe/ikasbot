@@ -27,9 +27,7 @@ const ExetrciseComponent = ({ exercise, user = null, isAdminOrTeacher = false, f
             }
         }
     }, [user])
-    useEffect(() => {
-        console.log("result", result)
-    }, [result])
+    
     const getMappedLevel = (level) => {
         switch (level) {
             case "easy":
@@ -53,8 +51,6 @@ const ExetrciseComponent = ({ exercise, user = null, isAdminOrTeacher = false, f
             }
             const exerciseAttempts = attemptsForExercise[0].exercises.find(exerciseAttempt => exerciseAttempt.exercise == exercise._id);
             const bestAttempt = exerciseAttempts.attempts.find(attempt => attempt._id = exerciseAttempts.bestAttempt._id);
-            console.log("attemptsForSubject", exerciseAttempts)
-            console.log("bestAttempt", bestAttempt);
             return bestAttempt
         }
         catch (err) {
@@ -73,7 +69,6 @@ const ExetrciseComponent = ({ exercise, user = null, isAdminOrTeacher = false, f
         setResult(response);
     }
     const formatMessage = (message) => {
-        console.log("message",message)
         let newMessage = message.replaceAll(/\s*✓/gi, "<br><span class='icon correct'>✓</span>")
         newMessage = newMessage.replaceAll(/\s*✕/gi, "<br><span class='icon incorrect'>✗</span>")
         newMessage = newMessage.replaceAll(/\n/gi, "<br>")
@@ -99,6 +94,12 @@ const ExetrciseComponent = ({ exercise, user = null, isAdminOrTeacher = false, f
             <div dangerouslySetInnerHTML={{ __html: exercise.description }}></div>
             <section className="test">
                 <section className="test-input">
+                    <form className="run-test-form" onSubmit={handleSubmit} key={solution.length} >
+
+                        <input type="hidden" name="id" value={exercise._id} />
+
+                        <button>Ejecutar tests</button>
+                    </form>
                     <Editor
                         value={solution}
                         className='hljs editor'
@@ -110,12 +111,7 @@ const ExetrciseComponent = ({ exercise, user = null, isAdminOrTeacher = false, f
                             fontSize: 12,
                         }}
                     />
-                    <form className="run-test-form" onSubmit={handleSubmit} key={solution.length} >
 
-                        <input type="hidden" name="id" value={exercise._id} />
-
-                        <button>Ejecutar tests</button>
-                    </form>
                 </section>
 
                 <section className="test-result">
@@ -127,9 +123,9 @@ const ExetrciseComponent = ({ exercise, user = null, isAdminOrTeacher = false, f
                                 hp={result.correct_tests}
                             />
                             {result.message &&
-                            
+
                                 <code dangerouslySetInnerHTML={{ __html: formatMessage(result.message) }} />
-                            
+
                             }
                         </section>
                     }

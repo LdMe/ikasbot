@@ -26,7 +26,6 @@ const SubjectComponent = ({originalSubject}) => {
             return;
         }
         const response = await renameSubject(subject._id,name);
-        console.log("response",response);
         const newSubject = {...subject,name:response.name};
         setSubject(newSubject);
         setIsEditing(false);

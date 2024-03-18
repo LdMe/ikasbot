@@ -3,7 +3,6 @@ import SubjectComponent from "../../components/subject/SubjectComponent";
 import SubjectStats from "../../components/stats/SubjectStats";
 const Subject = () => {
     const {subject,user} = useLoaderData();
-    console.log("subject",subject)
     return (
         <section>
             Curso:  

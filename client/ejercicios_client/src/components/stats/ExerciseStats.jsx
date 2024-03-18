@@ -43,8 +43,6 @@ const ExerciseStats = ({ exercise, students }) => {
                     if(thisExerciseAttempts.length > 0){
                         const attempts = thisExerciseAttempts[0];
                         bestAttempt = attempts.bestAttempt;
-                        console.log("bestAttempt", bestAttempt);
-                        console.log("attempts", attempts.attempts);
                         totalAttempts = attempts.attempts.length;
                     }
 
