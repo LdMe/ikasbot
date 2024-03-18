@@ -31,6 +31,12 @@ const attemptSchema = new mongoose.Schema({
 attemptSchema.pre('save', async function (next) {
     const attempt = this;
     if(!attempt.message){
+        attempt.correct_percentage = 0;
+        attempt.correct_tests = 0;
+        attempt.total_tests = 0;
+        attempt.execution_time = 0;
+        attempt.success = false;
+        attempt.message = "No se ha podido ejecutar el código";
         return next();
     }
     

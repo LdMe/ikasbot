@@ -17,49 +17,59 @@ import util from 'util';
  * @param {string} code - code to be tested
  * @returns {object} - test result
  */
-const testCode = async (userId,exerciseId, code) => {
+const testCode = async (userId, exerciseId, code) => {
     // get exercise
+    // try {
+    //     const attempts = await Attempt.find({ exercise: exerciseId, createdBy: userId }).sort({ createdAt: 1 });
+    //     // if code is the same as any of the previous attempts, return the previous attempt
+    //     /* if(attempts.some(attempt => attempt.code === code)){
+    //         const attempt = attempts.find(attempt => attempt.code === code);
+    //         return attempt;
+    //     } */
+    //     // if number of attempts for this exercise is greater than 3, remove the oldest attempt
+    //     /* if (attempts.length > 3) {
+    //         const notSuccessAttempts = attempts.filter(attempt => !attempt.success);
+    //         if (notSuccessAttempts.length > 0) {
+    //             await Attempt.findByIdAndDelete(notSuccessAttempts[0]._id);
+    //         }
+    //         else {
+    //             throw new Error("You have reached the maximum number of  correct attempts");
+    //         }
+    //     } */
+
+    //     const newAttempt = new Attempt({ code, exercise: exerciseId,createdBy:userId });
+    //     await newAttempt.save();
+    // }
+    // catch (err) {
+    //     console.error(err);
+    //     const attempt = await Attempt.findOne({code,exercise:exerciseId,createdBy:userId});
+    //     if(!attempt){
+    //         return { success: false, message: err.message };
+    //     }
+    //     attempt.success = false;
+    //     attempt.message = err.message;
+    //     await attempt.save();
+    //     return attempt;
+    // }
     try {
-        const attempts = await Attempt.find({ exercise: exerciseId, createdBy: userId }).sort({ createdAt: 1 });
-        // if code is the same as any of the previous attempts, return the previous attempt
-        /* if(attempts.some(attempt => attempt.code === code)){
-            const attempt = attempts.find(attempt => attempt.code === code);
-            return attempt;
-        } */
-        // if number of attempts for this exercise is greater than 3, remove the oldest attempt
-        if (attempts.length > 3) {
-            const notSuccessAttempts = attempts.filter(attempt => !attempt.success);
-            if (notSuccessAttempts.length > 0) {
-                await Attempt.findByIdAndDelete(notSuccessAttempts[0]._id);
-            }
-            else {
-                throw new Error("You have reached the maximum number of  correct attempts");
-            }
-        }
-        
-        const newAttempt = new Attempt({ code, exercise: exerciseId,createdBy:userId });
-        await newAttempt.save();
-    }
-    catch (err) {
+        const exercise = await Exercise.findById(exerciseId);
+        // run code against test
+        const testResult = await runTest(code, exercise, userId);
+        const attempt = new Attempt({ code, exercise: exerciseId, createdBy: userId });
+        attempt.success = testResult.success;
+        attempt.message = testResult.message;
+        await attempt.save();
+        // return test result
+        return attempt;
+    } catch (err) {
         console.error(err);
-        const attempt = await Attempt.findOne({code,exercise:exerciseId,createdBy:userId});
-        if(!attempt){
-            return { success: false, message: err.message };
-        }
+        const attempt = new Attempt({ code, exercise: exerciseId, createdBy: userId });
         attempt.success = false;
         attempt.message = err.message;
         await attempt.save();
         return attempt;
     }
-    const exercise = await Exercise.findById(exerciseId);
-    // run code against test
-    const testResult = await runTest(code, exercise,userId);
-    const attempt = await Attempt.findOne({code,exercise:exerciseId,createdBy:userId});
-    attempt.success = testResult.success;
-    attempt.message = testResult.message;
-    await attempt.save();
-    // return test result
-    return attempt;
+
 }
 
 /**
@@ -68,9 +78,9 @@ const testCode = async (userId,exerciseId, code) => {
  * @param {string} test - test to be run
  * @returns {object} - test result
  */
-const runTest = async (code, exercise,userId="test-user") => {
+const runTest = async (code, exercise, userId = "test-user") => {
     try {
-        const { success, message } = await runInDocker(code, exercise.test,userId);
+        const { success, message } = await runInDocker(code, exercise.test, userId);
         return { success, message };
     }
     catch (err) {
@@ -78,7 +88,7 @@ const runTest = async (code, exercise,userId="test-user") => {
         return { success: false, message: "err.message" };
     }
 }
-async function runInDocker(code, test,username="test-user") {
+async function runInDocker(code, test, username = "test-user") {
     console.log("running in docker");
     const userPath = `./test/${username}`;
     try {
@@ -109,18 +119,18 @@ async function runInDocker(code, test,username="test-user") {
         fs.rmSync(userPath, { recursive: true, force: true });
         const [executionCode, message] = stderr.split("test.js\n ");
         return { success: true, message };
-        
+
     }
     catch (err) {
         const messageSplit = err.message.split("test.js\n ");
         fs.unlinkSync(`${userPath}/test.js`);
         // borra la carpeta del usuario
         fs.rmSync(userPath, { recursive: true, force: true });
-        if(messageSplit.length > 1){
+        if (messageSplit.length > 1) {
             const message = messageSplit[1];
             return { success: false, message };
         }
-        return { success: false, message:err.message };
+        return { success: false, message: err.message };
     }
 
 }
