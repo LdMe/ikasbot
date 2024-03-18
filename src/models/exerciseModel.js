@@ -6,6 +6,10 @@ const exerciseSchema = new mongoose.Schema({
     description: String,
     test: String,
     level: String,
+    isDraft: {
+        type: Boolean,
+        default: true
+    },
     createdBy:{
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User',

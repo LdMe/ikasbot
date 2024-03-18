@@ -74,6 +74,9 @@ const ExetrciseComponent = ({ exercise, user = null, isAdminOrTeacher = false, f
         newMessage = newMessage.replaceAll(/\n/gi, "<br>")
         return newMessage
     }
+    if(!exercise){
+        return <div>cargando...</div>
+    }
     return (
         <div key={exercise._id}>
             <h1>{exercise.name}</h1>
@@ -91,7 +94,7 @@ const ExetrciseComponent = ({ exercise, user = null, isAdminOrTeacher = false, f
                 </>
             )
             }
-            <div dangerouslySetInnerHTML={{ __html: exercise.description }}></div>
+            <div className="enunciado" dangerouslySetInnerHTML={{ __html: exercise.description }}></div>
             <section className="test">
                 <section className="test-input">
                     <form className="run-test-form" onSubmit={handleSubmit} key={solution.length} >

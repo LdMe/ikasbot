@@ -23,11 +23,16 @@ const createExercise = async (data,createdBy) => {
  * Get all exercises
  * @returns {Array} exercises
  */
-const getAllExercises = async (subject=null) => {
+const getAllExercises = async (subject=null,avoidDraft=true) => {
     try {
         let filter = {};
         if(subject){
             filter = {subject};
+        }
+        if(avoidDraft){
+            
+            // oly if isDrft is not true (false or undefined)
+            filter.isDraft = {$ne:true};
         }
         // if subject is an array, get exercises for each subject
         if(Array.isArray(subject)){
@@ -69,7 +74,7 @@ const getExercise = async (id) => {
  */
 const updateExercise = async (id, data) => {
     try {
-        const { name, description, test,level} = data;
+        const { name, description, test,level,isDraft} = data;
         const exercise = await Exercise.findById(id);
         if (exercise == null) {
             return null;
@@ -78,7 +83,9 @@ const updateExercise = async (id, data) => {
         exercise.description = description;
         exercise.test = test;
         exercise.level = level;
+        exercise.isDraft = isDraft;
         await exercise.save();
+        await exercise.populate('subject')
         return exercise;
 
     }

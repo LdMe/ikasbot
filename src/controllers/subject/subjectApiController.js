@@ -45,7 +45,8 @@ const getAllSubjects = async (req, res) => {
  */
 const getSubject = async (req, res) => {
     try {
-        const subject = await subjectController.getSubject(req.params.id);
+        const isdminOrTeacher = req.user.role === 'admin' || req.user.role === 'teacher';
+        const subject = await subjectController.getSubject(req.params.id, isdminOrTeacher);
         if (subject == null) {
             return res.status(404).json({ error: 'Cannot find subject' });
         }

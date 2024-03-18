@@ -185,6 +185,16 @@ button.selected {
   font-size: 1.5rem;
   background: none;
 }
+.icon.primary {
+  color: v.$primary;
+  font-size: 1.5rem;
+  background: none;
+}
+.icon.secondary {
+  color: #6c757d;
+  font-size: 1.5rem;
+  background: none;
+}
 .result-section{
   display: flex;
   flex-direction: column;
@@ -300,6 +310,10 @@ form.exercise fieldset {
   & > * {
     width: 100%;
   }
+}
+
+.enunciado {
+  overflow-x: auto;
 }
 
 @media screen and (max-width: 768px) {

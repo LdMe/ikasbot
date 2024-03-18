@@ -54,13 +54,13 @@ const getAllSubjects = async (courseId=null,addExercises=true) => {
  * @param {String} id
  * @returns {Object} subject
  */
-const getSubject = async (id) => {
+const getSubject = async (id,isAdminOrTeacher=false) => {
     try {
         const subject = await Subject.findById(id).populate('course', 'name');
         if (subject == null) {
             return null;
         }
-        const exercises = await getAllExercises(subject._id);
+        const exercises = await getAllExercises(subject._id,!isAdminOrTeacher);
         const response = {
             ...subject._doc,
             exercises

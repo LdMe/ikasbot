@@ -7,7 +7,7 @@ import { useContext, useEffect, useState } from 'react';
 import "./Stats.scss";
 
 const ExerciseStats = ({ exercise, students }) => {
-    const { getBasePath } = useContext(loggedInContext)
+    const { getBasePath,getUserRole } = useContext(loggedInContext)
     const getMappedLevel = (level) => {
         switch (level) {
             case "easy":
@@ -45,12 +45,15 @@ const ExerciseStats = ({ exercise, students }) => {
                         bestAttempt = attempts.bestAttempt;
                         totalAttempts = attempts.attempts.length;
                     }
-
+                    let link = `${getBasePath()}/usuarios/${student._id}`;
+                    if(getUserRole() !== "student"){
+                        link = `${getBasePath()}/ejercicios/${exercise._id}/usuarios/${student._id}`;
+                    }
                     return (
                         <section className="exercise-info" key={student._id}>
                             <article className="exercise-info">
                                 {students?.length > 1 &&
-                                    <Link to={`${getBasePath()}/usuarios/${student._id}`}><p>{student.name}</p></Link>
+                                    <Link to={link}><p>{student.name}</p></Link>
                                 }
                                 {bestAttempt ?
                                     <HealthBar hp={bestAttempt.correct_tests} maxHp={bestAttempt.total_tests} />

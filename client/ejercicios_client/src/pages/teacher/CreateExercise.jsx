@@ -17,6 +17,7 @@ function CreateExercise({ oldExercise, onSubmit = null }) {
     const [test, setTest] = useState('')
     const [level, setLevel] = useState('easy')
     const [hasTest, setHasTest] = useState(true)
+    const [isDraft, setIsDraft] = useState(true)
     const [isDescriptionInHTML, setisDescriptionInHTML] = useState(false)
     const [isCreatingTest, setIsCreatingTest] = useState(false)
     const navigate = useNavigate();
@@ -30,12 +31,13 @@ function CreateExercise({ oldExercise, onSubmit = null }) {
             setDescription(oldExercise.description)
             setTest(oldExercise.test)
             setLevel(oldExercise.level)
+            setIsDraft(oldExercise.isDraft || false)
         }
     }, [oldExercise])
     const handleSubmit = async (e) => {
         e.preventDefault()
         const subject = searchParams.get("subject")
-        const data = { name, description, test, level, subject: subject }
+        const data = { name, description, test, level, subject: subject ,isDraft}
         e.target.reset()
         let exercise = null;
         if (oldExercise) {
@@ -122,6 +124,8 @@ function CreateExercise({ oldExercise, onSubmit = null }) {
 
                     </section>
                 }
+                <label htmlFor="isDraft">Guardar como borrador</label>
+                <input type="checkbox" name="isDraft" id="isDraft"  onChange={ (e) => setIsDraft(e.target.checked)} checked={isDraft} />
                 <button>{oldExercise ? "Guardar" : "Crear"}</button>
                 <button type="button" onClick={handleCancel}>Cancelar</button>
             </form>

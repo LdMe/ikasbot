@@ -37,7 +37,14 @@ const router ={
         {
             path: "ejercicios/:id",
             element: <Exercise/>,
-            loader: ({params}) => getExercise(params.id),
+            loader: async({params}) => {return {exercise: await getExercise(params.id)}},
+        },
+        {
+            path: "ejercicios/:idEjercicio/usuarios/:idUsuario",
+            element: <Exercise/>,
+            loader: async({ params }) => {
+                return { exercise: await getExercise(params.idEjercicio), user:  await getUserData(params.idUsuario) }
+            }
         },
         {
             path: "ejercicios/nuevo",
