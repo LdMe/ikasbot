@@ -89,7 +89,6 @@ const runTest = async (code, exercise, userId = "test-user") => {
     }
 }
 async function runInDocker(code, test, username = "test-user") {
-    console.log("running in docker");
     const userPath = `./test/${username}`;
     try {
 

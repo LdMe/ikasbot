@@ -2,7 +2,6 @@ import exerciseController from './exerciseController.js';
 import Anthropic from "@anthropic-ai/sdk";
 import dotenv from 'dotenv';
 dotenv.config();
-console.log("process.env", process.env["ANTHROPIC_API_KEY"])
 const anthropic = new Anthropic({
     apiKey: process.env["ANTHROPIC_API_KEY"]
 });
@@ -10,8 +9,6 @@ const createExerciseText = async (req, res) => {
     try {
         const prompt = req.body.prompt
         const isTest = req.body.isTest
-        console.log("prompt", prompt)
-        console.log("isTest", isTest)
         let completePrompt = `Crea un ejercicio sobre ${prompt}. El código debe ser en javascript. El ejercicio se debe poder testear mediante tests unitarios que haremos a continuación, para que el alumno sepa el resultado. Devuelve solo el enunciado. El enunciado debe ser en formato html directamente. El enunciado debe tener un título ingenioso y dejar muy claro las variables o funciones que se deben crear. A ser posible, el ejercicio debe hacer referencia a un tema de actualidad o de interés general, o a alguna situación graciosa de la vida real. Devuelve únicamente el enunciado.`
         if (isTest) {
             completePrompt = `Crea tests unitarios para el ejercicio sobre ${prompt} usando jest. La respuesta debe ser sin formato y sin la solución, solo los tests unitarios.`
@@ -76,7 +73,6 @@ const getExercise = async (req, res) => {
         if (exercise == null) {
             return res.status(404).json({ error: 'Cannot find exercise' });
         }
-        console.log("exercise", exercise)
         res.json({ data: exercise });
     }
     catch (err) {
