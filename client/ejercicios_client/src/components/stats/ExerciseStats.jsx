@@ -45,15 +45,17 @@ const ExerciseStats = ({ exercise, students }) => {
                         bestAttempt = attempts.bestAttempt;
                         totalAttempts = attempts.attempts.length;
                     }
-                    let link = `${getBasePath()}/usuarios/${student._id}`;
+                    let link = `${getBasePath()}/ejercicios/${exercise._id}`;
+                    console.log("role",getUserRole());
                     if(getUserRole() !== "student"){
                         link = `${getBasePath()}/ejercicios/${exercise._id}/usuarios/${student._id}`;
                     }
                     return (
                         <section className="exercise-info" key={student._id}>
+                            <Link to={link}>
                             <article className="exercise-info">
                                 {students?.length > 1 &&
-                                    <Link to={link}><p>{student.name}</p></Link>
+                                    <p>{student.name}</p>
                                 }
                                 {bestAttempt ?
                                     <HealthBar hp={bestAttempt.correct_tests} maxHp={bestAttempt.total_tests} />
@@ -63,6 +65,7 @@ const ExerciseStats = ({ exercise, students }) => {
                                 <p>{totalAttempts} int.</p>
 
                             </article>
+                            </Link>
                         </section>
                     )
                 })}

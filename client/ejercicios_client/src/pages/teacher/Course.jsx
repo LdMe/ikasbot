@@ -11,7 +11,7 @@ import CourseStats from "../../components/stats/CourseStats";
 
 const Course = () => {
     const [course, setCourse] = useState(useLoaderData());
-    const [showStats, setShowStats] = useState(false);
+    const [showStats, setShowStats] = useState(true);
     const [subjectToDelete, setSubjectToDelete] = useState(null);
     const [deleteExercises, setDeleteExercises] = useState(true);
     const { getUserRole, getBasePath } = useContext(loggedInContext);

@@ -1,7 +1,7 @@
 
 import { useState, useContext, useEffect } from 'react'
 import loggedInContext from '../../context/loggedInContext'
-import { useLoaderData } from 'react-router-dom';
+import { useLoaderData,Link } from 'react-router-dom';
 import { deleteExercise, updateExercise } from '../../util/api/exercise';
 import { useNavigate } from 'react-router-dom';
 import CreateExercise from './CreateExercise';
@@ -41,7 +41,7 @@ const Exercise = () => {
     return (
         <div>
             {user ? 
-            <h2>usuario: {user.name}</h2>
+            <Link to={`/profesorado/usuarios/${user._id}`}>usuario: {user.name}</Link>
             :
             exercise.isDraft ? <button onClick={handleUpdateIsDraft} className="icon secondary"><FaEyeSlash/></button> : <button onClick={handleUpdateIsDraft} className="icon primary"><FaEye/></button>
             }

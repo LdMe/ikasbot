@@ -4,6 +4,7 @@ import { useContext, useEffect, useState } from 'react';
 import SubjectStats from './SubjectStats';
 import TextShowHide from '../TextShowHide';
 import "./Stats.scss";
+import { Link } from 'react-router-dom';
 const CourseStats = ({ course, students }) => {
     return (
         <div className="course-card">
@@ -29,7 +30,9 @@ const CourseStats = ({ course, students }) => {
                     <section className="user-info" key={student._id}>
                         <article className="user-info">
                             {students?.length > 1 &&
+                            <Link to={`/profesorado/usuarios/${student._id}`}>
                                 <p>{student.name}</p>
+                            </Link>
                             }
                             {maxHp!=0 ?
                                 <HealthBar hp={hp} maxHp={maxHp} />
