@@ -1,7 +1,7 @@
 import {  Link } from "react-router-dom";
 import { useContext,useState } from "react";
 import loggedInContext from "../../context/loggedInContext";
-import { FaPencil } from "react-icons/fa6";
+import { FaEye, FaEyeSlash, FaPencil } from "react-icons/fa6";
 import { renameSubject } from "../../util/api/subject";
 const SubjectComponent = ({originalSubject}) => {
     const[subject,setSubject] = useState(originalSubject);
@@ -52,7 +52,7 @@ const SubjectComponent = ({originalSubject}) => {
                 {
                     subject.exercises.map((exercise) => (
                         <li key={exercise._id}>
-                            <Link to={`${getBasePath()}/ejercicios/${exercise._id}`}>{exercise.name} | {getMappedLevel(exercise.level)}</Link>
+                            <Link to={`${getBasePath()}/ejercicios/${exercise._id}`}>{exercise.name} | {getMappedLevel(exercise.level)} | {exercise.isDraft ? <FaEyeSlash className="secondary"/> : <FaEye className="primary"/>}</Link>
                         </li>
                     ))
                 }

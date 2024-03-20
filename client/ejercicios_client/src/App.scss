@@ -48,10 +48,10 @@ button {
 
 }
 
-.incorrect {
+section.incorrect {
   background-color: v.$incorrect-bg;
 }
-.correct {
+section.correct {
   background-color: v.$correct-bg;
 }
 
@@ -60,12 +60,7 @@ button {
   padding: 2em;
 }
 
-.correct {
-  background-color: v.$correct-bg;
-}
-.incorrect {
-  background-color: v.$incorrect-bg;
-}
+
 
 
 .ql-editor,.hljs {
@@ -170,31 +165,26 @@ button.selected {
     font-weight: bold;
   }
 }
-.icon.correct {
+.icon {
+  font-size: 1.5rem;
+  background: none;
+}
+.correct:not(section) {
   color: #28a745;
-  font-size: 1.5rem;
-  background: none;
 }
-.icon.incorrect {
+.incorrect:not(section) {
   color: #dc3545;
-  font-size: 1.5rem;
-  background: none;
 }
-.icon.danger {
+.danger:not(section) {
   color: #efab17;
-  font-size: 1.5rem;
-  background: none;
 }
-.icon.primary {
+.primary:not(section) {
   color: v.$primary;
-  font-size: 1.5rem;
-  background: none;
 }
-.icon.secondary {
+.secondary:not(section) {
   color: #6c757d;
-  font-size: 1.5rem;
-  background: none;
 }
+
 .result-section{
   display: flex;
   flex-direction: column;

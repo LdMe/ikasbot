@@ -1,4 +1,8 @@
 import Course from "../../models/courseModel.js";
+import Subject from "../../models/subjectModel.js";
+import Exercise from "../../models/exerciseModel.js";
+import Attempt from "../../models/attemptModel.js";
+
 import { isValidObjectId } from "../../utils/helpers.js";
 import { getAllUsers,getUser } from "../user/userController.js";
 import { getAllSubjects } from "../subject/subjectController.js";
@@ -145,15 +149,26 @@ const deleteCourse = async (id) => {
         }
         // delete course from students and subjects
         const students = await getAllUsers(null, null, course._id);
-        students.forEach(async (student) => {
-            student.courses.pull(course._id);
+        await Promise.all(students.map(async (studentObject) => {
+            const student = await getUser(studentObject._id);
+            if (student == null) {
+                return null;
+            }
+            student.courses.pull(course);
             await student.save();
-        });
+        }));
+        //delete all subjects, exercises and attempts related to that course
         const subjects = await getAllSubjects(course._id);
-        subjects.forEach(async (subject) => {
+        const exercises = await Exercise.find({ subject: { $in: subjects } });
+        const attempts = await Attempt.find({ exercise: { $in: exercises } });
+        await Attempt.deleteMany({ _id: { $in: attempts } });
+        await Exercise.deleteMany({ _id: { $in: exercises } });
+        await Subject.deleteMany({ _id: { $in: subjects } });
+        /* subjects.forEach(async (subject) => {
             subject.course = null;
+            console.log("subject",subject);
             await subject.save();
-        });
+        }); */
 
         await Course.deleteOne({ _id: course._id });
         return course;

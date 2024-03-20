@@ -56,8 +56,11 @@ function CreateExercise({ oldExercise, onSubmit = null }) {
     const handleAutoTest = async () => {
         setIsCreatingTest(true)
         const data = await createExerciseText(description, true)
-        setTest(data.content[0].text)
         setIsCreatingTest(false)
+        if(data.error){
+            return alert(data.error)
+        }
+        setTest(data.content[0].text)
     }
     const handleCancel = () => {
         if (onSubmit) {
