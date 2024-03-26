@@ -8,6 +8,7 @@ import Login from "../pages/login/Login";
 import NotFound from "../pages/NotFound";
 import Root from "../pages/Root";
 import Home from "../pages/Home";
+import Resave from "../pages/Resave";
 import StudentRouter from "./Student";
 import TeacherRouter from "./Teacher";
 

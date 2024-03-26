@@ -5,7 +5,7 @@ import userRouter from './user.js';
 import authRouter from './auth.js';
 import courseRouter from './course.js';
 import subjectRouter from './subject.js';
-
+import AttemptRouter from './attempt.js';
 
 import {isAuth, isAdmin} from '../middleware/authMiddleware.js';
 
@@ -21,4 +21,5 @@ router.use('/user',isAuth, userRouter);
 router.use('/auth', authRouter);
 router.use('/course',isAuth, courseRouter);
 router.use('/subject',isAuth, subjectRouter);
+router.use('/attempt',isAuth, AttemptRouter);
 export default router;

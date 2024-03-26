@@ -1,5 +1,7 @@
 // Attempt model
 import mongoose from 'mongoose';
+import Stats from './exerciseStatsModel.js';
+import Exercise from './exerciseModel.js';
 const attemptSchema = new mongoose.Schema({
     code: String,
     createdBy: {
@@ -31,13 +33,8 @@ const attemptSchema = new mongoose.Schema({
 attemptSchema.pre('save', async function (next) {
     const attempt = this;
     if(!attempt.message){
-        attempt.correct_percentage = 0;
-        attempt.correct_tests = 0;
-        attempt.total_tests = 0;
-        attempt.execution_time = 0;
-        attempt.success = false;
-        attempt.message = "No se ha podido ejecutar el código";
-        return next();
+        // cancel save
+        return next(new Error('No se ha podido ejecutar el ejercicio'));
     }
     
     // get correct percentage
@@ -74,6 +71,36 @@ attemptSchema.pre('save', async function (next) {
         execution_time = parseFloat(match2[1]);
     }
     attempt.execution_time = execution_time;
+
+    console.log("attempt",attempt);
+    // get stats
+    const stats = await Stats.findOne({user: attempt.createdBy, exercise: attempt.exercise}).populate('bestAttempt');
+    
+    if(stats){
+        stats.attempts += 1;
+        stats.totalTests = total_tests;
+        stats.correctTests = Math.max(stats.correctTests, correct_tests);
+        if(correct_tests >= stats.correctTests){
+            stats.bestAttempt = attempt._id;
+            stats.bestAttemptDate = new Date();
+            stats.success = attempt.success;
+        }
+        await stats.save();
+            
+    }
+    else{
+        const stats = new Stats({
+            user: attempt.createdBy,
+            exercise: attempt.exercise,
+            correctTests: correct_tests,
+            totalTests: total_tests,
+            bestAttempt: attempt._id,
+            bestAttemptDate: new Date(),
+            totalAttempts: 1,
+            success: attempt.success
+        });
+        await stats.save();
+    }
     return next();
 });
 
