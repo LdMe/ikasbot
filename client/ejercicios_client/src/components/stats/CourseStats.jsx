@@ -15,17 +15,12 @@ const CourseStats = ({ course, students }) => {
                 let hp = 0;
                 let maxHp = 0;
                 courseSubjects.forEach(subject => {
-                    const exercisesLength = subject.exercises.length
-                    maxHp += exercisesLength
-                    const subjectAttempt = student.attempts.find(attempt => {
-                        const foundAttempt = attempt.subjects.find(subjectAttempt => subjectAttempt.subject == subject._id)
-                        return foundAttempt
-                    });
-                    if (subjectAttempt) {
-                        hp += subjectAttempt.correct
+                    const subjectStats = student.stats.find(stat => stat.subject.subject == subject._id);
+                    if (subjectStats) {
+                        hp += subjectStats.subject.correctExercises
                     }
-                });
-
+                    maxHp += subject.exercises.length
+                })
                 return (
                     <section className="user-info" key={student._id}>
                         <article className="user-info">

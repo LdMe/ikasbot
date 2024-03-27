@@ -13,10 +13,15 @@ const SubjectStats = ({ subject, students, id = 0 }) => {
             {students?.length > 1 && <h3>Estudiantes:</h3>}
             <section className="students">
                 {students?.map((student) => {
-                    const subjectAttempt = student.attempts.find(attempt => {
+                    /* const subjectAttempt = student.attempts.find(attempt => {
                         const subjectAttempt = attempt.subjects.find(subjectAttempt => subjectAttempt.subject == subject._id)
                         return subjectAttempt
-                    })?.subjects[0]
+                    })?.subjects[0] */
+                    const subjectStats = student.stats.find(stat => stat.subject.subject == subject._id);
+                    const correct = subjectStats ? subjectStats.subject.correctExercises : 0;
+                    const total = subjectStats ? subjectStats.subject.totalExercises : 0;
+                    const subjectAttempt = { correct, total }
+                    
                     return (
                         <section className="subject-info" key={student._id}>
                             <article className="subject-info">

@@ -8,10 +8,11 @@ import TextShowHide from '../TextShowHide';
 import { Link } from 'react-router-dom';
 import { useState, useContext, useEffect } from 'react'
 import { createAttempt } from '../../util/api/exercise';
+import { getAttempt } from '../../util/api/attempt';
 import loggedInContext from '../../context/loggedInContext';
 
 
-const ExetrciseComponent = ({ exercise, user = null, isAdminOrTeacher = false, functions = {} }) => {
+const ExerciseComponent = ({ exercise, user = null, isAdminOrTeacher = false, functions = {} }) => {
     const { setIsEditing, handleDelete } = functions
     const { getBasePath } = useContext(loggedInContext)
     const [solution, setSolution] = useState('const message="Hello World";')
@@ -22,7 +23,7 @@ const ExetrciseComponent = ({ exercise, user = null, isAdminOrTeacher = false, f
         if (user) {
             const bestAttempt = loadBestAttempt(user)
             if (bestAttempt) {
-                setSolution(bestAttempt.code)
+                setSolution(bestAttempt.code || 'const message="Hello World";')
                 setResult(bestAttempt)
             }
         }
@@ -40,23 +41,19 @@ const ExetrciseComponent = ({ exercise, user = null, isAdminOrTeacher = false, f
                 return "Fácil";
         }
     }
-    const loadBestAttempt = (user) => {
-        try {
-            const attemptsForSubject = user.attempts.map(attempt => {
-                return attempt.subjects[0];
-            });
-            const attemptsForExercise = attemptsForSubject.filter(attempt => attempt.exercises.find(exerciseAttempt => exerciseAttempt.exercise == exercise._id));
-            if (attemptsForExercise.length == 0) {
-                return null
+    const loadBestAttempt = async(user) => {
+        const subjectStats = user.stats.find(stat => stat.exercises.find(exerciseStat => exerciseStat.exercise == exercise._id));
+        const exerciseStats = subjectStats ? subjectStats.exercises.find(exerciseStat => exerciseStat.exercise == exercise._id) : null;
+        console.log("exerciseStats",exerciseStats);
+        if(exerciseStats){
+            const bestAttempt = await getAttempt(exerciseStats.bestAttempt);
+            if(bestAttempt){
+                console.log("best attempt",bestAttempt);
+                setSolution(bestAttempt.code || 'const message="Hello World";')
+                setResult(bestAttempt)
             }
-            const exerciseAttempts = attemptsForExercise[0].exercises.find(exerciseAttempt => exerciseAttempt.exercise == exercise._id);
-            const bestAttempt = exerciseAttempts.attempts.find(attempt => attempt._id = exerciseAttempts.bestAttempt._id);
-            return bestAttempt
         }
-        catch (err) {
-            console.error(err)
-            return null
-        }
+        return exerciseStats;
     }
 
     const handleSubmit = async (e) => {
@@ -147,4 +144,4 @@ const ExetrciseComponent = ({ exercise, user = null, isAdminOrTeacher = false, f
     )
 }
 
-export default ExetrciseComponent
+export default ExerciseComponent

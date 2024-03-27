@@ -6,6 +6,7 @@ import { getCourse, } from '../course/courseController.js';
 import { getAllSubjects, getSubject } from '../subject/subjectController.js';
 import { getAllExercises } from '../exercise/exerciseController.js';
 import { getExercise } from '../exercise/exerciseController.js';
+import { getSubjectStats,getExerciseStats, getUserStats } from '../stats/statsController.js';
 /**
  * create a user, returns the created user or null if there was an error
  * @param {Object} data
@@ -53,8 +54,12 @@ const getAllUsers = async (query, limit, course = null) => {
                 const userData = user._doc;
                 delete userData.password;
                 // filter attempts by user
-                let attempts = await getAttemptsByCourse(user._id);
-                return { ...userData, attempts };
+                const stats = await getUserStats(user._id);
+                //let attempts = await getAttemptsByCourse(user._id);
+                return { 
+                    ...userData, 
+                    //attempts ,
+                    stats};
             }));
         }
         return users;
@@ -168,11 +173,12 @@ const getUser = async (id, simple = true) => {
             const course = await getCourse(courseId);
             return course;
         }));
-        const attempts = await getAttemptsByCourse(user._id);
+        //const attempts = await getAttemptsByCourse(user._id);
         const userData = user._doc;
         delete userData.password;
+        userData.stats = await getUserStats(user._id);
         userData.courses = completeCourses;
-        userData.attempts = attempts;
+        //userData.attempts = attempts;
         return userData;
     }
     catch (err) {

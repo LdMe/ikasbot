@@ -31,6 +31,7 @@ const attemptSchema = new mongoose.Schema({
 
 // every time before an attempt is saved, update the exercise's correct percentage and execution time
 attemptSchema.pre('save', async function (next) {
+    
     const attempt = this;
     if(!attempt.message){
         // cancel save
@@ -63,6 +64,7 @@ attemptSchema.pre('save', async function (next) {
     attempt.correct_tests = correct_tests;
     attempt.total_tests = total_tests;
 
+    attempt.success = correct_tests === total_tests && total_tests !== 0;
     // get execution time
     regex = /Time:\s+(\d.?\d+)\s+s/;
     const match2 = attempt.message.match(regex);
@@ -72,12 +74,18 @@ attemptSchema.pre('save', async function (next) {
     }
     attempt.execution_time = execution_time;
 
-    console.log("attempt",attempt);
+    //console.log("attempt",attempt);
     // get stats
-    const stats = await Stats.findOne({user: attempt.createdBy, exercise: attempt.exercise}).populate('bestAttempt');
     
+    const stats = await Stats.findOne({user: attempt.createdBy, exercise: attempt.exercise}).populate('bestAttempt');
+    //console.log("stats", stats)
+    let attempts = await Attempt.countDocuments({exercise: attempt.exercise, createdBy: attempt.createdBy});
+    if(attempt.isNew){
+        attempts += 1;  
+    }
     if(stats){
-        stats.attempts += 1;
+        
+        stats.totalAttempts = Math.max(stats.totalAttempts, attempts);
         stats.totalTests = total_tests;
         stats.correctTests = Math.max(stats.correctTests, correct_tests);
         if(correct_tests >= stats.correctTests){
@@ -89,6 +97,10 @@ attemptSchema.pre('save', async function (next) {
             
     }
     else{
+        //console.log(`exercise ${attempt.exercise} stats does not exits`)
+        const totalAttempts = attempts;
+        
+        //console.log("totalAttempts", totalAttempts)
         const stats = new Stats({
             user: attempt.createdBy,
             exercise: attempt.exercise,
@@ -96,7 +108,7 @@ attemptSchema.pre('save', async function (next) {
             totalTests: total_tests,
             bestAttempt: attempt._id,
             bestAttemptDate: new Date(),
-            totalAttempts: 1,
+            totalAttempts: totalAttempts,
             success: attempt.success
         });
         await stats.save();

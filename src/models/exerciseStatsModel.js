@@ -26,6 +26,11 @@ const ExerciseStatsSchema = new mongoose.Schema({
         ref: 'Exercise',
         required: true
     },
+    subjectStats: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'SubjectStats',
+        required: false
+    },
     correctTests: {
         type: Number,
         default: 0
@@ -52,24 +57,32 @@ const ExerciseStatsSchema = new mongoose.Schema({
 });
 
 // after saving the stats, update the subject's stats
-ExerciseStatsSchema.post('save', async function() {
+ExerciseStatsSchema.pre('save', async function() {
+    
     const exerciseStats = this;
     const exercise = await Exercise.findById(exerciseStats.exercise);
     const subjectStats = await SubjectStats.findOne({user: exerciseStats.user, subject: exercise.subject});
     const exercises = await Exercise.find({subject: exercise.subject, isDraft: false});
-    const correctExercises= await Stats.countDocuments({user: exerciseStats.user, exercise: {$in: exercises.map(exercise => exercise._id)}, success: true});
+    const correctExercises= await Stats.find({user: exerciseStats.user, exercise: {$in: exercises.map(exercise => exercise._id)}, success: true});
+    const uniqueCorrectExercises = [...new Set(correctExercises.map(attempt => attempt.exercise))];
+    let correctExerciseCount = uniqueCorrectExercises.length;
+    if (exerciseStats.isNew && exerciseStats.success) {
+        correctExerciseCount++;
+    }
     if(subjectStats) {
-        subjectStats.correctExercises = correctExercises;
+        subjectStats.correctExercises = correctExerciseCount;
         subjectStats.totalExercises = exercises.length;
+        exerciseStats.subjectStats = subjectStats._id;
         await subjectStats.save();
     }
     else {
-        await SubjectStats.create({
+        const newSubjectStats = await SubjectStats.create({
             user: exerciseStats.user,
             subject: exercise.subject,
-            correctExercises: correctExercises,
+            correctExercises: correctExerciseCount,
             totalExercises: exercises.length
         })
+        exerciseStats.subjectStats = newSubjectStats._id;
     }
 
 })

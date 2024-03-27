@@ -32,9 +32,8 @@ const ExerciseStats = ({ exercise, students }) => {
             <section className="students">
                 {students?.map((student) => {
                     // get attempts for an exercise inside a subject inside a course, we don't have course id, so we have to search in all courses
-                    let bestAttempt = null;
                     let totalAttempts = 0;
-                    // get attempts from the course of the exercise
+                    /* // get attempts from the course of the exercise
                     const subjectAttempts = student.attempts.filter(attempt => attempt.subjects.find(subjectAttempt => subjectAttempt.subject == exercise.subject));
                     // get only the exercise attempts
                     const exercisesAttempts = subjectAttempts.map(attempt => attempt.subjects.find(subjectAttempt => subjectAttempt.subject == exercise.subject).exercises);
@@ -44,9 +43,13 @@ const ExerciseStats = ({ exercise, students }) => {
                         const attempts = thisExerciseAttempts[0];
                         bestAttempt = attempts.bestAttempt;
                         totalAttempts = attempts.attempts.length;
-                    }
+                    } */
+                    const subjectStats = student.stats.find(stat => stat.exercises.find(exerciseStat => exerciseStat.exercise == exercise._id));
+                    const exerciseStats = subjectStats ? subjectStats.exercises.find(exerciseStat => exerciseStat.exercise == exercise._id) : null;
+                    
+                    totalAttempts = exerciseStats ? exerciseStats.totalAttempts : 0;
                     let link = `${getBasePath()}/ejercicios/${exercise._id}`;
-                    console.log("role",getUserRole());
+                    
                     if(getUserRole() !== "student"){
                         link = `${getBasePath()}/ejercicios/${exercise._id}/usuarios/${student._id}`;
                     }
@@ -57,13 +60,12 @@ const ExerciseStats = ({ exercise, students }) => {
                                 {students?.length > 1 &&
                                     <p>{student.name}</p>
                                 }
-                                {bestAttempt ?
-                                    <HealthBar hp={bestAttempt.correct_tests} maxHp={bestAttempt.total_tests} />
+                                {exerciseStats ?
+                                    <HealthBar hp={exerciseStats.correctTests} maxHp={exerciseStats.totalTests} />
                                     :
                                     <HealthBar hp={0} />
                                 }
                                 <p>{totalAttempts} int.</p>
-
                             </article>
                             </Link>
                         </section>

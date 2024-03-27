@@ -12,7 +12,18 @@ const resaveAttempts = async () => {
     }
 }
 
+const getAttempt = async (id) => {
+    try {
+        const url = `/attempt/${id}`;
+        return await fetchApi(url,"GET");
+    }
+    catch (err) {
+        console.error(err);
+        return {error: err.message};
+    }
+}
 
 export {
-    resaveAttempts
+    resaveAttempts,
+    getAttempt
 }
