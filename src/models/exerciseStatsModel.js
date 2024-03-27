@@ -66,9 +66,13 @@ ExerciseStatsSchema.pre('save', async function() {
     const correctExercises= await Stats.find({user: exerciseStats.user, exercise: {$in: exercises.map(exercise => exercise._id)}, success: true});
     const uniqueCorrectExercises = [...new Set(correctExercises.map(attempt => attempt.exercise))];
     let correctExerciseCount = uniqueCorrectExercises.length;
-    if (exerciseStats.isNew && exerciseStats.success) {
+    console.log("correct exercises",uniqueCorrectExercises);
+    console.log("exerciseStats.exercise",exerciseStats.exercise);
+     if ( exerciseStats.success && uniqueCorrectExercises.findIndex(exercise => exercise._id.toString() === exerciseStats.exercise.toString()) === -1) {
+        console.log("new correct exercise");
         correctExerciseCount++;
     }
+    console.log("correct exercises",correctExerciseCount,correctExercises.length);
     if(subjectStats) {
         subjectStats.correctExercises = correctExerciseCount;
         subjectStats.totalExercises = exercises.length;
