@@ -6,6 +6,7 @@ import HealthBar from '../../components/healthBar/HealthBar'
 import CourseStats from '../../components/stats/CourseStats'
 import TextShowHide from '../../components/TextShowHide'
 import { FaXmark } from 'react-icons/fa6'
+import PasswordChange from '../../components/profile/PasswordChange'
 
 const User = () => {
     const [user, setUser] = useState(useLoaderData().user)
@@ -36,6 +37,8 @@ const User = () => {
                     <option value="admin">Administrador</option>
                 </select>
             }
+
+            <PasswordChange user={user} isAdmin={getUserRole() == "admin"}/>
             <section className="courses">
                 
 

@@ -1,5 +1,6 @@
 import { isValidObjectId } from '../../utils/helpers.js';
 import userController from './userController.js';
+import bcrypt from 'bcryptjs';
 
 /**
  * create a user 
@@ -67,6 +68,19 @@ const getUser = async (req, res) => {
 const updateUser = async (req, res) => {
     try {
         const id = req.params.id;
+        const isAdmin = req.user?.role === 'admin';
+        if (!isAdmin && id !== req.user?.id) {
+            return res.status(401).json({ error: 'Unauthorized' });
+        }
+        if(!isAdmin){
+            const tempUser = await userController.getUser(id,true);
+            const oldPassword = req.body.oldPassword || '';
+            const match = await bcrypt.compare(oldPassword, tempUser.password);
+            if(!match){
+                return res.status(400).json({ error: 'Invalid old password' });
+            }
+            
+        }
         const user = await userController.updateUser(id, req.body);
         if (user == null) {
             return res.status(404).json({ error: 'Cannot find user' });

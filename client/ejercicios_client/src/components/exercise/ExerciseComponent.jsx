@@ -44,11 +44,10 @@ const ExerciseComponent = ({ exercise, user = null, isAdminOrTeacher = false, fu
     const loadBestAttempt = async(user) => {
         const subjectStats = user.stats.find(stat => stat.exercises.find(exerciseStat => exerciseStat.exercise == exercise._id));
         const exerciseStats = subjectStats ? subjectStats.exercises.find(exerciseStat => exerciseStat.exercise == exercise._id) : null;
-        console.log("exerciseStats",exerciseStats);
+        
         if(exerciseStats){
             const bestAttempt = await getAttempt(exerciseStats.bestAttempt);
             if(bestAttempt){
-                console.log("best attempt",bestAttempt);
                 setSolution(bestAttempt.code || 'const message="Hello World";')
                 setResult(bestAttempt)
             }

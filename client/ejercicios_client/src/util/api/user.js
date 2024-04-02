@@ -72,11 +72,23 @@ const deleteUser = async (id) => {
     }
 } 
 
+const updateUser = async (id,data) => {
+    try {
+        const url = `/user/${id}`;
+        return await fetchApi(url,"PUT",data);
+    }
+    catch (error) {
+        console.error(error)
+        return { error: error.message };
+    }
+}
+
 export {
     getAllUsers,
     getUserData,
     changeUserRole,
     getTeachers,
     getStudents,
-    deleteUser
+    deleteUser,
+    updateUser
 }
