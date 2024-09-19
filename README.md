@@ -107,6 +107,10 @@ If you have any questions about the project or would like to connect, feel free 
 - LinkedIn: https://www.linkedin.com/in/danel-lafuente/
 - Portfolio: https://lafuentedanel.com
 
+## 🚀 Test it
+
+You can go to [https://ikasbot.tbfsb.com](https://ikasbot.tbfsb.com) and test it out. You can use the user `usuario@mail.com`and password `1234` to test it as a student.
+
 ---
 
 Empowering education through technology - Happy coding with Ikasbot! 🚀📚
