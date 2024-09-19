@@ -1,7 +1,7 @@
 import Exercise from "../../models/exerciseModel.js";
 import Subject from "../../models/subjectModel.js";
 import Attempt from "../../models/attemptModel.js";
-import { getAllExercises,deleteExercises } from "../exercise/exerciseController.js";
+import { getAllExercises,deleteExercises,copyExercises } from "../exercise/exerciseController.js";
 
 // Crud for subjects
 /**
@@ -135,6 +135,48 @@ const deleteSubject = async (id,cascade=true) => {
     }
 }
 
+/**
+ * Copy a subject and all its exercises to another course
+ * @param {String} id
+ * @param {String} courseId
+ * @returns {Object} subject
+ */
+const copySubject = async (id, courseId) => {
+    try {
+        const subject = await Subject.findById(id);
+        if (subject == null) {
+            return null;
+        }
+        const newSubject = await createSubject({ name: subject.name, course: courseId });
+        await copyExercises(subject._id, newSubject._id);
+        return newSubject;
+    }
+    catch (err) {
+        console.error(err);
+        return null;
+    }
+}
 
-export { createSubject, getAllSubjects, getSubject, updateSubject, deleteSubject };
-export default { createSubject, getAllSubjects, getSubject, updateSubject, deleteSubject };
+/**
+ * Move a subject to another course
+ * @param {String} id
+ * @param {String} courseId
+ */
+const moveSubject = async (id, courseId) => {
+    try {
+        const subject = await Subject.findById(id);
+        if (subject == null) {
+            return null;
+        }
+        subject.course = courseId;
+        await subject.save();
+        return subject;
+    }
+    catch (err) {
+        console.error(err);
+        return null;
+    }
+}
+
+export { createSubject, getAllSubjects, getSubject, updateSubject, deleteSubject, copySubject, moveSubject }
+export default { createSubject, getAllSubjects, getSubject, updateSubject, deleteSubject, copySubject, moveSubject };

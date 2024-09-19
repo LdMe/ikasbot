@@ -55,7 +55,8 @@ const createExercise = async (req, res) => {
 // Get all exercises
 const getAllExercises = async (req, res) => {
     try {
-        const exercises = await exerciseController.getAllExercises();
+        const subject = req.query.subject;
+        const exercises = await exerciseController.getAllExercises(subject);
         if (exercises.length == 0) {
             return res.status(404).json({ error: 'Cannot find exercises' });
         }
@@ -111,5 +112,20 @@ const deleteExercise = async (req, res) => {
     }
 };
 
+// Copy an exercise to another subject
+const copyExercise = async (req, res) => {
+    try {
+        if(req.user.role != "admin"){
+            return res.status(401).json({ error: 'Unauthorized' });
+        }
+        const exercise = await exerciseController.copyExercise(req.params.id, req.body.subject);
+        res.json({ data: exercise });
+    }
+    catch (err) {
+        console.error(err);
+        res.status(500).json({ error: err.message });
+    }
+};
+
 // Export the functions
-export { createExerciseText, createExercise, getAllExercises, getExercise, updateExercise, deleteExercise };
+export { createExerciseText, createExercise, getAllExercises, getExercise, updateExercise, deleteExercise, copyExercise };
