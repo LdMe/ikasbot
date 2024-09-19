@@ -1,6 +1,5 @@
 # Ikasbot
 
-![Ikasbot Logo](/api/placeholder/200/100)
 
 Ikasbot is an innovative web platform designed to streamline the process of creating and evaluating programming exercises. It empowers teachers to craft tailored coding challenges and enables students to receive instant feedback on their solutions.
 
