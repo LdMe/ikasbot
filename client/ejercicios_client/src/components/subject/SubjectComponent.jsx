@@ -3,6 +3,7 @@ import { useContext,useState } from "react";
 import loggedInContext from "../../context/loggedInContext";
 import { FaEye, FaEyeSlash, FaPencil } from "react-icons/fa6";
 import { renameSubject } from "../../util/api/subject";
+import CopySubject from "./CopySubjectComponent";
 const SubjectComponent = ({originalSubject}) => {
     const[subject,setSubject] = useState(originalSubject);
     const [isEditing,setIsEditing] = useState(false);
@@ -47,6 +48,7 @@ const SubjectComponent = ({originalSubject}) => {
                 <h1>Tema {subject.name}{user.role !="student" && <button onClick={() => setIsEditing(true)} className="icon danger"><FaPencil/></button>}</h1>
             )}
             <p>Curso: <Link to={`${getBasePath()}/cursos/${subject.course._id}`}>{subject.course.name}</Link></p>
+            <CopySubject subject={subject} />
             <h2>Ejercicios:</h2>
             <ul className="list">
                 {

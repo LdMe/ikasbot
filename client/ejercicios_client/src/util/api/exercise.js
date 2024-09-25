@@ -76,4 +76,15 @@ const createExerciseText = async (prompt,isTest=false) => {
     }
 }
 
-export { getExercises, getExercise, createExercise, updateExercise, createAttempt, deleteExercise, createExerciseText};
+const copyExercise = async (id, newSubject) => {
+    try {
+        const url = `/exercise/${id}/copy`;
+        return await fetchApi(url,"POST",{subject:newSubject});
+    }
+    catch (error) {
+        console.error(error)
+        return { error: error.message };
+    }
+}
+
+export { getExercises, getExercise, createExercise, updateExercise, createAttempt, deleteExercise, createExerciseText, copyExercise };

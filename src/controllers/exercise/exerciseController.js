@@ -141,7 +141,7 @@ const deleteExercises = async (subject) => {
  * @param {String} subject
  * @returns {Object} exercise
  */
-const copyExercise = async (id, subject) => {
+const copyExercise = async (id, subject,hidden=true) => {
     try {
         const exercise = await Exercise.findById(id);
         if (exercise == null) {
@@ -151,6 +151,7 @@ const copyExercise = async (id, subject) => {
         delete exerciseData._id;
         const newExercise = new Exercise(exerciseData);
         newExercise.subject = subject;
+        newExercise.isDraft = hidden;
         await newExercise.save();
         return newExercise;
     }

@@ -11,6 +11,19 @@ const getSubject = async (id) => {
         return {error: err.message};
     }
 }
+
+const getSubjects = async (courseId) => {
+    try {
+        const url = `/subject/`;
+        const result = await fetchApi(url,"GET",{course:courseId});
+        return result;
+    }
+    catch (err) {
+        console.error(err);
+        return {error: err.message};
+    }
+    
+}
 const createSubject = async (data) => {
     try {
         const url = `/subject`;
@@ -43,5 +56,14 @@ const renameSubject = async (id, name) => {
         return { error: error.message };
     }
 }
-
-export {createSubject, getSubject, deleteSubject, renameSubject};
+const copySubject = async (id, courseId) => {
+    try {
+        const url = `/subject/${id}/copy`;
+        return await fetchApi(url,"POST",{course:courseId});
+    }
+    catch (error) {
+        console.error(error)
+        return { error: error.message };
+    }
+}
+export {createSubject, getSubject, getSubjects, deleteSubject, renameSubject, copySubject};

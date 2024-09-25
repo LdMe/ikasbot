@@ -8,8 +8,13 @@ const fetchApi = async (url, method, data) => {
             credentials: "include",
         }
         if (data) {
-            options.headers = { 'Content-Type': 'application/json' };
-            options.body = JSON.stringify(data);
+            if (method === "GET") {
+                url = `${url}?${new URLSearchParams(data)}`;
+            }
+            else{
+                options.headers = { 'Content-Type': 'application/json' };
+                options.body = JSON.stringify(data);
+            }
         }
         const response = await fetch(`${BACKEND_URL}${url}`, options);
         const result = await response.json();

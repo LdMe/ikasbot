@@ -94,5 +94,17 @@ const deleteSubject = async (req, res) => {
         res.status(500).json({ error: err.message });
     }
 }
-
-export { createSubject, getAllSubjects, getSubject, updateSubject, deleteSubject };
+const copySubject = async (req, res) => {
+    try {
+        if(req.user.role != "admin"){
+            return res.status(401).json({ error: 'Unauthorized' });
+        }
+        const subject = await subjectController.copySubject(req.params.id, req.body.course);
+        res.json({ data: subject });
+    }
+    catch (err) {
+        console.error(err);
+        res.status(500).json({ error: err.message });
+    }
+}
+export { createSubject, getAllSubjects, getSubject, updateSubject, deleteSubject, copySubject };

@@ -10,7 +10,7 @@ import { useState, useContext, useEffect } from 'react'
 import { createAttempt } from '../../util/api/exercise';
 import { getAttempt } from '../../util/api/attempt';
 import loggedInContext from '../../context/loggedInContext';
-
+import CopyExercise from './CopyExerciseComponent';
 
 const ExerciseComponent = ({ exercise, user = null, isAdminOrTeacher = false, functions = {} }) => {
     const { setIsEditing, handleDelete } = functions
@@ -87,6 +87,7 @@ const ExerciseComponent = ({ exercise, user = null, isAdminOrTeacher = false, fu
                 <>
                     <button onClick={() => setIsEditing(true)}>Editar</button>
                     <button onClick={() => handleDelete(exercise._id)}>Borrar</button>
+                    <CopyExercise exercise={exercise} />
                 </>
             )
             }
