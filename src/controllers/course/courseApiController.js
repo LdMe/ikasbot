@@ -191,6 +191,23 @@ const unenrollStudent = async (req, res) => {
     }
 }
 
+/**
+ * reset course stats
+ */
+const resetCourse = async (req, res) => {
+    try {
+        const course = await courseController.resetCourse(req.params.id);
+        if (course == null) {
+            return res.status(404).json({ error: 'Cannot find course' });
+        }
+        res.json({course});
+    }
+    catch (err) {
+        console.error(err)
+        res.status(500).json({ error: err.message });
+    }
+}
+
 export {
     createCourse,
     getAllCourses,
@@ -200,5 +217,6 @@ export {
     addTeacher,
     removeTeacher,
     enrollStudent,
-    unenrollStudent
+    unenrollStudent,
+    resetCourse
 };

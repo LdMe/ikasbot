@@ -120,6 +120,17 @@ const unenrollStudent = async (courseId,studentId) => {
     }
 }
 
+const resetCourse = async (id) => {
+    try {
+        const url = `/course/${id}/reset`;
+        return await fetchApi(url,"PUT");
+    }
+    catch (error) {
+        console.error(error)
+        return { error: error.message };
+    }
+}
+
 export{
     
     getCourses,
@@ -129,6 +140,7 @@ export{
     addTeacher,
     removeTeacher,
     enrollStudent,
-    unenrollStudent
+    unenrollStudent,
+    resetCourse
     
 }

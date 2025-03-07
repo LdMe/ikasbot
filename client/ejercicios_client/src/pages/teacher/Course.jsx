@@ -3,15 +3,16 @@ import { useContext, useEffect, useState } from "react";
 import loggedInContext from "../../context/loggedInContext";
 import { createSubject, deleteSubject } from "../../util/api/subject";
 import { getTeachers, getStudents } from "../../util/api/user";
-import { addTeacher, removeTeacher, enrollStudent, unenrollStudent } from "../../util/api/course";
+import { addTeacher, removeTeacher, enrollStudent, unenrollStudent,resetCourse } from "../../util/api/course";
 import { FaXmark } from "react-icons/fa6";
 import AddUser from "../../components/AddUser";
 import TextShowHide from "../../components/TextShowHide";
 import CourseStats from "../../components/stats/CourseStats";
+import { FaArrowRotateLeft } from "react-icons/fa6";
 
 const Course = () => {
     const [course, setCourse] = useState(useLoaderData());
-    const [showStats, setShowStats] = useState(true);
+    const [showStats, setShowStats] = useState(false);
     const [subjectToDelete, setSubjectToDelete] = useState(null);
     const [deleteExercises, setDeleteExercises] = useState(true);
     const { getUserRole, getBasePath } = useContext(loggedInContext);
@@ -64,6 +65,13 @@ const Course = () => {
         const newStudents = course.students.filter((student) => student._id != studentId)
         setCourse({ ...course, students: newStudents })
     }
+    const handleResetCourse = async () => {
+        if(!window.confirm('Estas seguro de resetear el curso?')) return
+        const response = await resetCourse(course._id)
+        if (response) {
+            setCourse(response)
+        }
+    }
     if (!course) return (<div>cargando...</div>)
     if (showStats) {
         return (
@@ -80,6 +88,7 @@ const Course = () => {
             <h1>Curso {course.name}</h1>
             <button className="selected">Editar</button>
             <button onClick={() => setShowStats(true)}>Estadísticas</button>
+            <button onClick={handleResetCourse}><FaArrowRotateLeft /></button>
             <section className="subject-section">
                 <h2>Temas</h2>
 

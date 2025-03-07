@@ -2,6 +2,8 @@ import Course from "../../models/courseModel.js";
 import Subject from "../../models/subjectModel.js";
 import Exercise from "../../models/exerciseModel.js";
 import Attempt from "../../models/attemptModel.js";
+import ExerciseStats from "../../models/exerciseStatsModel.js";
+import SubjectStats from "../../models/subjectStatsModel.js";
 
 import { isValidObjectId } from "../../utils/helpers.js";
 import { getAllUsers,getUser } from "../user/userController.js";
@@ -297,6 +299,29 @@ const unenrollStudent = async (courseId, studentId) => {
     }
 }
 
+/**
+ * reset every stat and remove attempt
+ * @param {String} id
+ */
+const resetCourse = async (id) => {
+    try {
+        const course = await Course.findById(id);
+        if (course == null) {
+            return null;
+        }
+        const subjects = await getAllSubjects(id);
+        const exercises = await Exercise.find({ subject: { $in: subjects } });
+        const attempts = await Attempt.find({ exercise: { $in: exercises } });
+        await Attempt.deleteMany({ _id: { $in: attempts } });
+        await ExerciseStats.deleteMany({ exercise: { $in: exercises } });
+        await SubjectStats.deleteMany({ subject: { $in: subjects } });
+        const courseData = await getCourse(id);
+        return courseData;
+    } catch (err) {
+        console.error(err);
+        return null;
+    }
+}
 export {
     createCourse,
     getAllCourses,
@@ -306,7 +331,8 @@ export {
     addTeacher,
     removeTeacher,
     enrollStudent,
-    unenrollStudent
+    unenrollStudent,
+    resetCourse
 };
 export default {
     createCourse,
@@ -317,5 +343,6 @@ export default {
     addTeacher,
     removeTeacher,
     enrollStudent,
-    unenrollStudent
+    unenrollStudent,
+    resetCourse
 };
