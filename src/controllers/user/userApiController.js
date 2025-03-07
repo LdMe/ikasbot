@@ -117,6 +117,26 @@ const deleteUser = async (req, res) => {
     }
 }
 
+/**
+ * reset user stats
+ * @param {Object} req
+ * @param {Object} res
+ */
+const resetUserStats = async (req, res) => {
+    try {
+        const id = req.params.id;
+        const user = await userController.resetUserStats(id);
+        if (user == null) {
+            return res.status(404).json({ error: 'Cannot find user' });
+        }
+        res.json({data:user});
+    }
+    catch (err) {
+        console.error(err)
+        res.status(500).json({ error: err.message });
+    }
+}
+
 const getUsersByRole = async (req, res) => {
     try {
         const role = req.query.role || 'student';
@@ -141,6 +161,7 @@ export {
     getUser,
     updateUser,
     deleteUser,
+    resetUserStats,
     getUsersByRole,
 };
 export default {
@@ -149,5 +170,6 @@ export default {
     getUser,
     updateUser,
     deleteUser,
+    resetUserStats,
     getUsersByRole,
 };

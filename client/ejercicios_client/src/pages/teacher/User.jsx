@@ -1,11 +1,11 @@
 import {  useContext, useState } from 'react'
 import {   Link,  useLoaderData,useNavigate } from 'react-router-dom'
-import { changeUserRole,deleteUser } from '../../util/api/user'
+import { changeUserRole,deleteUser,resetUserStats } from '../../util/api/user'
 import loggedInContext from '../../context/loggedInContext'
 import HealthBar from '../../components/healthBar/HealthBar'
 import CourseStats from '../../components/stats/CourseStats'
 import TextShowHide from '../../components/TextShowHide'
-import { FaXmark } from 'react-icons/fa6'
+import { FaXmark,FaArrowRotateLeft } from 'react-icons/fa6'
 import PasswordChange from '../../components/profile/PasswordChange'
 
 const User = () => {
@@ -25,10 +25,20 @@ const User = () => {
             navigate('/profesorado/usuarios')
         })
     }
+    const handleResetStats = (id) => {
+        if(!confirm('Seguro que quieres resetear las estadisticas?')) return;   
+        resetUserStats(id).then((response) => {
+            setUser(response)
+        })
+    }
     return (
         <div className="container">
             <h1>Perfil</h1>
-            <h2>Nombre: {user.name} <button className="icon incorrect" onClick={() => handleDelete(user._id)}><FaXmark /></button></h2>
+            <h2>
+                Nombre: {user.name} 
+                <button className="icon incorrect" onClick={() => handleResetStats(user._id)}><FaArrowRotateLeft /></button>
+                <button className="icon incorrect" onClick={() => handleDelete(user._id)}><FaXmark /></button>
+            </h2>
             
             {getUserRole() == "admin" &&
                 <select name="role" id="role" value={user.role} onChange={handleChangeRole}>

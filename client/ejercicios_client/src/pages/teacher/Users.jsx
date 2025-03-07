@@ -2,8 +2,8 @@ import { useLoaderData,Link } from "react-router-dom";
 import { useEffect,useContext,useState } from "react";
 import { useNavigate } from "react-router-dom";
 import loggedInContext from "../../context/loggedInContext";
-import { getAllUsers,deleteUser } from "../../util/api/user";
-import { FaXmark } from "react-icons/fa6";
+import { getAllUsers,deleteUser,resetUserStats } from "../../util/api/user";
+import { FaXmark, FaArrowRotateLeft } from "react-icons/fa6";
 
 const Users = () => {
     const data = useLoaderData();
@@ -36,6 +36,10 @@ const Users = () => {
             setUsers(newUsers);
         })
     }
+    const handleResetStats = (id) => {
+        if(!confirm('Seguro que quieres resetear las estadisticas?')) return;   
+        resetUserStats(id)
+    }
     if(data && data.error)
     {
         return <div>error</div>
@@ -49,6 +53,7 @@ const Users = () => {
                 {users.map((user) => (
                     <li key={user._id}>
                         <Link to={`${getBasePath()}/usuarios/${user._id}`}><p>{user.name} | {user.email}</p></Link>
+                        <button className="icon incorrect" onClick={() => handleResetStats(user._id)}><FaArrowRotateLeft /></button>
                         <button className="icon incorrect" onClick={() => handleDelete(user._id)}><FaXmark /></button>
                     </li>
                 ))}

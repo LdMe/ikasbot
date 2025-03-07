@@ -72,6 +72,17 @@ const deleteUser = async (id) => {
     }
 } 
 
+const resetUserStats = async (id) => {
+    try {
+        const url = `/user/${id}/reset`;
+        return await fetchApi(url,"PUT");
+    }
+    catch (error) {
+        console.error(error)
+        return { error: error.message };
+    }
+}
+
 const updateUser = async (id,data) => {
     try {
         const url = `/user/${id}`;
@@ -90,5 +101,6 @@ export {
     getTeachers,
     getStudents,
     deleteUser,
+    resetUserStats,
     updateUser
 }

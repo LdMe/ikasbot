@@ -248,6 +248,27 @@ const deleteUser = async (id) => {
 }
 
 /**
+ * reset user stats
+ * @param {String} id
+ * @returns {Object} user
+ */
+const resetUserStats = async (id) => {
+    try {
+        const user = await User.findById(id);
+        if (user == null) {
+            return null;
+        }
+        await Attempt.deleteMany({ createdBy: id });
+        await ExerciseStats.deleteMany({ user: id });
+        await SubjectStats.deleteMany({ user: id });
+        return user;
+    }
+    catch (err) {
+        return null;
+    }
+}
+
+/**
  * get all teachers and admins(optional). Limit to "limit" variable, default 10. Skip users that are already teachers of the course 'notCourse'
  * @param {String} query
  * @param {Number} limit
@@ -342,6 +363,7 @@ export {
     getUser,
     updateUser,
     deleteUser,
+    resetUserStats,
     getUsersByRole,
 };
 export default {
@@ -350,5 +372,6 @@ export default {
     getUser,
     updateUser,
     deleteUser,
+    resetUserStats,
     getUsersByRole,
 };
