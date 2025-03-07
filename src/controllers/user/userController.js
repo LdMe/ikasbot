@@ -1,6 +1,7 @@
 import User from '../../models/userModel.js';
 import Attempt from '../../models/attemptModel.js';
-import Exercise from '../../models/exerciseModel.js';
+import ExerciseStats from '../../models/exerciseStatsModel.js';
+import SubjectStats from '../../models/subjectStatsModel.js';
 import { isValidObjectId } from '../../utils/helpers.js';
 import { getCourse, } from '../course/courseController.js';
 import { getAllSubjects, getSubject } from '../subject/subjectController.js';
@@ -230,7 +231,13 @@ const deleteUser = async (id) => {
         }
         // delete attempts from user
         await Attempt.deleteMany({ createdBy: id });
-        
+
+        // delete exercise stats from user
+        await ExerciseStats.deleteMany({ user: id });
+
+        // delete subject stats from user
+        await SubjectStats.deleteMany({ user: id });
+
         await User.findByIdAndDelete(id);
         return user;
 
