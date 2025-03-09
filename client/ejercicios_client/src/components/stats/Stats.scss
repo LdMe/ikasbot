@@ -21,20 +21,19 @@
 }
 
 .exercises {
-    display: flex;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
     box-sizing: border-box;
     justify-content: space-around;
     gap: 1em;
     width: 100%;
-    padding: 1em;
-    flex-wrap: wrap;
+    margin-bottom: 2rem;
 
 }
 
 .subjects {
-    display: flex;
-    justify-content: space-between;
-    flex-direction: column;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
     gap: 2em;
     width: 100%;
 }
@@ -141,6 +140,12 @@ media query for phones to make exercise-card min width: 50%
 @media (max-width: 780px) {
     .exercise-card {
         min-width: 90%;
+    }
+    .subjects {
+        grid-template-columns: 1fr;
+    }
+    .exercises {
+        grid-template-columns: 1fr;
     }
 }
 

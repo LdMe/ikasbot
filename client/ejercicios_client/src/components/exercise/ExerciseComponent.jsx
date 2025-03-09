@@ -5,7 +5,7 @@ import { highlight } from 'highlight.js';
 import Editor from 'react-simple-code-editor';
 import HealthBar from '../healthBar/HealthBar';
 import TextShowHide from '../TextShowHide';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useState, useContext, useEffect } from 'react'
 import { createAttempt } from '../../util/api/exercise';
 import { getAttempt } from '../../util/api/attempt';
@@ -17,7 +17,7 @@ const ExerciseComponent = ({ exercise, user = null, isAdminOrTeacher = false, fu
     const { getBasePath } = useContext(loggedInContext)
     const [solution, setSolution] = useState('const message="Hello World";')
     const [result, setResult] = useState(null)
-
+    const navigate = useNavigate();
 
     useEffect(() => {
         if (user) {
@@ -62,6 +62,11 @@ const ExerciseComponent = ({ exercise, user = null, isAdminOrTeacher = false, fu
         setResult(newResult)
         const id = e.target.id.value;
         const response = await createAttempt(id, solution)
+        if(response.error){
+            if(response.error.includes("Unauthorized")){
+                navigate("/login");
+            }
+        }
         setResult(response);
     }
     const formatMessage = (message) => {

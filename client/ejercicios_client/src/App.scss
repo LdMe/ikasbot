@@ -10,6 +10,15 @@ body{
   padding: 1rem;
   
 }
+h1::first-letter,
+h2::first-letter,
+h3::first-letter,
+h4::first-letter,
+h5::first-letter,
+h6::first-letter,
+p::first-letter {
+  text-transform: uppercase;
+}
 
 a {
   font-weight: 500;
@@ -160,7 +169,8 @@ button.selected {
 }
 .navbar-brand {
   display: flex;
-  & >p {
+  align-items: center;
+  & > p {
     font-size: large;
     font-weight: bold;
   }
@@ -309,6 +319,12 @@ form.exercise fieldset {
 @media screen and (max-width: 768px) {
   .test > * {
     width: 100%;
+  }
+  .navbar-brand{
+    flex-direction: column;
+    & > p {
+      margin:0;
+    }
   }
 }
 
