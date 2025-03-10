@@ -17,9 +17,9 @@ const fetchApi = async (url, method, data) => {
             }
         }
         const response = await fetch(`${BACKEND_URL}${url}`, options);
-        if(!response.ok){
-            throw new Error(response.statusText);
-        }
+        // if(!response.ok){
+        //     throw new Error(response.statusText);
+        // }
         const result = await response.json();
         if(result.error){
             return {error: result.error};
