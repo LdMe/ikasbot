@@ -57,6 +57,7 @@ const getExercise = async (id) => {
         if (exercise == null) {
             return null;
         }
+        await exercise.subject.populate('course',{name:1});
         return exercise;
     }
     catch (err) {
@@ -85,7 +86,9 @@ const updateExercise = async (id, data) => {
         exercise.level = level;
         exercise.isDraft = isDraft;
         await exercise.save();
-        await exercise.populate('subject')
+        await exercise.populate('subject');
+
+        await exercise.subject.populate('course',{name:1});
         return exercise;
 
     }
