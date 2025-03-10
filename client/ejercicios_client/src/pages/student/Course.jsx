@@ -9,7 +9,12 @@ const Course = () => {
     if (!course) return (<div>cargando...</div>)
     return (
         <div>
-            <h1>Curso {course.name}</h1>
+            <div className="breadcrumb">
+                <Link to={`${getBasePath()}`}>Aula</Link>
+                <span>/</span>
+                <Link to={`${getBasePath()}/cursos/${course._id}`}>{course.name}</Link>
+            </div>
+            <h1>{course.name}</h1>
             <CourseStats course={course} students={[user.user]} />
         </div>
     );

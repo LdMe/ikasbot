@@ -82,11 +82,7 @@ const ExerciseComponent = ({ exercise, user = null, isAdminOrTeacher = false, fu
         <div key={exercise._id}>
             <h1>{exercise.name}</h1>
 
-            <p>Tema:
-                <Link to={`${getBasePath()}/temas/${exercise.subject?._id}`}>
-                    {exercise.subject?.name}
-                </Link>
-            </p>
+            
             <p>Nivel: {getMappedLevel(exercise.level)}</p>
             {isAdminOrTeacher && (
                 <>

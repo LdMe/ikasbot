@@ -26,13 +26,13 @@ const HealthBar = ({maxHp=100,hp=0,showHp=true})=>{
         setCurrentWidth(currentWidthRef.current);
     },[currentWidthRef.current]);
     const width = prevWidth;
-    const green ="#31e054";
-    const yellow ="#d2e031";
-    const red ="#e03a31";
+    const green ="#6ae682";
+    const yellow ="#f5f06c";
+    const red ="#e05f58";
     const toColor = currentWidth > MEDIUM_HP ? green : currentWidth > LOW_HP ? yellow : red
-    const style = {width: prevWidth+"%", "--to-width":currentWidth+"%", "--from-width":prevWidth+"%","--to-color":toColor}
+    const style = {width: prevWidth+"%", "--to-width":(currentWidth || "0")+"%", "--from-width":(prevWidth|| "0")+"%","--to-color":toColor}
     const speed = prevWidth - currentWidth;
-    const duration = Math.min(Math.abs(speed/10),0.5);
+    const duration = (Math.min(Math.abs(speed/10),0.5) ||0.5);
     style["--duration"] = duration+"s";
     const isAnimatedClass = isAnimated ? " animated" : "";
     

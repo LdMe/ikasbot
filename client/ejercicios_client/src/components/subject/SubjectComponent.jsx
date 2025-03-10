@@ -3,6 +3,7 @@ import { useContext,useState } from "react";
 import loggedInContext from "../../context/loggedInContext";
 import { FaEye, FaEyeSlash, FaPencil } from "react-icons/fa6";
 import { renameSubject } from "../../util/api/subject";
+import { updateExercise } from "../../util/api/exercise";
 import CopySubject from "./CopySubjectComponent";
 const SubjectComponent = ({originalSubject}) => {
     const[subject,setSubject] = useState(originalSubject);
@@ -32,6 +33,12 @@ const SubjectComponent = ({originalSubject}) => {
         setIsEditing(false);
 
     }
+    const handleIsDraft = async(exercise) => {
+        const newExercise = {...exercise,isDraft:!exercise.isDraft};
+        const updatedExercise = await updateExercise(exercise._id,newExercise);
+        const newSubject = {...subject,exercises:subject.exercises.map((e) => e._id === exercise._id ? updatedExercise : e)};
+        setSubject(newSubject);
+    }
     if(!subject)
     {
         return <div>cargando...</div>
@@ -45,16 +52,19 @@ const SubjectComponent = ({originalSubject}) => {
                     <button onClick={() => setIsEditing(false)}>Cancelar</button>
                 </form>
             ) : (
-                <h1>Tema {subject.name}{user.role !="student" && <button onClick={() => setIsEditing(true)} className="icon danger"><FaPencil/></button>}</h1>
+                <h1>{subject.name}{user.role !="student" && <button onClick={() => setIsEditing(true)} className="icon danger"><FaPencil/></button>}</h1>
             )}
-            <p>Curso: <Link to={`${getBasePath()}/cursos/${subject.course._id}`}>{subject.course.name}</Link></p>
             <CopySubject subject={subject} />
             <h2>Ejercicios:</h2>
             <ul className="list">
                 {
                     subject.exercises.map((exercise) => (
                         <li key={exercise._id}>
-                            <Link to={`${getBasePath()}/ejercicios/${exercise._id}`}>{exercise.name} | {getMappedLevel(exercise.level)} | {exercise.isDraft ? <FaEyeSlash className="secondary"/> : <FaEye className="primary"/>}</Link>
+                            <Link to={`${getBasePath()}/ejercicios/${exercise._id}`}>{exercise.name} | {getMappedLevel(exercise.level)} | </Link>
+                            <span onClick={() => handleIsDraft(exercise)}>
+                             {exercise.isDraft ? <FaEyeSlash className="visible-button secondary"/> : <FaEye className="visible-button primary"/>}
+
+                            </span>
                         </li>
                     ))
                 }

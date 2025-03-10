@@ -51,6 +51,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
+    border-radius: 20px;
     background: linear-gradient(to right, var(--from-color), var(--to-color));
     transition: width var(--duration) ease-out;
 }

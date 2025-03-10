@@ -16,7 +16,7 @@ h3::first-letter,
 h4::first-letter,
 h5::first-letter,
 h6::first-letter,
-p::first-letter {
+p:not(.user-name):not(.user-email):first-letter {
   text-transform: uppercase;
 }
 

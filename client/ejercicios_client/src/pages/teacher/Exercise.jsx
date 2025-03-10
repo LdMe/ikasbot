@@ -14,6 +14,7 @@ const Exercise = () => {
     const [isEditing, setIsEditing] = useState(false)
 
     const navigate = useNavigate();
+    const { getBasePath } = useContext(loggedInContext)
 
     const handleDelete = async (id) => {
         if (window.confirm('Are you sure?')) {
@@ -37,9 +38,17 @@ const Exercise = () => {
         <CreateExercise oldExercise={exercise} onSubmit={handleEditExercise} />
     )
 
-    
+    const subject = exercise.subject;
+    const course = subject.course;
     return (
         <div>
+            <div className="breadcrumb">
+                <Link to={`${getBasePath()}`}>Aula</Link>
+                <span>/</span>
+                <Link to={`${getBasePath()}/cursos/${course._id}`}>{course.name}</Link>
+                <span>/</span>
+                <Link to={`${getBasePath()}/temas/${subject._id}`}>{subject.name}</Link>
+            </div>
             {user ? 
             <Link to={`/profesorado/usuarios/${user._id}`}>usuario: {user.name}</Link>
             :

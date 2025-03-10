@@ -48,7 +48,36 @@
     ;
 
 }
+.course-info__card{
+    border: 1px solid #ccc;
+    padding: 1rem;
+    max-width: 1024px;
+    margin-top: 1rem;
+    &:hover {
+        box-shadow: 0 0 1em #aaa;
+        cursor: pointer;
+    }
+}
+.visible-button{
+    font-size: 1.5rem;
+    margin-left:0.5rem;
+    cursor: pointer;
+}
+.breadcrumb{
+    font-size: 1.2rem;
+    font-style: italic;
 
+    & a {
+        text-decoration: none;
+        color: v.$primary;
+        &::first-letter {
+            text-transform: uppercase;
+        }
+        &:hover {
+            text-decoration: underline;
+        }
+    }
+}
 .exercise {
     width: 90%;
 

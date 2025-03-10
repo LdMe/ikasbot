@@ -85,6 +85,11 @@ const Course = () => {
     }
     return (
         <div>
+            <div className="breadcrumb">
+                <Link to={`${getBasePath()}/cursos/`}>Cursos</Link>
+                <span>/</span>
+                <Link to={`${getBasePath()}/cursos/${course._id}`}>{course.name}</Link>
+            </div>
             <h1>Curso {course.name}</h1>
             <button className="selected">Editar</button>
             <button onClick={() => setShowStats(true)}>Estadísticas</button>

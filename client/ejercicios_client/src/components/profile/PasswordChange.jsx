@@ -30,7 +30,7 @@ const PasswordChange = ({user,isAdmin=false}) => {
     }
     return (
         <div>
-            <TextShowHide title={isAdmin ? <h2>Cambiar contraseña de {user.name}</h2> : <h2>Cambiar contraseña</h2>} >
+            <TextShowHide title={isAdmin ? <h3>Cambiar contraseña de {user.name}</h3> : <h3>Cambiar contraseña</h3>} >
             
             <form onSubmit={handleUpdatePassword}>
 
