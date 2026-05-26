@@ -21,6 +21,11 @@ const Users = () => {
     }, [])
     useEffect(() => {
         getAllUsers(filter).then((data) => {
+            if(data.error) {
+                console.error("error")
+                setUsers([]);
+                return;
+            }
             setUsers(data);
         })
     }, [filter]);

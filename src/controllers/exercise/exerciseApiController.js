@@ -5,7 +5,7 @@ dotenv.config();
 const anthropic = new Anthropic({
     apiKey: process.env["ANTHROPIC_API_KEY"]
 });
-const createExerciseText = async (req, res) => {
+const createExerciseText_old = async (req, res) => {
     try {
         const prompt = req.body.prompt
         const isTest = req.body.isTest
@@ -36,6 +36,47 @@ const createExerciseText = async (req, res) => {
         res.status(500).json({ error: err.message });
     }
 }
+const createExerciseText = async (req, res) => {
+    try {
+        const prompt = req.body.prompt;
+        const isTest = req.body.isTest;
+
+        let completePrompt = `Crea un ejercicio sobre ${prompt}. El código debe ser en javascript. El ejercicio se debe poder testear mediante tests unitarios que haremos a continuación, para que el alumno sepa el resultado. Devuelve solo el enunciado. El enunciado debe ser en formato html directamente. El enunciado debe tener un título ingenioso y dejar muy claro las variables o funciones que se deben crear. A ser posible, el ejercicio debe hacer referencia a un tema de actualidad o de interés general, o a alguna situación graciosa de la vida real. Devuelve únicamente el enunciado.`;
+
+        if (isTest) {
+            completePrompt = `Crea tests unitarios para el ejercicio sobre ${prompt} usando jest. La respuesta debe ser sin formato y sin la solución, solo los tests unitarios.`;
+        }
+
+        const response = await fetch("https://api.deepseek.com/chat/completions", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${process.env.DEEPSEEK_API_KEY}`
+            },
+            body: JSON.stringify({
+                model: "deepseek-v4-pro",
+                max_tokens: 20023,
+                temperature: 1,
+                messages: [{ role: "user", content: completePrompt }]
+            })
+        });
+
+        if (!response.ok) {
+            const error = await response.json();
+            throw new Error(error.error?.message || "DeepSeek API error");
+        }
+
+        const data = await response.json();
+        console.log("received data from DeepSeek", data);
+        const text = data.choices[0].message.content;
+
+        res.json({ data: text });
+    }
+    catch (err) {
+        console.error(err);
+        res.status(500).json({ error: err.message });
+    }
+};
 // Create a new exercise
 const createExercise = async (req, res) => {
     try {

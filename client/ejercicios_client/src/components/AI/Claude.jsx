@@ -16,7 +16,8 @@ const ClaudeComponent = ({onResponse}) => {
         const newPrompt = document.getElementById("prompt").value
         setPrompt(prompt)
         const data = await createExerciseText(newPrompt)
-        onResponse(data.content[0].text)
+        console.log("data", data)
+        onResponse(data)
         setIsGenerating(false)
     }
     if(isGenerating){

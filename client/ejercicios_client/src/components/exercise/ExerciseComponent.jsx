@@ -1,3 +1,6 @@
+import CodeMirror from '@uiw/react-codemirror';
+import { javascript } from '@codemirror/lang-javascript';
+import { oneDark } from '@codemirror/theme-one-dark';
 
 import 'highlight.js/styles/atom-one-dark.css';
 import Highlight from 'react-highlight'
@@ -14,7 +17,6 @@ import CopyExercise from './CopyExerciseComponent';
 
 const ExerciseComponent = ({ exercise, user = null, isAdminOrTeacher = false, functions = {} }) => {
     const { setIsEditing, handleDelete } = functions
-    const { getBasePath } = useContext(loggedInContext)
     const [solution, setSolution] = useState('const message="Hello World";')
     const [result, setResult] = useState(null)
     const navigate = useNavigate();
@@ -101,17 +103,23 @@ const ExerciseComponent = ({ exercise, user = null, isAdminOrTeacher = false, fu
 
                         <button>Ejecutar tests</button>
                     </form>
-                    <Editor
-                        value={solution}
-                        className='hljs editor'
-                        onValueChange={solution => setSolution(solution)}
-                        highlight={text => highlight(text, { language: "javascript" }).value}
-                        padding={10}
-                        style={{
-                            fontFamily: '"Fira code", "Fira Mono", monospace',
-                            fontSize: 12,
-                        }}
-                    />
+                    <div className="editor-wrapper" style={{ fontSize: '14px', border: '1px solid #333' }}>
+                        <CodeMirror
+                            value={solution}
+                            height="400px" // O "auto" para que crezca con el contenido
+                            theme={oneDark}
+                            extensions={[javascript({ jsx: true })]}
+                            onChange={(value) => {
+                                setSolution(value);
+                            }}
+                            basicSetup={{
+                                lineNumbers: true,
+                                autocompletion: true,
+                                foldGutter: true,
+                                highlightActiveLine: true,
+                            }}
+                        />
+                    </div>
 
                 </section>
 

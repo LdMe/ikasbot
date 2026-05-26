@@ -60,7 +60,7 @@ function CreateExercise({ oldExercise, onSubmit = null }) {
         if(data.error){
             return alert(data.error)
         }
-        setTest(data.content[0].text)
+        setTest(data)
     }
     const handleCancel = () => {
         if (onSubmit) {
