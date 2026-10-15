@@ -6,8 +6,9 @@ import cors from 'cors';
 dotenv.config();
 const app = express();
 connectDB();
+const CLIENT_URLS = process.env.CLIENT_URL.split(',').map((url) => url.trim());
 const corsOptions = {
-    origin: process.env.CLIENT_URL,
+    origin: CLIENT_URLS,
     credentials: true,
 }
 app.use(cors(corsOptions));
