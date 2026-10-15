@@ -38,7 +38,7 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock
     networks:
       - ejercicios-interna
-      - nginx-proxy
+      #- nginx-proxy
 
   js-test: 
     container_name: js-test
@@ -52,5 +52,5 @@ services:
 networks:
   ejercicios-interna:
     name: ejercicios-interna
-  nginx-proxy:
-    external: true
+  #nginx-proxy:
+  #  external: true

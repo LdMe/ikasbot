@@ -1,5 +1,6 @@
 import  Jwt  from "jsonwebtoken";
 import dotenv from "dotenv";
+import { createTokenCookie } from "../utils/helpers.js";
 
 dotenv.config();
 
@@ -17,6 +18,7 @@ const isAuth = (req, res, next) => {
     try {
         const decoded = Jwt.verify(token, process.env.JWT_SECRET);
         req.user = decoded;
+        createTokenCookie(decoded, res);
         next();
     } catch (error) {
         res.status(401).json({error:"Unauthorized: Invalid token"});

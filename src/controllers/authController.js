@@ -1,6 +1,7 @@
 import Jwt from "jsonwebtoken";
 import User from "../models/userModel.js";
 import bcrypt from "bcryptjs";
+import {createTokenCookie} from "../utils/helpers.js";
 import dotenv from "dotenv";
 
 dotenv.config();
@@ -42,15 +43,16 @@ const login = async (req, res) => {
             res.status(400).json({ error: "Invalid credentials" });
             return;
         }
-        const token = Jwt.sign({ name: oldUser.name, email: oldUser.email, id: oldUser._id, role: oldUser.role }, process.env.JWT_SECRET, { expiresIn: "1h" });
-        /* send token in a cookie */
-        res.cookie("token", token, {
-            httpOnly: true,
-            secure: true,
-            sameSite: 'none',
-            maxAge: 3600000
+        // const token = Jwt.sign({ name: oldUser.name, email: oldUser.email, id: oldUser._id, role: oldUser.role }, process.env.JWT_SECRET, { expiresIn: "1h" });
+        // /* send token in a cookie */
+        // res.cookie("token", token, {
+        //     httpOnly: true,
+        //     secure: true,
+        //     sameSite: 'none',
+        //     maxAge: 3600000
 
-        });
+        // });
+        const token = createTokenCookie(oldUser, res);
 
         res.status(200).json({
             data: {
