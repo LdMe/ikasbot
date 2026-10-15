@@ -1,0 +1,137 @@
+/* Formularios: controles generales, ejercicios, creación y tests */
+
+/* ===== Controles generales ===== */
+
+input:not([type="checkbox"]):not([type="radio"]),
+select,
+textarea {
+  padding: 0.55em 0.8em;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  background-color: var(--color-surface);
+  color: var(--color-text);
+  font: inherit;
+  transition: border-color var(--transition), box-shadow var(--transition);
+}
+
+input:not([type="checkbox"]):not([type="radio"]):focus,
+select:focus,
+textarea:focus {
+  outline: none; /* se sustituye por el anillo de foco */
+  border-color: var(--color-accent);
+  box-shadow: var(--ring);
+}
+
+input::placeholder,
+textarea::placeholder {
+  color: var(--color-text-muted);
+}
+
+input[type="checkbox"],
+input[type="radio"] {
+  width: 1.1em;
+  height: 1.1em;
+  accent-color: var(--color-accent);
+}
+
+
+/* ===== Formulario de ejercicio ===== */
+
+form.exercise fieldset {
+  display: flex;
+  flex-wrap: wrap;
+  row-gap: var(--space-3);
+  margin: 0;
+  min-width: 0;
+  padding: var(--space-5);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  background-color: var(--color-surface);
+  color: var(--color-text);
+  box-shadow: var(--shadow-sm);
+}
+
+form.exercise fieldset > * {
+  margin: 0;
+}
+
+form.exercise legend {
+  padding: 0 var(--space-2);
+  font-weight: 600;
+}
+
+/* Si el input es un checkbox, label e input en la misma línea */
+form.exercise fieldset label {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  width: 50%;
+  font-weight: 500;
+}
+
+form.exercise fieldset input:not([type="checkbox"]) {
+  width: 100%;
+}
+
+form.exercise fieldset select {
+  width: 50%;
+}
+
+
+/* ===== Formulario de creación ===== */
+
+.form-new {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  padding: var(--space-5);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  background-color: var(--color-surface);
+  color: var(--color-text);
+  box-shadow: var(--shadow-sm);
+}
+
+.form-new > * {
+  margin: 0;
+}
+
+/* Si el input es un checkbox, label e input en la misma línea */
+.form-new label {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  width: 50%;
+  font-weight: 500;
+}
+
+.form-new input:not([type="checkbox"]) {
+  width: 100%;
+}
+
+.form-new select {
+  width: 50%;
+}
+
+
+/* ===== Formulario para ejecutar tests ===== */
+
+.run-test-form {
+  width: 100%;
+}
+
+.run-test-form > * {
+  width: 100%;
+}
+
+
+/* ===== Móvil: campos a ancho completo ===== */
+
+@media screen and (max-width: 768px) {
+  form.exercise fieldset label,
+  form.exercise fieldset select,
+  .form-new label,
+  .form-new select {
+    width: 100%;
+  }
+}

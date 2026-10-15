@@ -4,7 +4,7 @@ import { useState, useContext } from "react";
 import { useNavigate,Link } from "react-router-dom";
 import loggedInContext from "../../context/loggedInContext";
 import {login as loginApi,register} from "../../util/api/auth";
-import "./Login.scss";
+import "../../css/login.css";
 const Login = () => {
     const [name, setName] = useState("");
     const [email, setEmail] = useState("");

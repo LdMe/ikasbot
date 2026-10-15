@@ -1,0 +1,74 @@
+/* =========================================================
+   Tokens de diseño (sustituye a variables.css)
+   ---------------------------------------------------------
+   Todas las variables de la app salen de aquí. Cada color
+   tiene versión clara y oscura con light-dark(), así que no
+   hace falta un archivo aparte de "modo oscuro".
+
+   Para cambiar el color de marca basta con tocar --primary:
+   el resto (hover, versión oscura, fondos suaves) se calcula
+   a partir de él.
+   ========================================================= */
+
+:root {
+  color-scheme: light dark;
+
+  /* Color de marca: poned aquí el valor de vuestro $primary */
+  --primary: #0f7c8c;
+
+  /* Superficies */
+  --color-bg:        light-dark(#f5f6f8, #0e1013);
+  --color-surface:   light-dark(#ffffff, #171a1f);
+  --color-surface-2: light-dark(#f0f2f5, #1f232a); /* filas alternas, hover */
+  --color-border:    light-dark(#dde1e6, #2c313a);
+
+  /* Texto */
+  --color-text:       light-dark(#1b1f24, #e6e8eb);
+  --color-text-muted: light-dark(#59636e, #9aa4af);
+
+  /* Color de marca: en oscuro se aclara para mantener contraste */
+  --color-accent:       light-dark(var(--primary), color-mix(in srgb, var(--primary) 65%, white));
+  --color-accent-hover: light-dark(color-mix(in srgb, var(--primary) 85%, black),
+                                   color-mix(in srgb, var(--primary) 50%, white));
+  --color-accent-soft:  color-mix(in srgb, var(--color-accent) 12%, transparent);
+  --color-on-accent:    light-dark(#ffffff, #0e1013); /* texto sobre fondo de marca */
+
+  /* Estados (texto legible sobre la superficie en ambos modos) */
+  --color-success: light-dark(#1a7f37, #3fb950);
+  --color-error:   light-dark(#cf222e, #f85149);
+  --color-warning: light-dark(#9a6700, #d29922);
+  --color-success-bg: color-mix(in srgb, var(--color-success) 12%, var(--color-surface));
+  --color-error-bg:   color-mix(in srgb, var(--color-error) 12%, var(--color-surface));
+
+  /* Otros */
+  --color-code-bg:  #0d1117;
+  --color-backdrop: light-dark(rgb(15 17 21 / 0.45), rgb(0 0 0 / 0.65));
+
+  /* Sombras: más sutiles en claro, más densas en oscuro */
+  --shadow-sm: 0 1px 2px light-dark(rgb(16 24 40 / 0.06), rgb(0 0 0 / 0.4)),
+               0 1px 3px light-dark(rgb(16 24 40 / 0.08), rgb(0 0 0 / 0.3));
+  --shadow-md: 0 4px 12px light-dark(rgb(16 24 40 / 0.08), rgb(0 0 0 / 0.5));
+  --shadow-lg: 0 12px 32px light-dark(rgb(16 24 40 / 0.14), rgb(0 0 0 / 0.6));
+  --ring: 0 0 0 3px var(--color-accent-soft);
+
+  /* Forma y espacio */
+  --radius-sm: 6px;
+  --radius:    10px;
+  --radius-lg: 14px;
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-5: 1.5rem;
+  --space-6: 2rem;
+
+  /* Tipografía */
+  --font-sans: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-mono: ui-monospace, "SF Mono", "Cascadia Code", Menlo, Consolas, monospace;
+
+  --transition: 150ms ease;
+}
+
+/* Opcional: forzar un tema con <html data-theme="light|dark"> */
+:root[data-theme="light"] { color-scheme: light; }
+:root[data-theme="dark"]  { color-scheme: dark; }

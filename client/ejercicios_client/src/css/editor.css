@@ -1,0 +1,76 @@
+/* Editores de texto (Quill) y bloques de código (highlight.js) */
+
+.ql-editor,
+.hljs {
+  width: 100%;
+  min-height: 200px;
+  overflow: auto; /* antes "scroll": mostraba barras aunque no hiciera falta */
+}
+
+.hljs.sm {
+  min-height: initial;
+}
+
+.hljs.editor {
+  padding: var(--space-4);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  background-color: var(--color-code-bg);
+  font-family: var(--font-mono);
+  font-size: 0.9rem;
+  line-height: 1.6;
+}
+
+
+/* ===== Quill (tema "snow") adaptado al modo oscuro =====
+   Por defecto la barra de herramientas usa iconos grises
+   oscuros y bordes #ccc, que no se ven sobre fondo oscuro. */
+
+.ql-toolbar.ql-snow,
+.ql-container.ql-snow {
+  border-color: var(--color-border);
+}
+
+.ql-toolbar.ql-snow {
+  border-radius: var(--radius) var(--radius) 0 0;
+  background-color: var(--color-surface-2);
+}
+
+.ql-container.ql-snow {
+  border-radius: 0 0 var(--radius) var(--radius);
+  background-color: var(--color-surface);
+  color: var(--color-text);
+  font-family: inherit;
+  font-size: 1rem;
+}
+
+.ql-snow .ql-stroke {
+  stroke: var(--color-text);
+}
+
+.ql-snow .ql-fill {
+  fill: var(--color-text);
+}
+
+.ql-snow .ql-picker {
+  color: var(--color-text);
+}
+
+.ql-snow .ql-picker-options {
+  background-color: var(--color-surface);
+  border-color: var(--color-border);
+}
+
+.ql-snow.ql-toolbar button:hover .ql-stroke,
+.ql-snow.ql-toolbar button.ql-active .ql-stroke {
+  stroke: var(--color-accent);
+}
+
+.ql-snow.ql-toolbar button:hover .ql-fill,
+.ql-snow.ql-toolbar button.ql-active .ql-fill {
+  fill: var(--color-accent);
+}
+
+.ql-editor.ql-blank::before {
+  color: var(--color-text-muted);
+}

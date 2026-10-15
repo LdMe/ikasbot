@@ -1,0 +1,173 @@
+/* Estilos generales: reset, tipografía, enlaces y botones */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: var(--font-sans);
+  line-height: 1.5;
+  background-color: var(--color-bg);
+  color: var(--color-text);
+  -webkit-font-smoothing: antialiased;
+}
+
+#root {
+  width: 100%;
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: var(--space-4);
+}
+
+::selection {
+  background-color: var(--color-accent-soft);
+}
+
+
+/* ===== Tipografía ===== */
+
+h1, h2, h3, h4, h5, h6 {
+  line-height: 1.25;
+  font-weight: 650;
+  letter-spacing: -0.01em;
+  text-wrap: balance;
+}
+
+/* Primera letra en mayúscula */
+h1::first-letter,
+h2::first-letter,
+h3::first-letter,
+h4::first-letter,
+h5::first-letter,
+h6::first-letter,
+p:not(.user-name):not(.user-email)::first-letter {
+  text-transform: uppercase;
+}
+
+
+/* ===== Enlaces ===== */
+
+a {
+  font-weight: 500;
+  text-decoration: none;
+  color: var(--color-accent);
+  transition: color var(--transition);
+}
+
+a:hover {
+  color: var(--color-accent-hover);
+}
+
+
+/* ===== Foco visible (navegación con teclado) ===== */
+
+:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
+  border-radius: var(--radius-sm);
+}
+
+
+/* ===== Botones ===== */
+
+button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  padding: 0.5em 1em;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  background-color: var(--color-surface);
+  color: var(--color-text);
+  font: inherit;
+  font-weight: 500;
+  cursor: pointer;
+  transition:
+    background-color var(--transition),
+    border-color var(--transition),
+    color var(--transition),
+    transform var(--transition);
+}
+
+button:hover {
+  border-color: var(--color-accent);
+  color: var(--color-accent);
+  background-color: var(--color-accent-soft);
+}
+
+button:active {
+  transform: translateY(1px);
+}
+
+button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+}
+
+button.selected {
+  background-color: var(--color-accent);
+  border-color: var(--color-accent);
+  color: var(--color-on-accent);
+}
+
+button.correct:hover {
+  border-color: var(--color-success);
+  background-color: var(--color-success-bg);
+  color: var(--color-success);
+}
+
+button.incorrect:hover {
+  border-color: var(--color-error);
+  background-color: var(--color-error-bg);
+  color: var(--color-error);
+}
+
+/* Botones de icono, sin caja */
+.icon {
+  font-size: 1.5rem;
+  line-height: 1;
+  background: none;
+}
+
+button.icon {
+  padding: var(--space-1);
+  border-color: transparent;
+  background: none;
+}
+
+button.icon:hover {
+  background-color: var(--color-surface-2);
+}
+
+
+/* ===== Tarjeta genérica ===== */
+
+.card {
+  padding: 2em;
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
+}
+
+
+/* ===== Movimiento reducido ===== */
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

@@ -1,0 +1,77 @@
+/* Fondo del modal (oculto por defecto) */
+.modal {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  padding: var(--space-4);
+  background-color: var(--color-backdrop);
+  -webkit-backdrop-filter: blur(4px);
+  backdrop-filter: blur(4px);
+  overflow: hidden;
+}
+
+/* Centrado con grid */
+.modal.show {
+  display: grid;
+  place-items: center;
+}
+
+/* Evita que la página de detrás haga scroll con el modal abierto */
+body:has(.modal.show) {
+  overflow: hidden;
+}
+
+/* Caja del modal */
+.modal-body {
+  position: relative;
+  width: min(100%, 64rem);
+  height: 90%;
+  padding: var(--space-4);
+  background-color: var(--color-surface);
+  color: var(--color-text);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-lg);
+  overflow: hidden;
+  animation: modal-in 200ms ease-out;
+}
+
+@keyframes modal-in {
+  from {
+    opacity: 0;
+    transform: translateY(8px) scale(0.98);
+  }
+}
+
+/* Contenido con scroll */
+.modal-content {
+  position: absolute;
+  inset: 0;
+  padding: var(--space-5);
+  overflow-y: auto;
+  overflow-x: hidden;
+  overscroll-behavior: contain;
+}
+
+.modal-container {
+  width: 100%;
+}
+
+/* Botones */
+.modal__close-button {
+  position: absolute;
+  top: var(--space-3);
+  right: var(--space-3);
+  z-index: 1;
+  width: 2.25rem;
+  height: 2.25rem;
+  padding: 0;
+  border-radius: 999px;
+  cursor: pointer;
+}
+
+.modal-button {
+  width: 100%;
+  margin-top: var(--space-4);
+}

@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import './Modal.scss';
+import '../../css/modal.css';
 
 const Modal = ({ children, defaultShow = false }) => {
     const [show, setShow] = useState(defaultShow);

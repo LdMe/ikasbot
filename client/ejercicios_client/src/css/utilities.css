@@ -1,0 +1,35 @@
+/* Clases de estado: colores de texto y fondos de sección.
+   Los colores cumplen contraste AA en claro y en oscuro. */
+
+.correct:not(section) {
+  color: var(--color-success);
+}
+
+.incorrect:not(section) {
+  color: var(--color-error);
+}
+
+.danger:not(section) {
+  color: var(--color-warning);
+}
+
+.primary:not(section) {
+  color: var(--color-accent);
+}
+
+.secondary:not(section) {
+  color: var(--color-text-muted);
+}
+
+/* Secciones: fondo tintado + franja lateral de color */
+section.correct {
+  background-color: var(--color-success-bg);
+  color: var(--color-text);
+  box-shadow: inset 4px 0 0 var(--color-success);
+}
+
+section.incorrect {
+  background-color: var(--color-error-bg);
+  color: var(--color-text);
+  box-shadow: inset 4px 0 0 var(--color-error);
+}

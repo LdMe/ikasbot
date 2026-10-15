@@ -1,0 +1,211 @@
+/* ===== Tarjetas de asignatura y curso ===== */
+
+.subject-card {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  padding: var(--space-5);
+  background-color: var(--color-surface);
+  color: var(--color-text);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
+  transition: box-shadow var(--transition), border-color var(--transition);
+}
+
+.subject-card:hover {
+  box-shadow: var(--shadow-md);
+  border-color: color-mix(in srgb, var(--color-accent) 40%, var(--color-border));
+}
+
+.subject-card h2 {
+  width: 100%;
+  margin: 0 0 var(--space-3);
+  padding: var(--space-2);
+  font-size: 1.25rem;
+  text-align: center;
+}
+
+.course-card {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  padding: 5px;
+}
+
+.course-info__card {
+  max-width: 1024px;
+  margin-top: var(--space-4);
+  padding: var(--space-4) var(--space-5);
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  cursor: pointer;
+  transition: box-shadow var(--transition), border-color var(--transition);
+}
+
+.course-info__card:hover {
+  box-shadow: var(--shadow-md);
+  border-color: color-mix(in srgb, var(--color-accent) 40%, var(--color-border));
+}
+
+
+/* ===== Rejillas =====
+   auto-fill ajusta las columnas al ancho disponible,
+   así que ya no hace falta media query para móvil. */
+
+.exercises {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 240px), 1fr));
+  gap: var(--space-4);
+  width: 100%;
+  margin-bottom: 2rem;
+}
+
+.subjects {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 300px), 1fr));
+  gap: var(--space-6);
+  width: 100%;
+}
+
+.students {
+  width: 100%;
+}
+
+
+/* ===== Navegación ===== */
+
+.visible-button {
+  margin-left: var(--space-2);
+  font-size: 1.5rem;
+  cursor: pointer;
+}
+
+.breadcrumb {
+  font-size: 1.05rem;
+  color: var(--color-text-muted);
+}
+
+.breadcrumb a {
+  display: inline-block; /* ::first-letter no funciona en elementos inline */
+  color: var(--color-accent);
+  text-decoration: none;
+}
+
+.breadcrumb a::first-letter {
+  text-transform: uppercase;
+}
+
+.breadcrumb a:hover {
+  text-decoration: underline;
+  text-underline-offset: 0.2em;
+}
+
+
+/* ===== Ejercicios ===== */
+
+.exercise {
+  width: 90%;
+}
+
+.exercise > a {
+  width: 100%;
+  text-decoration: none;
+}
+
+.exercise-card {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  min-width: 20%;
+  padding: var(--space-3) var(--space-4);
+  background-color: var(--color-surface);
+  color: var(--color-text);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
+  transition:
+    box-shadow var(--transition),
+    border-color var(--transition),
+    transform var(--transition);
+}
+
+.exercise-card:hover {
+  box-shadow: var(--shadow-md);
+  border-color: color-mix(in srgb, var(--color-accent) 40%, var(--color-border));
+  transform: translateY(-2px);
+}
+
+.exercise-card > a {
+  width: 100%;
+  color: inherit;
+  text-decoration: none;
+}
+
+.exercise-card > a:hover {
+  color: inherit;
+}
+
+/* Color alterno para ejercicios pares e impares */
+.exercise-card:nth-child(odd) {
+  background-color: var(--color-surface-2);
+}
+
+.exercise-card .health-bar {
+  margin-right: 5px;
+}
+
+
+/* ===== Filas de información ===== */
+
+article.subject-info,
+article.user-info {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  gap: var(--space-2);
+  width: 100%;
+}
+
+article.subject-info > *,
+article.user-info > * {
+  max-width: 50%;
+}
+
+article.subject-info > p,
+article.subject-info > a,
+article.user-info > p,
+article.user-info > a {
+  width: 20%;
+}
+
+article.exercise-info {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-2);
+  width: 100%;
+}
+
+article.exercise-info > *:nth-child(1),
+article.exercise-info > *:nth-child(2) {
+  width: 40%;
+}
+
+article.exercise-info > *:nth-child(3) {
+  width: 20%;
+  text-align: center;
+}
+
+
+/* ===== Móvil ===== */
+
+@media (max-width: 780px) {
+  .exercise-card {
+    min-width: 90%;
+  }
+}

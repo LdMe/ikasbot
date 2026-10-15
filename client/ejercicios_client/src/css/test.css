@@ -1,0 +1,36 @@
+/* Vista de test: dos columnas (enunciado / editor) */
+
+.test {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--space-4);
+}
+
+.test > * {
+  min-height: 50vh;
+  padding: var(--space-4);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  background-color: var(--color-surface);
+  overflow: auto;
+}
+
+.test .test-input {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  position: relative;
+}
+
+/* El editor ocupa el espacio que queda (antes height: 90%) */
+.test .test-input .hljs.editor {
+  position: relative;
+  flex: 1;
+}
+
+/* En móvil, una sola columna */
+@media screen and (max-width: 768px) {
+  .test {
+    grid-template-columns: 1fr;
+  }
+}

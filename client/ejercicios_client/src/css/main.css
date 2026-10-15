@@ -1,0 +1,12 @@
+/* Punto de entrada: importa todos los estilos en orden.
+   tokens.css contiene todas las variables, así que no hace
+   falta ningún otro archivo de variables. */
+
+@import "./tokens.css";
+@import "./base.css";
+@import "./navbar.css";
+@import "./components.css";
+@import "./editor.css";
+@import "./forms.css";
+@import "./test.css";
+@import "./utilities.css";

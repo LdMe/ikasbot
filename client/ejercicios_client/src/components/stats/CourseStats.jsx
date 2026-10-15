@@ -3,7 +3,7 @@ import HealthBar from '../healthBar/HealthBar';
 import { useContext, useEffect, useState } from 'react';
 import SubjectStats from './SubjectStats';
 import TextShowHide from '../TextShowHide';
-import "./Stats.scss";
+import "../../css/stats.css";
 import { Link } from 'react-router-dom';
 const CourseStats = ({ course, students }) => {
     return (

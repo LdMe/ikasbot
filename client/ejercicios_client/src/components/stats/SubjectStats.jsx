@@ -5,7 +5,7 @@ import ExerciseStats from './ExerciseStats';
 import loggedInContext from '../../context/loggedInContext';
 import TextShowHide from '../TextShowHide';
 import Modal from '../modal';
-import "./Stats.scss";
+import "../../css/stats.css";
 const SubjectStats = ({ subject, students, id = 0 }) => {
     const { getBasePath } = useContext(loggedInContext)
     return (

@@ -4,7 +4,7 @@ import TextShowHide from '../TextShowHide';
 import AttemptsShow from '../AttemptsShow';
 import loggedInContext from '../../context/loggedInContext';
 import { useContext, useEffect, useState } from 'react';
-import "./Stats.scss";
+import "../../css/stats.css";
 
 const ExerciseStats = ({ exercise, students }) => {
     const { getBasePath,getUserRole } = useContext(loggedInContext)

@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import loggedInContext from './context/loggedInContext';
-import './App.scss'
+import './css/main.css'
 import router from './routes/Router.jsx'
 import { RouterProvider } from 'react-router-dom'
 import { refreshAuth,logout as logoutApi } from './util/api/auth'
