@@ -38,11 +38,21 @@ const Login = () => {
         login(result.user);
         navigate("/");
     }
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        console.log("isRegister", isRegister)
+        if (isRegister) {
+            handleRegister();
+        }
+        else {
+            handleLogin();
+        }
+    }
 
     return (
         <section className="login">
             <h2>{isRegister ? "Registro" : "Login"}</h2>
-            <form className="login-form">
+            <form className="login-form" onSubmit={handleSubmit}>
                 {isRegister &&
                     <>
                         <label htmlFor="name">Nombre</label>
@@ -50,7 +60,7 @@ const Login = () => {
                     </>
                 }
                 <label htmlFor="email">Email</label>
-                <input type="email" id="email" value={email} onChange={(e) => setEmail(e.target.value)} />
+                <input type="text" id="email" value={email} onChange={(e) => setEmail(e.target.value)} />
                 <label htmlFor="password">Contraseña</label>
                 <input type="password" id="password" value={password} onChange={(e) => setPassword(e.target.value)} />
                 {isRegister &&
@@ -59,7 +69,7 @@ const Login = () => {
                         <input type="password" id="passwordConfirm" value={passwordConfirm} onChange={(e) => setPasswordConfirm(e.target.value)} />
                     </>
                 }
-                <button type="button" onClick={isRegister ? handleRegister : handleLogin}>{isRegister ? "Registrarse" : "Login"}</button>
+                <button type="submit" >{isRegister ? "Registrarse" : "Login"}</button>
                 <button type="button" onClick={() => setIsRegister(!isRegister)}>{isRegister ? "Ya tengo cuenta" : "Crear cuenta"}</button>
 
             </form>
